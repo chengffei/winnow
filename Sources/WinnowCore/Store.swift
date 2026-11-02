@@ -3,9 +3,9 @@ import Foundation
 /// One JSON file per scan under Application Support, so a long NAS scan survives a restart.
 public enum Store {
     public static var directory: URL {
-        if let env = ProcessInfo.processInfo.environment["DEDUP_STORE"] { return URL(fileURLWithPath: env) }
+        if let env = ProcessInfo.processInfo.environment["WINNOW_STORE"] { return URL(fileURLWithPath: env) }
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        return base.appendingPathComponent("Dedup/scans", isDirectory: true)
+        return base.appendingPathComponent("Winnow/scans", isDirectory: true)
     }
 
     public static func loadAll() -> [ScanRecord] {

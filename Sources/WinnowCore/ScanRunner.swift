@@ -17,7 +17,7 @@ public enum ScanError: LocalizedError {
 public final class ScanRunner {
     public static func locateCLI() -> URL? {
         var candidates: [String] = []
-        if let env = ProcessInfo.processInfo.environment["DEDUP_CLI"] { candidates.append(env) }
+        if let env = ProcessInfo.processInfo.environment["WINNOW_CLI"] { candidates.append(env) }
         if let res = Bundle.main.resourceURL?.appendingPathComponent("czkawka_cli").path { candidates.append(res) }
         candidates += [NSHomeDirectory() + "/.local/bin/czkawka_cli", "/opt/homebrew/bin/czkawka_cli"]
         return candidates.first { FileManager.default.isExecutableFile(atPath: $0) }.map { URL(fileURLWithPath: $0) }
@@ -63,7 +63,7 @@ public final class ScanRunner {
         guard let cli = Self.locateCLI() else { throw ScanError.cliMissing }
         var config = config
         for i in config.locations.indices { config.locations[i].path = Self.realPath(config.locations[i].path) }
-        let work = FileManager.default.temporaryDirectory.appendingPathComponent("dedup-\(UUID().uuidString)")
+        let work = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: work, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: work) }
 

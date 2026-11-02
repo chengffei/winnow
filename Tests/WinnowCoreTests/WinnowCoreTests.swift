@@ -1,5 +1,5 @@
 import XCTest
-@testable import DedupCore
+@testable import WinnowCore
 
 final class ParserTests: XCTestCase {
     func testProgressLines() {
@@ -87,7 +87,7 @@ final class ProcessorTests: XCTestCase {
     var root: URL!
 
     override func setUpWithError() throws {
-        root = FileManager.default.temporaryDirectory.appendingPathComponent("dedup-test-\(UUID().uuidString)")
+        root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-test-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
     }

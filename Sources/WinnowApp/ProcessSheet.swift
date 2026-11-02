@@ -1,4 +1,4 @@
-import DedupCore
+import WinnowCore
 import SwiftUI
 
 /// The only way anything gets removed: re-checks the disk, then stages, trashes or deletes.

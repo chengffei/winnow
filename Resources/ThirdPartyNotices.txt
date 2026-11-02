@@ -1,4 +1,5 @@
-Dedup bundles czkawka_cli 12.0.2 (https://github.com/qarmin/czkawka), run as a separate program.
+Winnow is licensed under the GPL-3.0. It bundles czkawka_cli 12.0.2 (https://github.com/qarmin/czkawka), unmodified,
+and runs it as a separate program.
 Its source code is available at https://github.com/qarmin/czkawka/tree/12.0.2
 
 czkawka_cli itself is under the MIT License, reproduced below. It is statically linked with

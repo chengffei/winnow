@@ -1,22 +1,22 @@
 import AppKit
-import DedupCore
+import WinnowCore
 import SwiftUI
 
 let arguments = CommandLine.arguments
 if let i = arguments.firstIndex(of: "--snapshot"), i + 1 < arguments.count {
     MainActor.assumeIsolated {
         Snapshot.run(to: URL(fileURLWithPath: arguments[i + 1]),
-                     screen: ProcessInfo.processInfo.environment["DEDUP_SNAPSHOT_SCREEN"] ?? "dups")
+                     screen: ProcessInfo.processInfo.environment["WINNOW_SNAPSHOT_SCREEN"] ?? "dups")
     }
 } else {
-    DedupApp.main()
+    WinnowApp.main()
 }
 
-struct DedupApp: App {
+struct WinnowApp: App {
     @State private var model = AppModel()
 
     var body: some Scene {
-        Window("Dedup", id: "main") {
+        Window("Winnow", id: "main") {
             ContentView()
                 .environment(model)
                 .frame(minWidth: 900, minHeight: 560)
@@ -25,8 +25,8 @@ struct DedupApp: App {
     }
 }
 
-/// `DedupApp --snapshot out.png` renders a screen with demo data offscreen and exits.
-/// DEDUP_SNAPSHOT_SCREEN = new | scanning | dups | empty | sheet. Needs no screen-recording permission.
+/// `WinnowApp --snapshot out.png` renders a screen with demo data offscreen and exits.
+/// WINNOW_SNAPSHOT_SCREEN = new | scanning | dups | empty | sheet. Needs no screen-recording permission.
 @MainActor
 enum Snapshot {
     static func run(to file: URL, screen: String) {

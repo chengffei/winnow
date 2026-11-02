@@ -1,5 +1,5 @@
 import AppKit
-import DedupCore
+import WinnowCore
 import SwiftUI
 
 struct NewScanView: View {

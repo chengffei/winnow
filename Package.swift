@@ -2,13 +2,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "Dedup",
+    name: "Winnow",
     platforms: [
         .macOS(.v14)
     ],
     targets: [
-        .target(name: "DedupCore", path: "Sources/DedupCore"),
-        .executableTarget(name: "DedupApp", dependencies: ["DedupCore"], path: "Sources/DedupApp"),
-        .testTarget(name: "DedupCoreTests", dependencies: ["DedupCore"], path: "Tests/DedupCoreTests")
+        .target(name: "WinnowCore", path: "Sources/WinnowCore"),
+        .executableTarget(name: "WinnowApp", dependencies: ["WinnowCore"], path: "Sources/WinnowApp"),
+        .testTarget(name: "WinnowCoreTests", dependencies: ["WinnowCore"], path: "Tests/WinnowCoreTests")
     ]
 )

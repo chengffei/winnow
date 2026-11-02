@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh-Hans</string>
 	<key>CFBundleDisplayName</key>
-	<string>Dedup</string>
+	<string>Winnow</string>
 	<key>CFBundleExecutable</key>
-	<string>Dedup</string>
+	<string>Winnow</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.chengffei.dedup</string>
+	<string>com.chengffei.winnow</string>
 	<key>CFBundleName</key>
-	<string>Dedup</string>
+	<string>Winnow</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

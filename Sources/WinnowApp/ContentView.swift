@@ -1,4 +1,4 @@
-import DedupCore
+import WinnowCore
 import SwiftUI
 
 struct ContentView: View {
