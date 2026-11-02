@@ -22,7 +22,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp ".build/$CONFIG/WinnowApp" "$APP/Contents/MacOS/Winnow"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
-cp Resources/ThirdPartyNotices.txt "$APP/Contents/Resources/"
+cp Resources/ThirdPartyNotices.txt Resources/AppIcon.icns "$APP/Contents/Resources/"
 cp ThirdParty/czkawka_cli "$APP/Contents/Resources/czkawka_cli"
 
 IDENTITY=$(security find-identity -v -p codesigning | grep -o '"Apple Development[^"]*"' | head -1 | tr -d '"')

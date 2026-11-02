@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><!-- Winnow app icon: a duplicate page crumbles into grains, the front page stays. -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C2C3A"/><stop offset="1" stop-color="#15151F"/></linearGradient><clipPath id="keep"><polygon points="0,0 510,0 510,220 760,520 760,1024 0,1024"/></clipPath></defs>
+<clipPath id="sq"><rect x="100" y="100" width="824" height="824" rx="184" ry="184"/></clipPath>
+<rect x="100" y="100" width="824" height="824" rx="184" ry="184" fill="url(#bg)"/>
+<g clip-path="url(#sq)">
+<g clip-path="url(#keep)" opacity=".5"><path d="M 400 220 H 640 L 760 340 V 700 A 40 40 0 0 1 720 740 H 400 A 40 40 0 0 1 360 700 V 260 A 40 40 0 0 1 400 220 Z" fill="#fff"/></g>
+<ellipse transform="translate(509 245) rotate(51)" rx="16.9" ry="27.3" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(536 283) rotate(26)" rx="15.5" ry="24.9" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(561 310) rotate(79)" rx="18.9" ry="30.5" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(608 339) rotate(52)" rx="14.2" ry="22.9" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(629 373) rotate(47)" rx="18.3" ry="29.5" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(655 416) rotate(48)" rx="15.3" ry="24.7" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(686 457) rotate(39)" rx="15.1" ry="24.3" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(703 469) rotate(71)" rx="15.9" ry="25.6" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(754 513) rotate(75)" rx="16.3" ry="26.3" fill="#F4C150" opacity="1.00"/>
+<ellipse transform="translate(742 482) rotate(70)" rx="18.1" ry="29.1" fill="#F4C150" opacity="0.96"/>
+<ellipse transform="translate(686 399) rotate(53)" rx="17.6" ry="28.3" fill="#F4C150" opacity="0.92"/>
+<ellipse transform="translate(772 491) rotate(39)" rx="16.7" ry="27.0" fill="#F4C150" opacity="0.86"/>
+<ellipse transform="translate(581 211) rotate(63)" rx="15.7" ry="25.3" fill="#F4C150" opacity="0.78"/>
+<ellipse transform="translate(673 307) rotate(44)" rx="14.6" ry="23.6" fill="#F4C150" opacity="0.70"/>
+<ellipse transform="translate(690 296) rotate(58)" rx="13.5" ry="21.8" fill="#F4C150" opacity="0.61"/>
+<ellipse transform="translate(684 251) rotate(91)" rx="12.8" ry="20.6" fill="#F4C150" opacity="0.56"/>
+<ellipse transform="translate(811 415) rotate(32)" rx="11.5" ry="18.6" fill="#F4C150" opacity="0.46"/>
+<ellipse transform="translate(649 160) rotate(41)" rx="11.1" ry="17.8" fill="#F4C150" opacity="0.43"/>
+<ellipse transform="translate(703 234) rotate(54)" rx="10.0" ry="16.1" fill="#F4C150" opacity="0.34"/>
+<ellipse transform="translate(678 142) rotate(45)" rx="9.1" ry="14.7" fill="#F4C150" opacity="0.28"/>
+<ellipse transform="translate(727 201) rotate(57)" rx="8.0" ry="12.9" fill="#F4C150" opacity="0.19"/>
+<path d="M 290 330 H 530 L 650 450 V 810 A 40 40 0 0 1 610 850 H 290 A 40 40 0 0 1 250 810 V 370 A 40 40 0 0 1 290 330 Z" fill="#fff" stroke="#1C1C27" stroke-width="16"/><path d="M 530 330 V 422 A 28 28 0 0 0 558 450 H 650 Z" fill="#C7C7D1"/>
+</g></svg>
