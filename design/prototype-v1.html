@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>重复文件清理原型 v1</title>
+<style>
+:root{
+  --bg:#f5f5f7; --win:#ffffff; --side:#f0f0f2; --line:#e3e3e8; --line2:#d2d2d7;
+  --t1:#1d1d1f; --t2:#424245; --t3:#6e6e73;
+  --blue:#0071e3; --blue-bg:#e8f1fc; --green:#248a3d; --green-bg:#e9f6ec;
+  --orange:#b25000; --orange-bg:#fdf1e4; --red:#d70015; --red-bg:#fdecee;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--t1);font:13px/1.45 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}
+.page{max-width:1500px;margin:0 auto;padding:56px 32px 96px}
+h1{font-size:34px;font-weight:700;letter-spacing:-.02em}
+.lead{font-size:17px;color:var(--t2);margin-top:8px;max-width:760px}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0 8px}
+.card{background:#fff;border-radius:18px;padding:20px 22px}
+.card h3{font-size:15px;margin-bottom:6px}
+.card p,.card li{color:var(--t2);font-size:13px}
+.card ul{padding-left:18px}
+.frame{display:grid;grid-template-columns:1fr 300px;gap:28px;margin-top:72px;align-items:start}
+.frame-title{grid-column:1/-1;display:flex;align-items:baseline;gap:12px}
+.frame-title .no{font:600 13px ui-monospace,Menlo,monospace;color:var(--t3)}
+.frame-title h2{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.notes{background:#fff;border-radius:18px;padding:20px 22px;position:sticky;top:20px}
+.notes h4{font-size:12px;color:var(--t3);font-weight:600;margin-bottom:10px}
+.notes ol{padding-left:18px;display:grid;gap:10px}
+.notes li{color:var(--t2)}
+.notes li b{color:var(--t1)}
+.notes .fix{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--t3)}
+
+/* window */
+.win{background:var(--win);border-radius:12px;box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 18px 50px rgba(0,0,0,.12);overflow:hidden;height:700px;display:flex;flex-direction:column;position:relative}
+.bar{height:52px;display:flex;align-items:center;border-bottom:1px solid var(--line);flex:none}
+.bar .side-part{width:230px;height:100%;display:flex;align-items:center;padding-left:18px;background:var(--side);border-right:1px solid var(--line)}
+.lights{display:flex;gap:8px}.lights i{width:12px;height:12px;border-radius:50%;background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.bar .main-part{flex:1;display:flex;align-items:center;padding:0 16px;gap:10px}
+.bar .ttl{font-weight:600;font-size:14px}
+.bar .sub{color:var(--t3);font-size:12px}
+.spacer{flex:1}
+.tbtn{height:28px;padding:0 10px;border-radius:7px;display:inline-flex;align-items:center;gap:6px;color:var(--t2);font-size:13px;background:transparent;border:0}
+.tbtn.box{background:#f2f2f4}
+.search{width:180px;height:28px;border-radius:7px;background:#f2f2f4;color:var(--t3);display:flex;align-items:center;padding:0 10px;gap:6px}
+.body{flex:1;display:flex;min-height:0}
+.side{width:230px;background:var(--side);border-right:1px solid var(--line);padding:12px 10px;flex:none;overflow:hidden}
+.side .sec{font-size:11px;font-weight:600;color:var(--t3);padding:12px 8px 4px}
+.side .it{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;color:var(--t1)}
+.side .it .n{margin-left:auto;color:var(--t3);font-size:12px;font-variant-numeric:tabular-nums}
+.side .it.on{background:rgba(0,0,0,.07)}
+.side .it .s{display:block;color:var(--t3);font-size:11px}
+.main{flex:1;overflow:hidden;position:relative}
+svg.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.blue{color:var(--blue)}
+
+/* frame 1 */
+.setup{padding:28px 40px;display:grid;gap:26px;max-width:860px}
+.step h3{font-size:15px;font-weight:600;display:flex;gap:8px;align-items:baseline}
+.step h3 .k{font:600 12px ui-monospace,Menlo,monospace;color:var(--t3)}
+.step .hint{color:var(--t3);font-size:12px;margin:2px 0 10px}
+.locs{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.loc{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.loc:last-child{border-bottom:0}
+.loc .nm{font-weight:500}
+.loc .pt{color:var(--t3);font-size:12px}
+.tag{font-size:11px;padding:2px 7px;border-radius:5px;background:#f2f2f4;color:var(--t2);white-space:nowrap}
+.tag.orange{background:var(--orange-bg);color:var(--orange)}
+.tag.green{background:var(--green-bg);color:var(--green)}
+.tag.blue{background:var(--blue-bg);color:var(--blue)}
+.tag.red{background:var(--red-bg);color:var(--red)}
+.lock{display:flex;align-items:center;gap:6px;color:var(--t2);font-size:12px;margin-left:auto}
+.sw{width:30px;height:18px;border-radius:9px;background:#d2d2d7;position:relative}
+.sw:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px}
+.sw.on{background:#34c759}.sw.on:after{left:14px}
+.addrow{display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--blue);background:#fafafa}
+.addrow .drop{margin-left:auto;color:var(--t3);font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile{border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative}
+.tile.on{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);background:#fbfdff}
+.tile b{display:block;font-size:13px}
+.tile span{color:var(--t3);font-size:12px}
+.tile .ck{position:absolute;right:10px;top:10px;width:16px;height:16px;border-radius:4px;border:1px solid var(--line2)}
+.tile.on .ck{background:var(--blue);border-color:var(--blue)}
+.tile.on .ck:after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.more{color:var(--t2);font-size:12px;margin-top:8px}
+.seg{display:inline-flex;background:#f0f0f2;border-radius:8px;padding:2px}
+.seg span{padding:5px 14px;border-radius:6px;color:var(--t2)}
+.seg span.on{background:#fff;color:var(--t1);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.cmp div{font-size:12px;color:var(--t2)}
+.cmp b{color:var(--t1);font-weight:600}
+.footer{position:absolute;left:0;right:0;bottom:0;height:60px;border-top:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:12px;background:#fff}
+.btn{height:30px;padding:0 16px;border-radius:8px;display:inline-flex;align-items:center;font-size:13px;font-weight:500;background:#f0f0f2;color:var(--t1)}
+.btn.pri{background:var(--blue);color:#fff}
+.btn.danger{background:var(--red);color:#fff}
+.est{color:var(--t2);font-size:12px}
+
+/* frame 2 */
+.center{height:100%;display:flex;align-items:center;justify-content:center}
+.scan{width:520px}
+.scan h3{font-size:20px;font-weight:600}
+.scan .sub{color:var(--t3);margin:4px 0 22px}
+.stage{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.stage .dot{width:20px;height:20px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;background:var(--green)}
+.stage .dot.run{background:var(--blue)}
+.stage .dot.wait{background:#fff;border:1.5px solid var(--line2)}
+.stage b{font-weight:600}
+.stage .d{color:var(--t3);font-size:12px}
+.pbar{height:6px;border-radius:3px;background:#ececf0;margin:8px 0 6px;overflow:hidden}
+.pbar i{display:block;height:100%;width:41%;background:var(--blue);border-radius:3px}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.notice{margin-top:18px;border-radius:10px;padding:10px 14px;display:flex;gap:10px;align-items:center;font-size:12px}
+.notice.warn{background:var(--orange-bg);color:var(--orange)}
+.notice.info{background:var(--blue-bg);color:var(--blue)}
+.notice a{margin-left:auto;font-weight:600}
+
+/* frame 3 */
+.cols{display:flex;height:100%}
+.glist{width:330px;border-right:1px solid var(--line);overflow:hidden;flex:none}
+.ghead{padding:10px 14px;color:var(--t3);font-size:12px;border-bottom:1px solid var(--line);display:flex}
+.g{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.g.on{background:var(--blue-bg)}
+.thumb{width:36px;height:36px;border-radius:6px;flex:none;background:#e9e9ee;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:10px;font-weight:600}
+.g .nm{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g .m{color:var(--t3);font-size:12px}
+.g .r{margin-left:auto;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.g .r b{display:block;font-weight:600}
+.g .r span{color:var(--t3);font-size:11px}
+.detail{flex:1;padding:20px 24px;overflow:hidden}
+.dhead{display:flex;gap:16px;align-items:center}
+.preview{width:88px;height:88px;border-radius:10px;background:#dfe6ee;display:flex;align-items:center;justify-content:center;color:#7a8794;font-weight:700}
+.dhead h3{font-size:17px;font-weight:600}
+.dhead .m{color:var(--t3);font-size:12px;margin-top:2px}
+.copies{margin-top:20px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.cp{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}
+.cp:last-child{border-bottom:0}
+.cp .pt{font-size:12px;color:var(--t2);word-break:break-all}
+.cp .pt b{color:var(--t1);font-weight:500}
+.cp .m{color:var(--t3);font-size:11px}
+.pill{display:inline-flex;white-space:nowrap;flex:none;background:#f0f0f2;border-radius:7px;padding:2px;font-size:12px}
+.pill span{padding:3px 9px;border-radius:5px;color:var(--t3)}
+.pill span.keep{background:#fff;color:var(--green);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.pill span.del{background:#fff;color:var(--red);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.why{margin-top:12px;color:var(--t3);font-size:12px}
+.reveal{color:var(--blue);font-size:12px}
+.menu{position:absolute;top:44px;right:210px;width:280px;background:rgba(255,255,255,.97);border-radius:10px;box-shadow:0 0 0 .5px rgba(0,0,0,.2),0 10px 30px rgba(0,0,0,.18);padding:6px;z-index:5}
+.menu .mi{padding:6px 10px;border-radius:6px;display:flex;gap:8px}
+.menu .mi.on{background:var(--blue);color:#fff}
+.menu .mi.on .s{color:rgba(255,255,255,.8)}
+.menu .s{color:var(--t3);font-size:11px;display:block}
+.menu hr{border:0;border-top:1px solid var(--line);margin:5px 8px}
+.menu .chk{width:12px;flex:none}
+
+/* frame 4 */
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+.ph{border-radius:12px;border:1px solid var(--line);overflow:hidden;position:relative}
+.ph.keep{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.ph .img{height:150px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.ph .img svg{width:100%;height:100%}
+.ph .cap{padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:12px}
+.ph .cap .m{color:var(--t3)}
+.ph .badge{position:absolute;top:8px;left:8px}
+.slider{display:flex;align-items:center;gap:8px;color:var(--t3);font-size:12px}
+.slider .track{width:110px;height:4px;border-radius:2px;background:#d2d2d7;position:relative}
+.slider .track i{position:absolute;left:0;width:35%;height:100%;background:var(--blue);border-radius:2px}
+.slider .track b{position:absolute;left:35%;top:-6px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.2),0 1px 3px rgba(0,0,0,.2)}
+
+/* frame 5 */
+.dim{position:absolute;inset:52px 0 0 0;background:rgba(0,0,0,.18);z-index:4}
+.sheet{position:absolute;top:52px;left:50%;transform:translateX(-50%);width:520px;background:#fff;border-radius:0 0 14px 14px;box-shadow:0 18px 50px rgba(0,0,0,.25);padding:24px 26px 20px;z-index:6}
+.sheet h3{font-size:17px;font-weight:600}
+.sheet .sub{color:var(--t3);margin-top:2px}
+.opt{border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-top:10px;display:flex;gap:10px}
+.opt.on{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.opt.off{opacity:.55}
+.radio{width:16px;height:16px;border-radius:50%;border:1px solid var(--line2);flex:none;margin-top:2px}
+.opt.on .radio{border:5px solid var(--blue)}
+.opt b{font-weight:600}
+.opt .d{color:var(--t3);font-size:12px}
+.checks{margin-top:16px;display:grid;gap:6px;font-size:12px;color:var(--t2)}
+.checks div{display:flex;gap:8px;align-items:center}
+.checks .ok{color:var(--green);font-weight:700}
+.sheet .acts{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+
+.qs{margin-top:88px}
+.qs h2{font-size:24px;font-weight:700;margin-bottom:16px}
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.qgrid .card h3{display:flex;gap:8px}
+.qgrid .card h3 .k{font:600 12px ui-monospace,Menlo,monospace;color:var(--t3);padding-top:2px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>重复文件清理原型 v1</h1>
+<p class="lead">macOS 原生界面，底层用 czkawka_core。目标是第一次打开的人不看说明也能完成一次清理。2026-11-02，供讨论。</p>
+
+<div class="principles">
+  <div class="card"><h3>顺着流程走</h3><p>界面顺序就是操作顺序：选位置、选要找的、扫描、核对、处理。Krokiet 是结果在上、路径在下、按钮夹中间。</p></div>
+  <div class="card"><h3>说人话，不藏状态</h3><p>每个选项写清后果。跳过的目录、没权限的文件、预计耗时都摆在明面上，不静默。</p></div>
+  <div class="card"><h3>删除是最后一步</h3><p>默认不删任何东西，只做标记。处理前统一核对一次，每组至少留一份，网络卷默认移到暂存文件夹。</p></div>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="frame">
+  <div class="frame-title"><span class="no">01</span><h2>新建扫描</h2></div>
+  <div class="win">
+    <div class="bar">
+      <div class="side-part"><div class="lights"><i></i><i></i><i></i></div></div>
+      <div class="main-part"><span class="ttl">新建扫描</span><span class="spacer"></span></div>
+    </div>
+    <div class="body">
+      <div class="side">
+        <div class="it on"><svg class="ic blue" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>新建扫描</div>
+        <div class="sec">最近</div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1.5"/><path d="M5 10h.01M8 10h3"/></svg><span>hdd0<span class="s">10-28 · 重复文件</span></span></div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><path d="M2 5.5a1.5 1.5 0 0 1 1.5-1.5H6l1.5 1.5h5A1.5 1.5 0 0 1 14 7v4.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5z"/></svg><span>下载<span class="s">10-15 · 大文件</span></span></div>
+      </div>
+      <div class="main">
+        <div class="setup">
+          <div class="step">
+            <h3><span class="k">1</span>扫描哪里</h3>
+            <p class="hint">可以把文件夹直接拖进来。打开「只作对照」的位置，里面的文件只用来比对，永远不会被标记删除。</p>
+            <div class="locs">
+              <div class="loc">
+                <svg class="ic" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1.5"/><path d="M5 10h.01M8 10h3"/></svg>
+                <div><div class="nm">hdd0</div><div class="pt">/Volumes/hdd0 · 1.6 TB 已用</div></div>
+                <span class="tag orange">网络卷 SMB</span>
+                <div class="lock">只作对照<span class="sw"></span></div>
+              </div>
+              <div class="loc">
+                <svg class="ic" viewBox="0 0 16 16"><path d="M2 5.5a1.5 1.5 0 0 1 1.5-1.5H6l1.5 1.5h5A1.5 1.5 0 0 1 14 7v4.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5z"/></svg>
+                <div><div class="nm">图片</div><div class="pt">~/Pictures · 86 GB</div></div>
+                <span class="tag">本机</span>
+                <div class="lock">只作对照<span class="sw on"></span></div>
+              </div>
+              <div class="addrow"><svg class="ic" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>添加位置…<span class="drop">已自动跳过系统目录和资源库缓存　<span class="blue">修改</span></span></div>
+            </div>
+          </div>
+          <div class="step">
+            <h3><span class="k">2</span>找什么</h3>
+            <p class="hint">可以多选，一次扫完。</p>
+            <div class="tiles">
+              <div class="tile on"><i class="ck"></i><b>重复文件</b><span>内容完全一样</span></div>
+              <div class="tile"><i class="ck"></i><b>相似照片</b><span>连拍、裁剪、压缩过的</span></div>
+              <div class="tile"><i class="ck"></i><b>大文件</b><span>最占空间的 100 个</span></div>
+              <div class="tile on"><i class="ck"></i><b>空文件夹</b><span>里面什么都没有</span></div>
+            </div>
+            <p class="more">更多：相似视频、重复音乐、空文件、损坏的文件、扩展名不对的文件 ▸</p>
+          </div>
+          <div class="step">
+            <h3><span class="k">3</span>怎么比对重复文件</h3>
+            <div class="seg"><span class="on">按内容（推荐）</span><span>按大小和文件名</span></div>
+            <div class="cmp">
+              <div><b>按内容：</b>逐字节比，结果可以放心删。要把候选文件读一遍，网络卷上较慢。</div>
+              <div><b>按大小和文件名：</b>几分钟出结果，但同名同大小不一定相同，只适合先摸底。</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <span class="est">预计：本机约 4 分钟，hdd0 约 2 小时 40 分（网络 96 MB/s）</span>
+          <span class="spacer"></span>
+          <span class="btn pri">开始扫描</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>设计要点</h4>
+    <ol>
+      <li><b>三步自上而下</b>，扫描按钮只有一个，在右下角。</li>
+      <li>「参考路径」改名<b>只作对照</b>，并当场解释后果。</li>
+      <li>排除路径默认收起。系统目录自动跳过，不再出现 /proc 这类 Linux 路径。</li>
+      <li>工具按「找什么」描述，4 个常用的放卡片，其余折叠。EXIF 移除和视频压缩不是清理，首版不做。</li>
+      <li>比对方式在这里选，写清代价，不藏进齿轮。</li>
+    </ol>
+    <p class="fix">对应 Krokiet 问题：1 顺序反、2 Linux 默认值、4 无字图标、5 术语、6 工具平铺。</p>
+  </aside>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="frame">
+  <div class="frame-title"><span class="no">02</span><h2>扫描中</h2></div>
+  <div class="win">
+    <div class="bar">
+      <div class="side-part"><div class="lights"><i></i><i></i><i></i></div></div>
+      <div class="main-part"><span class="ttl">hdd0、图片</span><span class="sub">正在扫描</span><span class="spacer"></span></div>
+    </div>
+    <div class="body">
+      <div class="side">
+        <div class="it"><svg class="ic blue" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>新建扫描</div>
+        <div class="sec">进行中</div>
+        <div class="it on"><svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg><span>hdd0、图片<span class="s">41% · 剩约 1 小时 20 分</span></span></div>
+        <div class="sec">最近</div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><path d="M2 5.5a1.5 1.5 0 0 1 1.5-1.5H6l1.5 1.5h5A1.5 1.5 0 0 1 14 7v4.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5z"/></svg><span>下载<span class="s">10-15 · 大文件</span></span></div>
+      </div>
+      <div class="main">
+        <div class="center">
+          <div class="scan">
+            <h3>正在找重复文件</h3>
+            <p class="sub">可以关掉窗口，扫完会发通知。</p>
+            <div class="stage"><span class="dot">✓</span><div><b>收集文件</b><div class="d">182,340 个文件，1.68 TB · 用时 3 分 12 秒</div></div></div>
+            <div class="stage"><span class="dot">✓</span><div><b>按大小筛出候选</b><div class="d">大小有相同的才可能重复，剩 23,118 个候选，760 GB</div></div></div>
+            <div class="stage"><span class="dot run">3</span><div style="flex:1"><b>比对内容</b>
+              <div class="pbar"><i></i></div>
+              <div class="d mono">312 GB / 760 GB · 96 MB/s · 剩约 1 小时 20 分</div>
+              <div class="d">正在读 /Volumes/hdd0/备份/MacBook-2022/Movies/…</div></div></div>
+            <div class="stage" style="border:0"><span class="dot wait"></span><div><b>整理结果</b><div class="d">等待中</div></div></div>
+            <div class="notice info">已确认 1,204 组重复，可以先看<a>查看已有结果</a></div>
+            <div class="notice warn">3 个文件夹没有读取权限，已跳过<a>查看并授权</a></div>
+            <div style="display:flex;gap:10px;margin-top:20px"><span class="btn">暂停</span><span class="btn">停止</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>设计要点</h4>
+    <ol>
+      <li><b>分阶段讲清在干什么</b>，第 2 步顺带解释为什么不用读全部文件。</li>
+      <li>给数字：已读、总量、速度、剩余时间。网络卷慢，用户要知道是不是卡住了。</li>
+      <li><b>跳过的目录必须报出来</b>，点开引导到「完全磁盘访问权限」。Krokiet 的「0 个结果」就是这里出的问题。</li>
+      <li>边扫边出结果，2 小时的扫描不用干等。</li>
+      <li>可暂停，下次接着扫，依赖 core 的哈希缓存。</li>
+    </ol>
+    <p class="fix">对应 Krokiet 问题：3 静默跳过。</p>
+  </aside>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="frame">
+  <div class="frame-title"><span class="no">03</span><h2>结果：重复文件</h2></div>
+  <div class="win">
+    <div class="bar">
+      <div class="side-part"><div class="lights"><i></i><i></i><i></i></div></div>
+      <div class="main-part">
+        <span class="ttl">重复文件</span><span class="sub">1,204 组 · 可释放 186 GB</span>
+        <span class="spacer"></span>
+        <span class="tbtn box">自动标记 ▾</span>
+        <span class="tbtn">按可释放空间 ▾</span>
+        <span class="search"><svg class="ic" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>搜索文件名或路径</span>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="mi on"><span class="chk">✓</span><span>每组保留最早的一份<span class="s">原件通常最早，推荐</span></span></div>
+      <div class="mi"><span class="chk"></span><span>每组保留最新的一份</span></div>
+      <div class="mi"><span class="chk"></span><span>每组保留路径最短的一份</span></div>
+      <div class="mi"><span class="chk"></span><span>优先保留在指定文件夹里的…</span></div>
+      <hr>
+      <div class="mi"><span class="chk"></span><span>全部取消标记</span></div>
+    </div>
+    <div class="body">
+      <div class="side">
+        <div class="it"><svg class="ic blue" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>新建扫描</div>
+        <div class="sec">hdd0、图片 · 今天 16:42</div>
+        <div class="it on"><svg class="ic" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="8" height="8" rx="1.5"/><path d="M5.5 13.5h6a2 2 0 0 0 2-2v-6"/></svg><span>重复文件<span class="s">可释放 186 GB</span></span><span class="n">1,204</span></div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><path d="M2 5.5a1.5 1.5 0 0 1 1.5-1.5H6l1.5 1.5h5A1.5 1.5 0 0 1 14 7v4.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5z"/></svg><span>空文件夹</span><span class="n">312</span></div>
+        <div class="sec">跳过</div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3.5M8 11h.01"/></svg><span>没有权限</span><span class="n">3</span></div>
+      </div>
+      <div class="main">
+        <div class="cols">
+          <div class="glist">
+            <div class="ghead">按可释放空间排序<span class="spacer"></span>已标记 2,318 个</div>
+            <div class="g on"><div class="thumb">MOV</div><div style="min-width:0"><div class="nm">婚礼全程.mov</div><div class="m">3 份 · 每份 21.4 GB</div></div><div class="r"><b>42.8 GB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb">DMG</div><div style="min-width:0"><div class="nm">Xcode_17.dmg</div><div class="m">2 份 · 每份 11.9 GB</div></div><div class="r"><b>11.9 GB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb">ZIP</div><div style="min-width:0"><div class="nm">Photos Library 备份.zip</div><div class="m">2 份 · 每份 9.2 GB</div></div><div class="r"><b>9.2 GB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb">MP4</div><div style="min-width:0"><div class="nm">南京 vlog 原片.mp4</div><div class="m">4 份 · 每份 2.1 GB</div></div><div class="r"><b>6.3 GB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb">ISO</div><div style="min-width:0"><div class="nm">ubuntu-24.04.iso</div><div class="m">3 份 · 每份 2.6 GB</div></div><div class="r"><b>5.2 GB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb">HEIC</div><div style="min-width:0"><div class="nm">IMG_4821.HEIC 等 412 组</div><div class="m">照片 · 每份约 3 MB</div></div><div class="r"><b>2.4 GB</b><span>可释放</span></div></div>
+          </div>
+          <div class="detail">
+            <div class="dhead">
+              <div class="preview">MOV</div>
+              <div><h3>婚礼全程.mov</h3><div class="m">QuickTime 影片 · 21.4 GB · 3 份内容完全相同</div><div class="m">按空格键预览</div></div>
+            </div>
+            <div class="copies">
+              <div class="cp"><div class="pill"><span class="keep">保留</span><span>删除</span></div><div><div class="pt"><b>hdd0</b> › 影像 › 2025 › 婚礼</div><div class="m">修改于 2025-09-20 · 最早</div></div><span class="reveal">在访达中显示</span></div>
+              <div class="cp"><div class="pill"><span>保留</span><span class="del">删除</span></div><div><div class="pt"><b>hdd0</b> › 备份 › MacBook-2022 › Movies</div><div class="m">修改于 2025-10-02</div></div><span class="reveal">在访达中显示</span></div>
+              <div class="cp"><div class="pill"><span>保留</span><span class="del">删除</span></div><div><div class="pt"><b>hdd0</b> › 下载 › 婚礼全程 (1).mov</div><div class="m">修改于 2025-11-14</div></div><span class="reveal">在访达中显示</span></div>
+            </div>
+            <p class="why">按「每组保留最早的一份」自动标记。手动改过的组不会被再次自动标记覆盖。</p>
+          </div>
+        </div>
+        <div class="footer">
+          <span class="est"><b style="color:var(--t1)">已标记 2,318 个文件，将释放 172 GB</b>　还没有删除任何东西</span>
+          <span class="spacer"></span>
+          <span class="btn">导出清单</span>
+          <span class="btn pri">核对并处理…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>设计要点</h4>
+    <ol>
+      <li><b>三栏</b>：结果类别、按组列表、单组详情。和邮件、访达一样，Mac 用户不用学。</li>
+      <li>列表<b>按可释放空间排序</b>，最值得处理的在最上面。</li>
+      <li>每份副本只有「保留 / 删除」两态，路径用面包屑，盘名加粗，一眼看出在哪。</li>
+      <li>「自动标记」是唯一的批量入口，规则写成人话。Krokiet 的「选择」藏了 10 多种模式。</li>
+      <li>底栏常驻已标记数和释放量，明确写<b>还没有删除任何东西</b>。</li>
+    </ol>
+    <p class="fix">移动、删除、回收站、硬链接、软链接这 5 个按钮合并为一个「核对并处理」。</p>
+  </aside>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="frame">
+  <div class="frame-title"><span class="no">04</span><h2>结果：相似照片</h2></div>
+  <div class="win">
+    <div class="bar">
+      <div class="side-part"><div class="lights"><i></i><i></i><i></i></div></div>
+      <div class="main-part">
+        <span class="ttl">相似照片</span><span class="sub">286 组 · 可释放 4.1 GB</span>
+        <span class="spacer"></span>
+        <span class="slider">严格<span class="track"><i></i><b></b></span>宽松</span>
+        <span class="tbtn box">自动标记 ▾</span>
+      </div>
+    </div>
+    <div class="body">
+      <div class="side">
+        <div class="it"><svg class="ic blue" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>新建扫描</div>
+        <div class="sec">图片 · 今天 16:42</div>
+        <div class="it"><svg class="ic" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="8" height="8" rx="1.5"/><path d="M5.5 13.5h6a2 2 0 0 0 2-2v-6"/></svg><span>重复文件</span><span class="n">1,204</span></div>
+        <div class="it on"><svg class="ic" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="m2.5 11 3.5-3.5 3 3 2-2 2.5 2.5"/></svg><span>相似照片<span class="s">可释放 4.1 GB</span></span><span class="n">286</span></div>
+      </div>
+      <div class="main">
+        <div class="cols">
+          <div class="glist">
+            <div class="ghead">按拍摄时间排序<span class="spacer"></span>已标记 512 张</div>
+            <div class="g on"><div class="thumb" style="background:#c9d8e6"></div><div><div class="nm">紫金山 · 4 张</div><div class="m">2026-10-04 10:12 连拍</div></div><div class="r"><b>11.2 MB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb" style="background:#e6d9c9"></div><div><div class="nm">夫子庙夜景 · 3 张</div><div class="m">2026-10-04 19:40</div></div><div class="r"><b>6.8 MB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb" style="background:#d4e2cf"></div><div><div class="nm">玄武湖 · 2 张</div><div class="m">一张是微信转存的压缩版</div></div><div class="r"><b>3.4 MB</b><span>可释放</span></div></div>
+            <div class="g"><div class="thumb" style="background:#e3d3dc"></div><div><div class="nm">截屏 · 6 张</div><div class="m">2026-09-12</div></div><div class="r"><b>2.9 MB</b><span>可释放</span></div></div>
+          </div>
+          <div class="detail">
+            <div class="dhead" style="justify-content:space-between"><div><h3>紫金山 · 4 张</h3><div class="m">差异很小：同一时刻连拍。点照片放大对比，按左右键切换。</div></div></div>
+            <div class="grid4">
+              <div class="ph keep"><span class="tag green badge">建议保留 · 最清晰</span><div class="img" style="background:#c9d8e6"><svg viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100 L60 40 L95 70 L135 25 L200 100Z" fill="#9fb4c8"/></svg></div><div class="cap"><div class="pill"><span class="keep">保留</span><span>删除</span></div><span class="m">4032×3024 · 3.9 MB</span></div></div>
+              <div class="ph"><div class="img" style="background:#c9d8e6"><svg viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100 L58 42 L94 71 L133 27 L200 100Z" fill="#9fb4c8"/></svg></div><div class="cap"><div class="pill"><span>保留</span><span class="del">删除</span></div><span class="m">4032×3024 · 3.7 MB · 略糊</span></div></div>
+              <div class="ph"><div class="img" style="background:#c9d8e6"><svg viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100 L62 38 L97 69 L137 24 L200 100Z" fill="#9fb4c8"/></svg></div><div class="cap"><div class="pill"><span>保留</span><span class="del">删除</span></div><span class="m">4032×3024 · 3.8 MB</span></div></div>
+              <div class="ph"><div class="img" style="background:#c9d8e6"><svg viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100 L60 40 L95 70 L135 25 L200 100Z" fill="#9fb4c8"/></svg></div><div class="cap"><div class="pill"><span>保留</span><span class="del">删除</span></div><span class="m">1280×960 · 0.4 MB · 压缩版</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <span class="est"><b style="color:var(--t1)">已标记 512 张照片，将释放 3.8 GB</b>　还没有删除任何东西</span>
+          <span class="spacer"></span>
+          <span class="btn pri">核对并处理…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>设计要点</h4>
+    <ol>
+      <li>照片要<b>看图判断</b>，详情区改成大缩略图网格，不是路径列表。</li>
+      <li>系统给建议并写出理由：分辨率最高、最清晰、不是压缩版。</li>
+      <li>「相似度」是滑块，两端写严格和宽松。Krokiet 里是哈希大小、算法、缩放方式三个技术参数。</li>
+      <li>按拍摄时间分组命名，比按哈希分组好认。</li>
+    </ol>
+    <p class="fix">待定：iPhone 照片多是 HEIC，要启用 libheif，牵涉 LGPL 协议，见协议审计。</p>
+  </aside>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="frame">
+  <div class="frame-title"><span class="no">05</span><h2>核对并处理</h2></div>
+  <div class="win">
+    <div class="bar">
+      <div class="side-part"><div class="lights"><i></i><i></i><i></i></div></div>
+      <div class="main-part"><span class="ttl">重复文件</span><span class="sub">1,204 组 · 可释放 186 GB</span><span class="spacer"></span></div>
+    </div>
+    <div class="dim"></div>
+    <div class="sheet">
+      <h3>处理 2,318 个文件？</h3>
+      <p class="sub">将释放 172 GB。其中 2,301 个在网络卷 hdd0 上。</p>
+      <div class="opt on"><span class="radio"></span><div><b>移到暂存文件夹（推荐）</b><div class="d">放进 hdd0/_待清理_2026-11-02，保留原目录结构。确认没问题后再手动删，也可以在「最近」里一键还原。</div></div></div>
+      <div class="opt off"><span class="radio"></span><div><b>移到废纸篓</b><div class="d">网络卷不支持废纸篓，选了会直接删除，所以这里不可选。本机的 17 个文件会进废纸篓。</div></div></div>
+      <div class="opt"><span class="radio"></span><div><b>直接删除</b><div class="d">无法恢复。需要再输入一次「删除」确认。</div></div></div>
+      <div class="checks">
+        <div><span class="ok">✓</span>每组至少保留 1 份</div>
+        <div><span class="ok">✓</span>「只作对照」的位置里没有文件被标记</div>
+        <div><span class="ok">✓</span>标记的文件在扫描后都没有改动过</div>
+      </div>
+      <div class="acts"><span class="btn">取消</span><span class="btn pri">移动 2,318 个文件</span></div>
+    </div>
+    <div class="body" style="filter:saturate(.9)">
+      <div class="side"></div><div class="main"></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <h4>设计要点</h4>
+    <ol>
+      <li><b>只有一个处理入口</b>，处理前必看这张核对单。</li>
+      <li>按卷判断能力：SMB 卷上「废纸篓」等于直接删除，所以禁用并解释原因。</li>
+      <li><b>暂存文件夹是默认项</b>，可还原，适合你的 NAS 场景。</li>
+      <li>3 条自动安全检查，任何一条不过就不能执行。第 3 条防止扫描后文件被改过。</li>
+      <li>硬链接、软链接这类替换操作首版不做。</li>
+    </ol>
+  </aside>
+</section>
+
+<section class="qs">
+  <h2>待你拍板</h2>
+  <div class="qgrid">
+    <div class="card"><h3><span class="k">Q1</span>首版做哪几个工具</h3><p>建议只做重复文件和空文件夹，相似照片放第二版。相似照片要看图对比，界面工作量和前两个加起来差不多。</p></div>
+    <div class="card"><h3><span class="k">Q2</span>窗口结构</h3><p>原型是「侧栏加三栏」，扫描记录留在侧栏。另一种是单页向导，做完一次就结束。前者适合反复清 NAS，后者更简单。</p></div>
+    <div class="card"><h3><span class="k">Q3</span>NAS 默认处理方式</h3><p>原型默认移到 NAS 上的暂存文件夹，不跨网络搬数据，速度最快。是否要加「30 天后自动清空暂存」？</p></div>
+    <div class="card"><h3><span class="k">Q4</span>定位和名字</h3><p>自用工具，还是像 Clip、Leaf 一样开源发布？这决定要不要做多语言、官网和图标。名字等定位定了再起。</p></div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.build/
+.swiftpm/
+build/
+NOTES.md
+ThirdParty/czkawka_cli
