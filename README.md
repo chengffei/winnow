@@ -6,6 +6,20 @@ Winnow is a Mac-style interface on top of the [czkawka](https://github.com/qarmi
 
 > **Status: early (0.1).** Duplicate files and empty folders only. Interface in Simplified Chinese. Requires macOS 14 or later on Apple silicon.
 
+## Install
+
+**One line in Terminal** (recommended):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/chengffei/winnow/main/install.sh | bash
+```
+
+The [script](install.sh) downloads the latest release, checks its SHA-256, code signature, bundle ID and developer team, and puts Winnow in Applications. Downloads made this way are not quarantined, so macOS opens Winnow without a warning.
+
+**Or download the disk image**: [Winnow-0.1.0.dmg](https://github.com/chengffei/winnow/releases/download/v0.1.0/Winnow-0.1.0.dmg), then drag Winnow into Applications. Winnow is signed but not notarized, so macOS blocks the first launch: open it, close the warning, then click **Open Anyway** in *System Settings › Privacy & Security*.
+
+To scan folders macOS protects (Desktop, Documents, other apps' data), give Winnow **Full Disk Access** in *System Settings › Privacy & Security*. Winnow lists every folder it could not read.
+
 ## What it does
 
 1. **Choose where to look.** Add folders or drives, or drag them in. Mark a location as *compare only* (只作对照) and its files are used for matching but never marked for removal.
