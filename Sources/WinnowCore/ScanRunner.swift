@@ -6,8 +6,8 @@ public enum ScanError: LocalizedError {
 
     public var errorDescription: String? {
         switch self {
-        case .cliMissing: return "找不到扫描组件 czkawka_cli。"
-        case .failed(let text): return "扫描出错：\(text)"
+        case .cliMissing: return L("The scanning component czkawka_cli is missing.")
+        case .failed(let text): return L("The scan failed: %@", text)
         }
     }
 }
@@ -28,8 +28,7 @@ public final class ScanRunner {
     public static let excludedItems = [
         "*/.Trash/*", "*/.Trashes/*", "*/.Spotlight-V100/*", "*/.fseventsd/*", "*/.DocumentRevisions-V100/*",
         "*/Library/Caches/*", "*/@eaDir/*", "*/#recycle/*", "*/#snapshot/*", "*/.@__thumb/*", "*/@Recycle/*",
-        "*/\(Processor.stagingPrefix)*"
-    ]
+    ] + Processor.allStagingPrefixes.map { "*/\($0)*" }
 
     private let lock = NSLock()
     private var process: Process?
@@ -157,7 +156,7 @@ public final class ScanRunner {
         if wasCancelled { throw CancellationError() }
         // The CLI exits non-zero when it finds something, so only a missing result file is a failure.
         if p.terminationStatus != 0 && !FileManager.default.fileExists(atPath: output.path) {
-            throw ScanError.failed(tail.isEmpty ? "退出码 \(p.terminationStatus)" : tail)
+            throw ScanError.failed(tail.isEmpty ? L("exit code %ld", Int(p.terminationStatus)) : tail)
         }
         return skipped
     }

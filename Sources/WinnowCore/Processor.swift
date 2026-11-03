@@ -38,7 +38,10 @@ public struct ProcessOutcome {
 }
 
 public enum Processor {
-    public static let stagingPrefix = "_待清理_"
+    public static let stagingPrefix = "_Winnow-Staging-"
+    /// Folder names used before 0.2, still recognised so old staging folders are skipped and restorable.
+    public static let legacyStagingPrefixes = ["_待清理_"]
+    public static var allStagingPrefixes: [String] { [stagingPrefix] + legacyStagingPrefixes }
 
     public static func plan(_ record: ScanRecord) -> [PlanItem] {
         var items: [PlanItem] = []
@@ -180,7 +183,7 @@ public enum Processor {
         var failures: [(String, String)] = []
         for m in moves.reversed() {
             if fm.fileExists(atPath: m.from) {
-                failures.append((m.from, "原位置已有同名项目"))
+                failures.append((m.from, L("Something with the same name is already there")))
                 continue
             }
             do {

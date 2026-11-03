@@ -114,8 +114,8 @@ final class AppModel {
     private func notifyFinished(_ record: ScanRecord) {
         guard !NSApp.isActive else { return }
         let content = UNMutableNotificationContent()
-        content.title = "扫描完成"
-        content.body = "\(record.config.title)：\(record.groups.count) 组重复，可释放 \(Fmt.bytes(record.reclaimable))"
+        content.title = L("Scan finished")
+        content.body = L("%@: %ld groups of duplicates, %@ can be freed", record.config.title, record.groups.count, Fmt.bytes(record.reclaimable))
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: record.id.uuidString, content: content, trigger: nil))
         NSApp.requestUserAttention(.informationalRequest)
     }
@@ -154,31 +154,28 @@ enum Fmt {
     }
 
     static func day(_ seconds: Int64) -> String {
-        dayFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(seconds)))
+        Date(timeIntervalSince1970: TimeInterval(seconds)).formatted(date: .numeric, time: .omitted)
     }
 
     static func short(_ date: Date) -> String {
-        Calendar.current.isDateInToday(date) ? "今天 " + timeFormatter.string(from: date) : shortFormatter.string(from: date)
+        Calendar.current.isDateInToday(date)
+            ? L("Today %@", date.formatted(date: .omitted, time: .shortened))
+            : date.formatted(.dateTime.month(.abbreviated).day().hour().minute())
     }
 
     static func duration(_ seconds: Double) -> String {
-        let s = Int(seconds.rounded())
-        if s < 60 { return "\(s) 秒" }
-        if s < 3600 { return "\(s / 60) 分 \(s % 60) 秒" }
-        return "\(s / 3600) 小时 \(s % 3600 / 60) 分"
+        durationFormatter.string(from: max(seconds, 1).rounded()) ?? ""
     }
 
     static func number(_ n: Int) -> String {
         n.formatted(.number)
     }
 
-    private static let dayFormatter: DateFormatter = {
-        let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return f
-    }()
-    private static let timeFormatter: DateFormatter = {
-        let f = DateFormatter(); f.dateFormat = "HH:mm"; return f
-    }()
-    private static let shortFormatter: DateFormatter = {
-        let f = DateFormatter(); f.dateFormat = "MM-dd HH:mm"; return f
+    private static let durationFormatter: DateComponentsFormatter = {
+        let f = DateComponentsFormatter()
+        f.allowedUnits = [.hour, .minute, .second]
+        f.unitsStyle = .abbreviated
+        f.maximumUnitCount = 2
+        return f
     }()
 }

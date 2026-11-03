@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>zh-Hans</string>
+	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Winnow</string>
 	<key>CFBundleExecutable</key>
@@ -12,6 +12,17 @@
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.chengffei.winnow</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>zh-Hans</string>
+		<string>zh-Hant</string>
+		<string>ja</string>
+		<string>ko</string>
+		<string>fr</string>
+		<string>de</string>
+		<string>es</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>Winnow</string>
 	<key>CFBundlePackageType</key>

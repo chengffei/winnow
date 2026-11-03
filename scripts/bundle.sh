@@ -24,6 +24,8 @@ cp ".build/$CONFIG/WinnowApp" "$APP/Contents/MacOS/Winnow"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
 cp Resources/ThirdPartyNotices.txt Resources/AppIcon.icns "$APP/Contents/Resources/"
 cp ThirdParty/czkawka_cli "$APP/Contents/Resources/czkawka_cli"
+# Checks every UI string has all translations, then writes <lang>.lproj/Localizable.strings.
+python3 -I scripts/build-strings.py "$APP/Contents/Resources"
 
 IDENTITY=$(security find-identity -v -p codesigning | grep -o '"Apple Development[^"]*"' | head -1 | tr -d '"')
 codesign --force --options runtime --sign "${IDENTITY:--}" "$APP/Contents/Resources/czkawka_cli"

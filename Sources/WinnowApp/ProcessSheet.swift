@@ -17,6 +17,9 @@ struct ProcessSheet: View {
     @State private var doneCount = 0
     @State private var outcome: ProcessOutcome?
 
+    /// The word typed to confirm a permanent delete, in the user's language.
+    private var confirmWord: String { L("delete") }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let outcome {
@@ -26,14 +29,14 @@ struct ProcessSheet: View {
             } else {
                 HStack(spacing: 10) {
                     ProgressView().controlSize(.small)
-                    Text("正在逐个核对标记的项目…")
+                    Text(L("Checking each marked item again…"))
                 }
                 .padding(.vertical, 30)
                 .frame(maxWidth: .infinity)
             }
         }
         .padding(24)
-        .frame(width: 540)
+        .frame(width: 560)
         .task { await check() }
     }
 
@@ -50,44 +53,47 @@ struct ProcessSheet: View {
     private func form(_ report: SafetyReport) -> some View {
         let items = report.items
         let bytes = items.reduce(UInt64(0)) { $0 + $1.size }
-        Text("处理 \(Fmt.number(items.count)) 项？").font(.title3.weight(.semibold))
-        Text("将释放 \(Fmt.bytes(bytes))。" + (networkCount > 0 ? "其中 \(Fmt.number(networkCount)) 项在网络卷上。" : ""))
+        Text(L("Clean up %@ items?", Fmt.number(items.count))).font(.title3.weight(.semibold))
+        Text(networkCount > 0
+             ? L("This frees %@. %@ of the items are on a network drive.", Fmt.bytes(bytes), Fmt.number(networkCount))
+             : L("This frees %@.", Fmt.bytes(bytes)))
             .foregroundStyle(.secondary)
             .padding(.top, 2)
 
         VStack(spacing: 10) {
-            Option(selected: action == .stage, disabled: false, title: "移到暂存文件夹（推荐）",
-                   detail: "放进所在磁盘顶层的「\(Processor.stagingPrefix)日期」文件夹，保留原目录结构。本机磁盘上的放在个人文件夹里。确认没问题后再手动删，也可以一键还原。") {
+            Option(selected: action == .stage, disabled: false, title: L("Move to a staging folder (recommended)"),
+                   detail: L("Items go into a dated “%@…” folder at the top of their drive, keeping their folder structure. Items on this Mac’s disk go into your home folder. Delete the folder yourself once you are sure, or restore everything in one click.", Processor.stagingPrefix)) {
                 action = .stage
             }
-            Option(selected: action == .trash, disabled: networkCount > 0, title: "移到废纸篓",
-                   detail: networkCount > 0 ? "网络卷不支持废纸篓，选了会直接删除，所以这里不可选。" : "可以在废纸篓里找回。") {
+            Option(selected: action == .trash, disabled: networkCount > 0, title: L("Move to Trash"),
+                   detail: networkCount > 0 ? L("Network drives have no Trash; this would delete for good, so it is turned off.")
+                                            : L("You can get items back from the Trash.")) {
                 action = .trash
             }
-            Option(selected: action == .delete, disabled: false, title: "直接删除",
-                   detail: "无法恢复。需要输入「删除」两个字确认。") {
+            Option(selected: action == .delete, disabled: false, title: L("Delete permanently"),
+                   detail: L("Cannot be undone. Type “%@” to confirm.", confirmWord)) {
                 action = .delete
             }
             if action == .delete {
-                TextField("输入「删除」确认", text: $confirmText)
+                TextField(L("Type “%@” to confirm", confirmWord), text: $confirmText)
                     .textFieldStyle(.roundedBorder)
             }
         }
         .padding(.top, 16)
 
         VStack(alignment: .leading, spacing: 6) {
-            CheckLine(ok: report.everyGroupKeepsOne, text: "每组至少保留 1 份")
-            CheckLine(ok: report.noReferenceMarked, text: "「只作对照」的位置里没有项目被标记")
+            CheckLine(ok: report.everyGroupKeepsOne, text: L("Every group keeps at least one copy"))
+            CheckLine(ok: report.noReferenceMarked, text: L("Nothing in a “compare only” location is marked"))
             if report.changed.isEmpty {
-                CheckLine(ok: true, text: "标记的项目在扫描后都没有改动过")
+                CheckLine(ok: true, text: L("No marked item changed since the scan"))
             } else {
-                CheckLine(ok: nil, text: "\(report.changed.count) 项在扫描后有变化或已不在，将跳过")
+                CheckLine(ok: nil, text: L("%@ items changed or are gone since the scan and will be skipped", Fmt.number(report.changed.count)))
             }
             if !report.unsafeGroups.isEmpty {
-                CheckLine(ok: nil, text: "\(report.unsafeGroups.count) 组要保留的那份已不在或变了，这些组不处理")
+                CheckLine(ok: nil, text: L("In %@ groups the kept copy is gone or changed; those groups are left alone", Fmt.number(report.unsafeGroups.count)))
             }
             if model.record(id)?.config.method == .sizeName, items.contains(where: { !$0.isFolder }) {
-                CheckLine(ok: nil, text: "按大小和文件名比对，文件内容没有核实")
+                CheckLine(ok: nil, text: L("Compared by size and name; file contents were not checked"))
             }
         }
         .font(.callout)
@@ -100,23 +106,24 @@ struct ProcessSheet: View {
 
         HStack {
             Spacer()
-            Button("取消") { dismiss() }
+            Button(L("Cancel")) { dismiss() }
                 .keyboardShortcut(.cancelAction)
                 .disabled(running)
             Button(buttonTitle(items.count)) { run(items) }
                 .buttonStyle(.borderedProminent)
                 .tint(action == .delete ? .red : .accentColor)
                 .keyboardShortcut(.defaultAction)
-                .disabled(running || report.blocking || items.isEmpty || (action == .delete && confirmText != "删除"))
+                .disabled(running || report.blocking || items.isEmpty
+                          || (action == .delete && confirmText.trimmingCharacters(in: .whitespaces).lowercased() != confirmWord.lowercased()))
         }
         .padding(.top, 20)
     }
 
     private func buttonTitle(_ n: Int) -> String {
         switch action {
-        case .stage: return "移动 \(Fmt.number(n)) 项"
-        case .trash: return "移到废纸篓"
-        case .delete: return "永久删除 \(Fmt.number(n)) 项"
+        case .stage: return L("Move %@ Items", Fmt.number(n))
+        case .trash: return L("Move to Trash")
+        case .delete: return L("Delete %@ Items", Fmt.number(n))
         }
     }
 
@@ -139,13 +146,16 @@ struct ProcessSheet: View {
 
     @ViewBuilder
     private func result(_ outcome: ProcessOutcome) -> some View {
-        let verb = action == .stage ? "移到暂存文件夹" : (action == .trash ? "移到废纸篓" : "删除")
-        Text(outcome.failures.isEmpty ? "完成" : "部分完成").font(.title3.weight(.semibold))
-        Text("已\(verb) \(Fmt.number(outcome.done.count)) 项，释放 \(Fmt.bytes(outcome.done.reduce(0) { $0 + $1.size }))。")
+        let count = Fmt.number(outcome.done.count)
+        let freed = Fmt.bytes(outcome.done.reduce(0) { $0 + $1.size })
+        Text(outcome.failures.isEmpty ? L("Done") : L("Partly done")).font(.title3.weight(.semibold))
+        Text(action == .stage ? L("Moved %@ items to the staging folder, freeing %@.", count, freed)
+             : action == .trash ? L("Moved %@ items to the Trash, freeing %@.", count, freed)
+             : L("Deleted %@ items, freeing %@.", count, freed))
             .foregroundStyle(.secondary)
             .padding(.top, 2)
         if !outcome.failures.isEmpty {
-            Text("\(outcome.failures.count) 项失败：").padding(.top, 14)
+            Text(L("%@ items failed:", Fmt.number(outcome.failures.count))).padding(.top, 14)
             ScrollView {
                 VStack(alignment: .leading, spacing: 6) {
                     ForEach(Array(outcome.failures.enumerated()), id: \.offset) { _, f in
@@ -161,7 +171,7 @@ struct ProcessSheet: View {
         }
         HStack {
             Spacer()
-            Button("完成") { dismiss() }.keyboardShortcut(.defaultAction)
+            Button(L("Done")) { dismiss() }.keyboardShortcut(.defaultAction)
         }
         .padding(.top, 20)
     }

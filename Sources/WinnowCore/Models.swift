@@ -87,7 +87,7 @@ public struct ScanConfig: Codable, Hashable {
     }
 
     public var title: String {
-        locations.map { Paths.displayName($0.path) }.joined(separator: "、")
+        joinedList(locations.map { Paths.displayName($0.path) })
     }
 }
 

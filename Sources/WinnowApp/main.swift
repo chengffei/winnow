@@ -76,7 +76,7 @@ enum Snapshot {
 enum Demo {
     static let config = ScanConfig(locations: [Location(path: "/Volumes/hdd0"),
                                                Location(path: NSHomeDirectory() + "/Pictures", isReference: true)],
-                                   kinds: [.photos, .videos], excluded: ["/Volumes/hdd0/备份/Time Machine"])
+                                   kinds: [.photos, .videos], excluded: ["/Volumes/hdd0/Backups/Time Machine"])
 
     static func record() -> ScanRecord {
         let base: Int64 = 1_758_000_000
@@ -86,17 +86,17 @@ enum Demo {
             })
         }
         var groups = [
-            g(0, "婚礼全程.mov", 21_400_000_000, ["影像/2025/婚礼", "备份/MacBook-2022/Movies", "下载"]),
-            g(1, "Xcode_17.dmg", 11_900_000_000, ["软件", "下载"]),
-            g(2, "Photos Library 备份.zip", 9_200_000_000, ["备份", "备份/旧"]),
-            g(3, "南京 vlog 原片.mp4", 2_100_000_000, ["影像/2026/南京", "下载", "备份/iPhone", "桌面"]),
-            g(4, "ubuntu-24.04.iso", 2_600_000_000, ["软件/系统", "下载", "备份/软件"]),
-            g(5, "年度报告.pdf", 4_800_000, ["文档/工作", "下载"])
+            g(0, "Family Videos 2025.mov", 21_400_000_000, ["Videos/2025", "Backups/MacBook-2022/Movies", "Downloads"]),
+            g(1, "Xcode_17.dmg", 11_900_000_000, ["Software", "Downloads"]),
+            g(2, "Photos Library Backup.zip", 9_200_000_000, ["Backups", "Backups/Old"]),
+            g(3, "Trip Raw Footage.mp4", 2_100_000_000, ["Videos/2026", "Downloads", "Backups/iPhone", "Desktop"]),
+            g(4, "ubuntu-24.04.iso", 2_600_000_000, ["Software/OS", "Downloads", "Backups/Software"]),
+            g(5, "Annual Report.pdf", 4_800_000, ["Documents/Work", "Downloads"])
         ]
-        groups[5].files.append(FileEntry(path: NSHomeDirectory() + "/Pictures/年度报告.pdf", size: 4_800_000,
+        groups[5].files.append(FileEntry(path: NSHomeDirectory() + "/Pictures/Annual Report.pdf", size: 4_800_000,
                                          modified: base, isReference: true))
         var r = ScanRecord(config: config, groups: groups,
-                           emptyFolders: ["下载/新建文件夹", "备份/MacBook-2022/Movies/空", "影像/2024/未整理"].map {
+                           emptyFolders: ["Downloads/New Folder", "Backups/MacBook-2022/Movies/Empty", "Videos/2024/Unsorted"].map {
                                EmptyFolder(path: "/Volumes/hdd0/\($0)")
                            },
                            skipped: [SkippedItem(path: "/Volumes/hdd0/@eaDir", reason: "Permission denied (os error 13)")])
@@ -122,7 +122,7 @@ enum Demo {
     static func report(_ record: ScanRecord) -> SafetyReport {
         var r = SafetyReport()
         r.items = Processor.plan(record)
-        r.changed = ["/Volumes/hdd0/下载/Xcode_17.dmg"]
+        r.changed = ["/Volumes/hdd0/Downloads/Xcode_17.dmg"]
         return r
     }
 }

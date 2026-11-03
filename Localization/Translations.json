@@ -1,0 +1,1676 @@
+{
+ "%@ can be freed": {
+  "de": "%@ freigebbar",
+  "es": "Se pueden liberar %@",
+  "fr": "%@ libérables",
+  "ja": "%@ を解放可能",
+  "ko": "%@ 확보 가능",
+  "zh-Hans": "可释放 %@",
+  "zh-Hant": "可釋放 %@"
+ },
+ "%@ candidates left, %@": {
+  "de": "%@ Kandidaten übrig, %@",
+  "es": "Quedan %@ candidatos, %@",
+  "fr": "%@ candidats restants, %@",
+  "ja": "残り候補 %@ 個、%@",
+  "ko": "남은 후보 %@개, %@",
+  "zh-Hans": "剩 %@ 个候选，%@",
+  "zh-Hant": "剩 %@ 個候選，%@"
+ },
+ "%@ elapsed. You can close the window; you will be notified when it is done.": {
+  "de": "%@ vergangen. Du kannst das Fenster schließen; am Ende kommt eine Mitteilung.",
+  "es": "Han pasado %@. Puedes cerrar la ventana; recibirás un aviso al terminar.",
+  "fr": "%@ écoulés. Vous pouvez fermer la fenêtre ; une notification arrivera à la fin.",
+  "ja": "経過 %@。ウインドウを閉じても、終わったら通知します。",
+  "ko": "%@ 경과. 창을 닫아도 끝나면 알림을 보냅니다.",
+  "zh-Hans": "已用 %@。可以关掉窗口，扫完会发通知。",
+  "zh-Hant": "已用 %@。可以關掉視窗，掃完會發通知。"
+ },
+ "%@ empty folders marked": {
+  "de": "%@ leere Ordner markiert",
+  "es": "%@ carpetas vacías marcadas",
+  "fr": "%@ dossiers vides marqués",
+  "ja": "%@ 個の空のフォルダをマーク",
+  "ko": "빈 폴더 %@개 표시됨",
+  "zh-Hans": "已标记 %@ 个空文件夹",
+  "zh-Hant": "已標記 %@ 個空資料夾"
+ },
+ "%@ files": {
+  "de": "%@ Dateien",
+  "es": "%@ archivos",
+  "fr": "%@ fichiers",
+  "ja": "%@ 個のファイル",
+  "ko": "파일 %@개",
+  "zh-Hans": "%@ 个文件",
+  "zh-Hant": "%@ 個檔案"
+ },
+ "%@ files and %@ empty folders marked, %@ will be freed": {
+  "de": "%@ Dateien und %@ leere Ordner markiert, %@ werden frei",
+  "es": "%@ archivos y %@ carpetas vacías marcados, se liberarán %@",
+  "fr": "%@ fichiers et %@ dossiers vides marqués, %@ seront libérés",
+  "ja": "%@ 個のファイルと %@ 個の空のフォルダをマーク、%@ を解放予定",
+  "ko": "파일 %@개와 빈 폴더 %@개 표시됨, %@ 확보 예정",
+  "zh-Hans": "已标记 %@ 个文件、%@ 个空文件夹，将释放 %@",
+  "zh-Hant": "已標記 %@ 個檔案、%@ 個空資料夾，將釋放 %@"
+ },
+ "%@ files found": {
+  "de": "%@ Dateien gefunden",
+  "es": "%@ archivos encontrados",
+  "fr": "%@ fichiers trouvés",
+  "ja": "%@ 個のファイルを発見",
+  "ko": "파일 %@개 찾음",
+  "zh-Hans": "已找到 %@ 个文件",
+  "zh-Hant": "已找到 %@ 個檔案"
+ },
+ "%@ files marked, %@ will be freed": {
+  "de": "%@ Dateien markiert, %@ werden frei",
+  "es": "%@ archivos marcados, se liberarán %@",
+  "fr": "%@ fichiers marqués, %@ seront libérés",
+  "ja": "%@ 個のファイルをマーク、%@ を解放予定",
+  "ko": "파일 %@개 표시됨, %@ 확보 예정",
+  "zh-Hans": "已标记 %@ 个文件，将释放 %@",
+  "zh-Hant": "已標記 %@ 個檔案，將釋放 %@"
+ },
+ "%@ found; folders holding only empty folders count too": {
+  "de": "%@ gefunden; Ordner nur mit leeren Ordnern zählen mit",
+  "es": "%@ encontradas; las que solo contienen carpetas vacías también cuentan",
+  "fr": "%@ trouvés ; ceux qui ne contiennent que des dossiers vides comptent aussi",
+  "ja": "%@ 個。空のフォルダだけを含むものも含みます",
+  "ko": "%@개, 빈 폴더만 있는 폴더도 포함",
+  "zh-Hans": "%@ 个，只含空文件夹的也算",
+  "zh-Hant": "%@ 個，只含空資料夾的也算"
+ },
+ "%@ groups · %@ can be freed": {
+  "de": "%@ Gruppen · %@ freigebbar",
+  "es": "%@ grupos · se pueden liberar %@",
+  "fr": "%@ groupes · %@ libérables",
+  "ja": "%@ グループ · %@ を解放可能",
+  "ko": "%@개 그룹 · %@ 확보 가능",
+  "zh-Hans": "%@ 组 · 可释放 %@",
+  "zh-Hant": "%@ 組 · 可釋放 %@"
+ },
+ "%@ is not connected. Connect or remove it to scan.": {
+  "de": "%@ ist nicht verbunden. Verbinden oder entfernen, um zu scannen.",
+  "es": "%@ no está conectado. Conéctalo o quítalo para analizar.",
+  "fr": "%@ n’est pas connecté. Connectez-le ou retirez-le pour lancer l’analyse.",
+  "ja": "%@ が接続されていません。接続するか削除するとスキャンできます。",
+  "ko": "%@이(가) 연결되지 않았습니다. 연결하거나 제거해야 스캔할 수 있습니다.",
+  "zh-Hans": "%@ 没有连接。连上或移除后才能扫描。",
+  "zh-Hant": "%@ 沒有連線。連上或移除後才能掃描。"
+ },
+ "%@ items changed or are gone since the scan and will be skipped": {
+  "de": "%@ Objekte haben sich seit dem Scan geändert oder fehlen und werden übersprungen",
+  "es": "%@ elementos cambiaron o ya no están y se omitirán",
+  "fr": "%@ éléments ont changé ou disparu depuis l’analyse et seront ignorés",
+  "ja": "%@ 項目はスキャン後に変更または削除されたため、スキップします",
+  "ko": "%@개 항목이 스캔 후 바뀌었거나 없어져 건너뜁니다",
+  "zh-Hans": "%@ 项在扫描后有变化或已不在，将跳过",
+  "zh-Hant": "%@ 項在掃描後有變化或已不在，將略過"
+ },
+ "%@ items failed:": {
+  "de": "%@ Objekte fehlgeschlagen:",
+  "es": "%@ elementos fallaron:",
+  "fr": "%@ éléments ont échoué :",
+  "ja": "%@ 項目が失敗しました：",
+  "ko": "%@개 항목 실패:",
+  "zh-Hans": "%@ 项失败：",
+  "zh-Hant": "%@ 項失敗："
+ },
+ "%@ items were moved to a staging folder. Once you are sure, delete the staging folder in Finder.": {
+  "de": "%@ Objekte wurden in einen Zwischenordner verschoben. Wenn du sicher bist, lösche ihn im Finder.",
+  "es": "Se movieron %@ elementos a una carpeta de espera. Cuando estés seguro, bórrala en el Finder.",
+  "fr": "%@ éléments ont été déplacés vers un dossier d’attente. Une fois sûr, supprimez-le dans le Finder.",
+  "ja": "%@ 項目を一時保管フォルダへ移しました。問題がなければ Finder でフォルダを削除してください。",
+  "ko": "항목 %@개를 임시 보관 폴더로 옮겼습니다. 확인 후 Finder에서 그 폴더를 삭제하세요.",
+  "zh-Hans": "已移到暂存文件夹 %@ 项。确认没问题后可以在访达里删掉暂存文件夹。",
+  "zh-Hant": "已移到暫存資料夾 %@ 項。確認沒問題後可以在 Finder 裡刪掉暫存資料夾。"
+ },
+ "%@ locations skipped": {
+  "de": "%@ Orte übersprungen",
+  "es": "%@ ubicaciones omitidas",
+  "fr": "%@ emplacements ignorés",
+  "ja": "%@ か所をスキップ",
+  "ko": "%@곳 건너뜀",
+  "zh-Hans": "%@ 个位置被跳过",
+  "zh-Hant": "%@ 個位置被略過"
+ },
+ "%@ marked": {
+  "de": "%@ markiert",
+  "es": "%@ marcados",
+  "fr": "%@ marqués",
+  "ja": "%@ 件をマーク済み",
+  "ko": "%@개 표시됨",
+  "zh-Hans": "已标记 %@ 个",
+  "zh-Hant": "已標記 %@ 個"
+ },
+ "%@ of %@": {
+  "de": "%@ von %@",
+  "es": "%@ de %@",
+  "fr": "%@ sur %@",
+  "ja": "%@ / %@",
+  "ko": "%@ / %@",
+  "zh-Hans": "%@ / %@",
+  "zh-Hant": "%@ / %@"
+ },
+ "%@ of %@ candidates": {
+  "de": "%@ von %@ Kandidaten",
+  "es": "%@ de %@ candidatos",
+  "fr": "%@ sur %@ candidats",
+  "ja": "候補 %@ / %@",
+  "ko": "후보 %@ / %@",
+  "zh-Hans": "%@ / %@ 个候选",
+  "zh-Hant": "%@ / %@ 個候選"
+ },
+ "%@ · %@ · %ld copies with identical content": {
+  "de": "%@ · %@ · %ld Kopien mit identischem Inhalt",
+  "es": "%@ · %@ · %ld copias con el mismo contenido",
+  "fr": "%@ · %@ · %ld copies au contenu identique",
+  "ja": "%@ · %@ · 内容が同一のコピー %ld 個",
+  "ko": "%@ · %@ · 내용이 같은 사본 %ld개",
+  "zh-Hans": "%@ · %@ · %ld 份内容完全相同",
+  "zh-Hant": "%@ · %@ · %ld 份內容完全相同"
+ },
+ "%@ · %@ · %ld copies with the same size and name": {
+  "de": "%@ · %@ · %ld Kopien mit gleicher Größe und gleichem Namen",
+  "es": "%@ · %@ · %ld copias con el mismo tamaño y nombre",
+  "fr": "%@ · %@ · %ld copies de même taille et nom",
+  "ja": "%@ · %@ · サイズと名前が同じコピー %ld 個",
+  "ko": "%@ · %@ · 크기와 이름이 같은 사본 %ld개",
+  "zh-Hans": "%@ · %@ · %ld 份大小和文件名相同",
+  "zh-Hant": "%@ · %@ · %ld 份大小和檔名相同"
+ },
+ "%@/s": {
+  "de": "%@/s",
+  "es": "%@/s",
+  "fr": "%@/s",
+  "ja": "%@/秒",
+  "ko": "%@/초",
+  "zh-Hans": "%@/秒",
+  "zh-Hant": "%@/秒"
+ },
+ "%@: %ld groups of duplicates, %@ can be freed": {
+  "de": "%@: %ld Duplikatgruppen, %@ freigebbar",
+  "es": "%@: %ld grupos de duplicados, se pueden liberar %@",
+  "fr": "%@ : %ld groupes de doublons, %@ libérables",
+  "ja": "%@：重複 %ld グループ、%@ を解放可能",
+  "ko": "%@: 중복 %ld개 그룹, %@ 확보 가능",
+  "zh-Hans": "%@：%ld 组重复，可释放 %@",
+  "zh-Hant": "%@：%ld 組重複，可釋放 %@"
+ },
+ "%ld copies · %@ each": {
+  "de": "%ld Kopien · je %@",
+  "es": "%ld copias · %@ cada una",
+  "fr": "%ld copies · %@ chacune",
+  "ja": "%ld 個 · 各 %@",
+  "ko": "사본 %ld개 · 각 %@",
+  "zh-Hans": "%ld 份 · 每份 %@",
+  "zh-Hant": "%ld 份 · 每份 %@"
+ },
+ "%ld folders excluded": {
+  "de": "%ld Ordner ausgeschlossen",
+  "es": "%ld carpetas excluidas",
+  "fr": "%ld dossiers exclus",
+  "ja": "%ld 個のフォルダを除外",
+  "ko": "폴더 %ld개 제외",
+  "zh-Hans": "排除 %ld 个文件夹",
+  "zh-Hant": "排除 %ld 個資料夾"
+ },
+ "1 folder excluded": {
+  "de": "1 Ordner ausgeschlossen",
+  "es": "1 carpeta excluida",
+  "fr": "1 dossier exclu",
+  "ja": "1 個のフォルダを除外",
+  "ko": "폴더 1개 제외",
+  "zh-Hans": "排除 1 个文件夹",
+  "zh-Hant": "排除 1 個資料夾"
+ },
+ "8 KB (default)": {
+  "de": "8 KB (Standard)",
+  "es": "8 KB (predeterminado)",
+  "fr": "8 Ko (par défaut)",
+  "ja": "8 KB（デフォルト）",
+  "ko": "8 KB(기본값)",
+  "zh-Hans": "8 KB（默认）",
+  "zh-Hant": "8 KB（預設）"
+ },
+ "Add": {
+  "de": "Hinzufügen",
+  "es": "Añadir",
+  "fr": "Ajouter",
+  "ja": "追加",
+  "ko": "추가",
+  "zh-Hans": "添加",
+  "zh-Hant": "加入"
+ },
+ "Add Location…": {
+  "de": "Ort hinzufügen …",
+  "es": "Añadir ubicación…",
+  "fr": "Ajouter un emplacement…",
+  "ja": "場所を追加…",
+  "ko": "위치 추가…",
+  "zh-Hans": "添加位置…",
+  "zh-Hant": "加入位置…"
+ },
+ "Add a location to scan first.": {
+  "de": "Füge zuerst einen Ort zum Scannen hinzu.",
+  "es": "Primero añade una ubicación.",
+  "fr": "Ajoutez d’abord un emplacement à analyser.",
+  "ja": "まずスキャンする場所を追加してください。",
+  "ko": "먼저 스캔할 위치를 추가하세요.",
+  "zh-Hans": "先添加要扫描的位置。",
+  "zh-Hant": "先加入要掃描的位置。"
+ },
+ "All": {
+  "de": "Alle",
+  "es": "Todos",
+  "fr": "Tous",
+  "ja": "すべて",
+  "ko": "전체",
+  "zh-Hans": "全部",
+  "zh-Hant": "全部"
+ },
+ "Allow Winnow there, then scan again. Permissions on a network drive are set on the NAS.": {
+  "de": "Winnow dort erlauben und erneut scannen. Rechte auf Netzlaufwerken werden am NAS eingestellt.",
+  "es": "Permite Winnow allí y vuelve a analizar. Los permisos de una unidad de red se cambian en el NAS.",
+  "fr": "Autorisez Winnow, puis relancez l’analyse. Les droits d’un disque réseau se règlent sur le NAS.",
+  "ja": "そこで Winnow を許可してから再スキャンしてください。ネットワークドライブの権限は NAS 側で設定します。",
+  "ko": "그곳에서 Winnow를 허용한 뒤 다시 스캔하세요. 네트워크 드라이브 권한은 NAS에서 설정합니다.",
+  "zh-Hans": "给 Winnow 授权后重新扫描。网络卷上的权限要在 NAS 上改。",
+  "zh-Hant": "給 Winnow 授權後重新掃描。網路磁碟上的權限要在 NAS 上改。"
+ },
+ "Another scan is running. Start a new one when it finishes.": {
+  "de": "Ein anderer Scan läuft. Starte einen neuen, wenn er fertig ist.",
+  "es": "Hay otro análisis en curso. Inicia uno nuevo cuando termine.",
+  "fr": "Une autre analyse est en cours. Lancez-en une nouvelle une fois terminée.",
+  "ja": "別のスキャンが実行中です。終わってから開始してください。",
+  "ko": "다른 스캔이 진행 중입니다. 끝난 뒤 새로 시작하세요.",
+  "zh-Hans": "已有一个扫描在进行，完成后才能开始新的。",
+  "zh-Hant": "已有一個掃描在進行，完成後才能開始新的。"
+ },
+ "Any size": {
+  "de": "Beliebig",
+  "es": "Cualquier tamaño",
+  "fr": "Toutes tailles",
+  "ja": "制限なし",
+  "ko": "제한 없음",
+  "zh-Hans": "不限",
+  "zh-Hant": "不限"
+ },
+ "Archives & Installers": {
+  "de": "Archive und Installer",
+  "es": "Archivos comprimidos e instaladores",
+  "fr": "Archives et installeurs",
+  "ja": "アーカイブとインストーラ",
+  "ko": "압축 파일 및 설치 파일",
+  "zh-Hans": "压缩包和安装包",
+  "zh-Hant": "壓縮檔和安裝檔"
+ },
+ "Auto Mark": {
+  "de": "Automatisch markieren",
+  "es": "Marcado automático",
+  "fr": "Marquage auto",
+  "ja": "自動マーク",
+  "ko": "자동 표시",
+  "zh-Hans": "自动标记",
+  "zh-Hant": "自動標記"
+ },
+ "By File Size": {
+  "de": "Nach Dateigröße",
+  "es": "Por tamaño de archivo",
+  "fr": "Par taille de fichier",
+  "ja": "ファイルサイズ順",
+  "ko": "파일 크기순",
+  "zh-Hans": "按单个文件大小",
+  "zh-Hant": "按單一檔案大小"
+ },
+ "By Name": {
+  "de": "Nach Name",
+  "es": "Por nombre",
+  "fr": "Par nom",
+  "ja": "名前順",
+  "ko": "이름순",
+  "zh-Hans": "按名称",
+  "zh-Hant": "按名稱"
+ },
+ "By Number of Copies": {
+  "de": "Nach Anzahl der Kopien",
+  "es": "Por número de copias",
+  "fr": "Par nombre de copies",
+  "ja": "コピー数順",
+  "ko": "사본 수순",
+  "zh-Hans": "按份数",
+  "zh-Hant": "按份數"
+ },
+ "By Space Freed": {
+  "de": "Nach freigebbarem Platz",
+  "es": "Por espacio liberado",
+  "fr": "Par espace libéré",
+  "ja": "解放できる容量順",
+  "ko": "확보 공간순",
+  "zh-Hans": "按可释放空间",
+  "zh-Hant": "按可釋放空間"
+ },
+ "By content": {
+  "de": "Nach Inhalt",
+  "es": "Por contenido",
+  "fr": "Par contenu",
+  "ja": "内容で比較",
+  "ko": "내용으로",
+  "zh-Hans": "按内容",
+  "zh-Hant": "按內容"
+ },
+ "By content (recommended)": {
+  "de": "Nach Inhalt (empfohlen)",
+  "es": "Por contenido (recomendado)",
+  "fr": "Par contenu (recommandé)",
+  "ja": "内容で比較（推奨）",
+  "ko": "내용으로(권장)",
+  "zh-Hans": "按内容（推荐）",
+  "zh-Hant": "按內容（推薦）"
+ },
+ "By size and name": {
+  "de": "Nach Größe und Name",
+  "es": "Por tamaño y nombre",
+  "fr": "Par taille et nom",
+  "ja": "サイズと名前で比較",
+  "ko": "크기와 이름으로",
+  "zh-Hans": "按大小和文件名",
+  "zh-Hant": "按大小和檔名"
+ },
+ "Cancel": {
+  "de": "Abbrechen",
+  "es": "Cancelar",
+  "fr": "Annuler",
+  "ja": "キャンセル",
+  "ko": "취소",
+  "zh-Hans": "取消",
+  "zh-Hant": "取消"
+ },
+ "Cannot be undone. Type “%@” to confirm.": {
+  "de": "Kann nicht rückgängig gemacht werden. Zum Bestätigen „%@“ eingeben.",
+  "es": "No se puede deshacer. Escribe «%@» para confirmar.",
+  "fr": "Irréversible. Tapez « %@ » pour confirmer.",
+  "ja": "元に戻せません。確認のため「%@」と入力してください。",
+  "ko": "되돌릴 수 없습니다. 확인하려면 '%@'를 입력하세요.",
+  "zh-Hans": "无法恢复。需要输入「%@」确认。",
+  "zh-Hant": "無法復原。需要輸入「%@」確認。"
+ },
+ "Checking each marked item again…": {
+  "de": "Jedes markierte Objekt wird erneut geprüft …",
+  "es": "Revisando de nuevo cada elemento marcado…",
+  "fr": "Nouvelle vérification de chaque élément marqué…",
+  "ja": "マークした項目を 1 つずつ再確認しています…",
+  "ko": "표시한 항목을 하나씩 다시 확인하는 중…",
+  "zh-Hans": "正在逐个核对标记的项目…",
+  "zh-Hant": "正在逐一核對標記的項目…"
+ },
+ "Checking every folder for files": {
+  "de": "Jeder Ordner wird auf Dateien geprüft",
+  "es": "Revisando si cada carpeta tiene archivos",
+  "fr": "Vérification du contenu de chaque dossier",
+  "ja": "各フォルダにファイルがあるか確認中",
+  "ko": "각 폴더에 파일이 있는지 확인 중",
+  "zh-Hans": "检查每个文件夹里有没有文件",
+  "zh-Hant": "檢查每個資料夾裡有沒有檔案"
+ },
+ "Choose folders inside “%@” to skip": {
+  "de": "Ordner in „%@“ wählen, die übersprungen werden",
+  "es": "Elige las carpetas de «%@» que se omitirán",
+  "fr": "Choisissez les dossiers de « %@ » à ignorer",
+  "ja": "「%@」内でスキップするフォルダを選択",
+  "ko": "'%@' 안에서 건너뛸 폴더 선택",
+  "zh-Hans": "选「%@」里扫描时要跳过的文件夹",
+  "zh-Hant": "選「%@」裡掃描時要略過的資料夾"
+ },
+ "Clean up %@ items?": {
+  "de": "%@ Objekte aufräumen?",
+  "es": "¿Limpiar %@ elementos?",
+  "fr": "Nettoyer %@ éléments ?",
+  "ja": "%@ 項目を整理しますか？",
+  "ko": "항목 %@개를 정리할까요?",
+  "zh-Hans": "处理 %@ 项？",
+  "zh-Hant": "處理 %@ 項？"
+ },
+ "Collect files": {
+  "de": "Dateien sammeln",
+  "es": "Reunir archivos",
+  "fr": "Collecte des fichiers",
+  "ja": "ファイルを収集",
+  "ko": "파일 수집",
+  "zh-Hans": "收集文件",
+  "zh-Hant": "收集檔案"
+ },
+ "Compare contents": {
+  "de": "Inhalte vergleichen",
+  "es": "Comparar contenido",
+  "fr": "Comparaison du contenu",
+  "ja": "内容を比較",
+  "ko": "내용 비교",
+  "zh-Hans": "比对内容",
+  "zh-Hant": "比對內容"
+ },
+ "Compare only": {
+  "de": "Nur vergleichen",
+  "es": "Solo comparar",
+  "fr": "Comparaison seule",
+  "ja": "比較のみ",
+  "ko": "비교 전용",
+  "zh-Hans": "只作对照",
+  "zh-Hant": "只作對照"
+ },
+ "Compare sizes and names": {
+  "de": "Größen und Namen vergleichen",
+  "es": "Comparar tamaños y nombres",
+  "fr": "Comparaison des tailles et noms",
+  "ja": "サイズと名前を比較",
+  "ko": "크기와 이름 비교",
+  "zh-Hans": "按大小和文件名比对",
+  "zh-Hant": "按大小和檔名比對"
+ },
+ "Compared by size and name; file contents were not checked": {
+  "de": "Nach Größe und Name verglichen; Inhalte wurden nicht geprüft",
+  "es": "Comparado por tamaño y nombre; no se revisó el contenido",
+  "fr": "Comparaison par taille et nom ; le contenu n’a pas été vérifié",
+  "ja": "サイズと名前で比較したため、内容は確認していません",
+  "ko": "크기와 이름으로 비교해 파일 내용은 확인하지 않았습니다",
+  "zh-Hans": "按大小和文件名比对，文件内容没有核实",
+  "zh-Hant": "按大小和檔名比對，檔案內容沒有核實"
+ },
+ "Compares every byte, so results are safe to delete. Candidates are read in full, which is slow on network drives.": {
+  "de": "Vergleicht jedes Byte, Ergebnisse können bedenkenlos gelöscht werden. Kandidaten werden vollständig gelesen, auf Netzlaufwerken langsam.",
+  "es": "Compara cada byte, así que los resultados se pueden borrar con seguridad. Lee los candidatos completos, lo que es lento en unidades de red.",
+  "fr": "Compare chaque octet : les résultats peuvent être supprimés sans crainte. Les candidats sont lus en entier, ce qui est lent sur un disque réseau.",
+  "ja": "全バイトを比較するので、結果は安心して削除できます。候補を全部読むため、ネットワークドライブでは時間がかかります。",
+  "ko": "모든 바이트를 비교하므로 결과를 안심하고 삭제할 수 있습니다. 후보 파일을 전부 읽어 네트워크 드라이브에서는 느립니다.",
+  "zh-Hans": "逐字节比，结果可以放心删。要把候选文件读一遍，网络卷上较慢。",
+  "zh-Hant": "逐位元組比對，結果可以放心刪。要把候選檔案讀一遍，網路磁碟上較慢。"
+ },
+ "Comparing contents %ld%%": {
+  "de": "Vergleich %ld %%",
+  "es": "Comparando %ld %%",
+  "fr": "Comparaison %ld %%",
+  "ja": "内容を比較中 %ld%%",
+  "ko": "내용 비교 %ld%%",
+  "zh-Hans": "比对内容 %ld%%",
+  "zh-Hant": "比對內容 %ld%%"
+ },
+ "Comparing the remaining candidates byte by byte": {
+  "de": "Restliche Kandidaten werden Byte für Byte verglichen",
+  "es": "Comparando byte a byte los candidatos restantes",
+  "fr": "Comparaison octet par octet des candidats restants",
+  "ja": "残りの候補をバイト単位で比較",
+  "ko": "남은 후보를 바이트 단위로 비교",
+  "zh-Hans": "逐字节比对剩下的候选",
+  "zh-Hant": "逐位元組比對剩下的候選"
+ },
+ "Contents were not compared byte by byte. Open the files to check before removing.": {
+  "de": "Inhalte wurden nicht Byte für Byte verglichen. Vor dem Entfernen die Dateien öffnen und prüfen.",
+  "es": "El contenido no se comparó byte a byte. Abre los archivos para comprobarlos antes de eliminar.",
+  "fr": "Le contenu n’a pas été comparé octet par octet. Ouvrez les fichiers pour vérifier avant de supprimer.",
+  "ja": "内容はバイト単位で比較していません。削除する前に開いて確認してください。",
+  "ko": "내용을 바이트 단위로 비교하지 않았습니다. 삭제 전에 열어서 확인하세요.",
+  "zh-Hans": "内容没有逐字节核对，处理前建议打开确认。",
+  "zh-Hant": "內容沒有逐位元組核對，處理前建議打開確認。"
+ },
+ "Delete %@ Items": {
+  "de": "%@ Objekte löschen",
+  "es": "Eliminar %@ elementos",
+  "fr": "Supprimer %@ éléments",
+  "ja": "%@ 項目を完全に削除",
+  "ko": "항목 %@개 영구 삭제",
+  "zh-Hans": "永久删除 %@ 项",
+  "zh-Hant": "永久刪除 %@ 項"
+ },
+ "Delete This Record": {
+  "de": "Diesen Eintrag löschen",
+  "es": "Eliminar este registro",
+  "fr": "Supprimer cet historique",
+  "ja": "この記録を削除",
+  "ko": "이 기록 삭제",
+  "zh-Hans": "删除这条记录",
+  "zh-Hant": "刪除這筆記錄"
+ },
+ "Delete permanently": {
+  "de": "Endgültig löschen",
+  "es": "Eliminar definitivamente",
+  "fr": "Supprimer définitivement",
+  "ja": "完全に削除",
+  "ko": "영구 삭제",
+  "zh-Hans": "直接删除",
+  "zh-Hant": "直接刪除"
+ },
+ "Deleted %@ items, freeing %@.": {
+  "de": "%@ Objekte gelöscht, %@ frei.",
+  "es": "%@ elementos eliminados; se liberaron %@.",
+  "fr": "%@ éléments supprimés, %@ libérés.",
+  "ja": "%@ 項目を削除し、%@ を解放しました。",
+  "ko": "항목 %@개를 삭제해 %@를 확보했습니다.",
+  "zh-Hans": "已删除 %@ 项，释放 %@。",
+  "zh-Hant": "已刪除 %@ 項，釋放 %@。"
+ },
+ "Documents": {
+  "de": "Dokumente",
+  "es": "Documentos",
+  "fr": "Documents",
+  "ja": "書類",
+  "ko": "문서",
+  "zh-Hans": "文档",
+  "zh-Hant": "文件"
+ },
+ "Done": {
+  "de": "Fertig",
+  "es": "Listo",
+  "fr": "Terminé",
+  "ja": "完了",
+  "ko": "완료",
+  "zh-Hans": "完成",
+  "zh-Hant": "完成"
+ },
+ "Drag folders here, or add them below. Files in a “compare only” location are used for matching and are never marked for removal.": {
+  "de": "Ordner hierher ziehen oder unten hinzufügen. Dateien an einem Ort „nur vergleichen“ dienen nur zum Abgleich und werden nie zum Entfernen markiert.",
+  "es": "Arrastra carpetas aquí o añádelas abajo. Los archivos de una ubicación «solo comparar» sirven para comparar y nunca se marcan para eliminar.",
+  "fr": "Glissez des dossiers ici ou ajoutez-les ci-dessous. Les fichiers d’un emplacement « comparaison seule » servent à la comparaison et ne sont jamais marqués pour suppression.",
+  "ja": "フォルダをここにドラッグするか、下で追加します。「比較のみ」の場所にあるファイルは照合にだけ使われ、削除対象にはなりません。",
+  "ko": "폴더를 여기로 끌어오거나 아래에서 추가하세요. '비교 전용' 위치의 파일은 대조에만 쓰이고 삭제 대상으로 표시되지 않습니다.",
+  "zh-Hans": "可以把文件夹直接拖进来。打开「只作对照」的位置，里面的文件只用来比对，永远不会被标记删除。",
+  "zh-Hant": "可以把資料夾直接拖進來。開啟「只作對照」的位置，裡面的檔案只用來比對，永遠不會被標記刪除。"
+ },
+ "Duplicate Files": {
+  "de": "Doppelte Dateien",
+  "es": "Archivos duplicados",
+  "fr": "Fichiers en double",
+  "ja": "重複ファイル",
+  "ko": "중복 파일",
+  "zh-Hans": "重复文件",
+  "zh-Hant": "重複檔案"
+ },
+ "Empty Folders": {
+  "de": "Leere Ordner",
+  "es": "Carpetas vacías",
+  "fr": "Dossiers vides",
+  "ja": "空のフォルダ",
+  "ko": "빈 폴더",
+  "zh-Hans": "空文件夹",
+  "zh-Hant": "空資料夾"
+ },
+ "Every group keeps at least one copy": {
+  "de": "Jede Gruppe behält mindestens eine Kopie",
+  "es": "Cada grupo conserva al menos una copia",
+  "fr": "Chaque groupe garde au moins une copie",
+  "ja": "各グループで 1 つ以上残します",
+  "ko": "모든 그룹이 최소 1개를 유지합니다",
+  "zh-Hans": "每组至少保留 1 份",
+  "zh-Hant": "每組至少保留 1 份"
+ },
+ "Every group must keep at least one copy.": {
+  "de": "Jede Gruppe muss mindestens eine Kopie behalten.",
+  "es": "Cada grupo debe conservar al menos una copia.",
+  "fr": "Chaque groupe doit garder au moins une copie.",
+  "ja": "各グループで少なくとも 1 つは残す必要があります。",
+  "ko": "그룹마다 최소 한 개는 남겨야 합니다.",
+  "zh-Hans": "每组至少要保留一份。",
+  "zh-Hant": "每組至少要保留一份。"
+ },
+ "Every location is “compare only”, so nothing can be cleaned.": {
+  "de": "Alle Orte sind „nur vergleichen“, es gibt nichts aufzuräumen.",
+  "es": "Todas las ubicaciones son «solo comparar», así que no hay nada que limpiar.",
+  "fr": "Tous les emplacements sont en « comparaison seule » : rien ne peut être nettoyé.",
+  "ja": "すべての場所が「比較のみ」なので、整理できるものがありません。",
+  "ko": "모든 위치가 '비교 전용'이라 정리할 것이 없습니다.",
+  "zh-Hans": "所有位置都是「只作对照」，没有可以清理的地方。",
+  "zh-Hant": "所有位置都是「只作對照」，沒有可以清理的地方。"
+ },
+ "Exclude": {
+  "de": "Ausschließen",
+  "es": "Excluir",
+  "fr": "Exclure",
+  "ja": "除外",
+  "ko": "제외",
+  "zh-Hans": "排除",
+  "zh-Hant": "排除"
+ },
+ "Exclude Subfolder…": {
+  "de": "Unterordner ausschließen …",
+  "es": "Excluir subcarpeta…",
+  "fr": "Exclure un sous-dossier…",
+  "ja": "サブフォルダを除外…",
+  "ko": "하위 폴더 제외…",
+  "zh-Hans": "排除子文件夹…",
+  "zh-Hant": "排除子資料夾…"
+ },
+ "External Drive": {
+  "de": "Externes Laufwerk",
+  "es": "Unidad externa",
+  "fr": "Disque externe",
+  "ja": "外部ドライブ",
+  "ko": "외장 드라이브",
+  "zh-Hans": "外接磁盘",
+  "zh-Hant": "外接磁碟"
+ },
+ "Fast, but files with the same name and size are not always the same. Good for a first look.": {
+  "de": "Schnell, aber Dateien mit gleichem Namen und gleicher Größe sind nicht immer gleich. Gut für einen ersten Überblick.",
+  "es": "Rápido, pero archivos con el mismo nombre y tamaño no siempre son iguales. Útil para una primera revisión.",
+  "fr": "Rapide, mais deux fichiers de même nom et taille ne sont pas toujours identiques. Utile pour un premier aperçu.",
+  "ja": "速いですが、名前とサイズが同じでも中身が同じとは限りません。下調べ向けです。",
+  "ko": "빠르지만 이름과 크기가 같아도 같은 파일이 아닐 수 있습니다. 먼저 훑어볼 때 적합합니다.",
+  "zh-Hans": "很快出结果，但同名同大小不一定相同，只适合先摸底。",
+  "zh-Hant": "很快出結果，但同名同大小不一定相同，只適合先摸底。"
+ },
+ "File": {
+  "de": "Datei",
+  "es": "Archivo",
+  "fr": "Fichier",
+  "ja": "ファイル",
+  "ko": "파일",
+  "zh-Hans": "文件",
+  "zh-Hant": "檔案"
+ },
+ "File contents are not read": {
+  "de": "Dateiinhalte werden nicht gelesen",
+  "es": "No se lee el contenido",
+  "fr": "Le contenu n’est pas lu",
+  "ja": "ファイルの内容は読みません",
+  "ko": "파일 내용은 읽지 않습니다",
+  "zh-Hans": "不读文件内容",
+  "zh-Hant": "不讀檔案內容"
+ },
+ "File types": {
+  "de": "Dateitypen",
+  "es": "Tipos de archivo",
+  "fr": "Types de fichiers",
+  "ja": "ファイルの種類",
+  "ko": "파일 유형",
+  "zh-Hans": "文件类型",
+  "zh-Hant": "檔案類型"
+ },
+ "Files with exactly the same content": {
+  "de": "Dateien mit identischem Inhalt",
+  "es": "Archivos con el mismo contenido exacto",
+  "fr": "Fichiers au contenu identique",
+  "ja": "内容がまったく同じファイル",
+  "ko": "내용이 완전히 같은 파일",
+  "zh-Hans": "内容完全一样的文件",
+  "zh-Hant": "內容完全一樣的檔案"
+ },
+ "Find empty folders": {
+  "de": "Leere Ordner suchen",
+  "es": "Buscar carpetas vacías",
+  "fr": "Recherche de dossiers vides",
+  "ja": "空のフォルダを探す",
+  "ko": "빈 폴더 찾기",
+  "zh-Hans": "找空文件夹",
+  "zh-Hant": "找空資料夾"
+ },
+ "Folders with nothing in them": {
+  "de": "Ordner ohne Inhalt",
+  "es": "Carpetas sin nada dentro",
+  "fr": "Dossiers qui ne contiennent rien",
+  "ja": "中身が何もないフォルダ",
+  "ko": "아무것도 없는 폴더",
+  "zh-Hans": "里面什么都没有",
+  "zh-Hant": "裡面什麼都沒有"
+ },
+ "Groups you changed by hand are never overwritten": {
+  "de": "Von Hand geänderte Gruppen werden nie überschrieben",
+  "es": "Los grupos cambiados a mano nunca se sobrescriben",
+  "fr": "Les groupes modifiés à la main ne sont jamais écrasés",
+  "ja": "手動で変更したグループは上書きされません",
+  "ko": "직접 바꾼 그룹은 덮어쓰지 않습니다",
+  "zh-Hans": "手动改过的组不会被自动标记覆盖",
+  "zh-Hant": "手動改過的組不會被自動標記覆蓋"
+ },
+ "How to Compare Duplicates": {
+  "de": "Wie Duplikate vergleichen",
+  "es": "Cómo comparar duplicados",
+  "fr": "Comment comparer les doublons",
+  "ja": "重複の比較方法",
+  "ko": "중복 비교 방법",
+  "zh-Hans": "怎么比对重复文件",
+  "zh-Hant": "怎麼比對重複檔案"
+ },
+ "In %@ groups the kept copy is gone or changed; those groups are left alone": {
+  "de": "In %@ Gruppen fehlt die behaltene Kopie oder hat sich geändert; diese bleiben unangetastet",
+  "es": "En %@ grupos la copia conservada ya no está o cambió; esos grupos no se tocan",
+  "fr": "Dans %@ groupes, la copie gardée a disparu ou changé ; ces groupes ne sont pas touchés",
+  "ja": "%@ グループで残すコピーが消えたか変更されたため、それらは処理しません",
+  "ko": "%@개 그룹은 남길 사본이 없어졌거나 바뀌어 처리하지 않습니다",
+  "zh-Hans": "%@ 组要保留的那份已不在或变了，这些组不处理",
+  "zh-Hant": "%@ 組要保留的那份已不在或變了，這些組不處理"
+ },
+ "In Progress": {
+  "de": "Läuft",
+  "es": "En curso",
+  "fr": "En cours",
+  "ja": "実行中",
+  "ko": "진행 중",
+  "zh-Hans": "进行中",
+  "zh-Hant": "進行中"
+ },
+ "Items go into a dated “%@…” folder at the top of their drive, keeping their folder structure. Items on this Mac’s disk go into your home folder. Delete the folder yourself once you are sure, or restore everything in one click.": {
+  "de": "Objekte kommen in einen datierten Ordner „%@…“ oben auf ihrem Laufwerk, mit ihrer Ordnerstruktur. Objekte auf dem Laufwerk dieses Macs landen in deinem Benutzerordner. Lösche den Ordner selbst, wenn du sicher bist, oder stelle alles mit einem Klick wieder her.",
+  "es": "Los elementos van a una carpeta fechada «%@…» en la raíz de su unidad, conservando su estructura. Los del disco de este Mac van a tu carpeta personal. Borra la carpeta tú mismo cuando estés seguro, o restaura todo con un clic.",
+  "fr": "Les éléments vont dans un dossier daté « %@… » à la racine de leur disque, en gardant leur arborescence. Ceux du disque de ce Mac vont dans votre dossier personnel. Supprimez le dossier vous-même une fois sûr, ou restaurez tout en un clic.",
+  "ja": "各ドライブの最上位にある日付付きの「%@…」フォルダへ、元のフォルダ構成のまま移します。この Mac のディスク上の項目はホームフォルダに入ります。問題がなければ自分で削除し、ワンクリックで元に戻すこともできます。",
+  "ko": "각 드라이브 최상위의 날짜가 붙은 '%@…' 폴더로 원래 폴더 구조를 유지한 채 옮깁니다. 이 Mac 디스크의 항목은 홈 폴더로 갑니다. 확인 후 직접 삭제하거나 한 번에 되돌릴 수 있습니다.",
+  "zh-Hans": "放进所在磁盘顶层带日期的「%@…」文件夹，保留原目录结构。本机磁盘上的放在个人文件夹里。确认没问题后再手动删，也可以一键还原。",
+  "zh-Hant": "放進所在磁碟頂層帶日期的「%@…」資料夾，保留原目錄結構。本機磁碟上的放在個人資料夾裡。確認沒問題後再手動刪，也可以一鍵還原。"
+ },
+ "Keep": {
+  "de": "Behalten",
+  "es": "Conservar",
+  "fr": "Garder",
+  "ja": "残す",
+  "ko": "유지",
+  "zh-Hans": "保留",
+  "zh-Hant": "保留"
+ },
+ "Keep the copy with the shortest path": {
+  "de": "Die Kopie mit dem kürzesten Pfad behalten",
+  "es": "Conservar la copia con la ruta más corta",
+  "fr": "Garder la copie au chemin le plus court",
+  "ja": "パスが最も短いものを残す",
+  "ko": "경로가 가장 짧은 사본 유지",
+  "zh-Hans": "每组保留路径最短的一份",
+  "zh-Hant": "每組保留路徑最短的一份"
+ },
+ "Keep the newest copy in each group": {
+  "de": "In jeder Gruppe die neueste Kopie behalten",
+  "es": "Conservar la copia más reciente de cada grupo",
+  "fr": "Garder la copie la plus récente de chaque groupe",
+  "ja": "各グループで最も新しいものを残す",
+  "ko": "그룹마다 가장 최신 사본 유지",
+  "zh-Hans": "每组保留最新的一份",
+  "zh-Hant": "每組保留最新的一份"
+ },
+ "Keep the oldest copy in each group": {
+  "de": "In jeder Gruppe die älteste Kopie behalten",
+  "es": "Conservar la copia más antigua de cada grupo",
+  "fr": "Garder la copie la plus ancienne de chaque groupe",
+  "ja": "各グループで最も古いものを残す",
+  "ko": "그룹마다 가장 오래된 사본 유지",
+  "zh-Hans": "每组保留最早的一份",
+  "zh-Hant": "每組保留最早的一份"
+ },
+ "Keep the oldest copy in each group (recommended; the original is usually oldest)": {
+  "de": "In jeder Gruppe die älteste Kopie behalten (empfohlen; das Original ist meist die älteste)",
+  "es": "Conservar la copia más antigua de cada grupo (recomendado; el original suele ser el más antiguo)",
+  "fr": "Garder la copie la plus ancienne de chaque groupe (recommandé ; l’original est souvent le plus ancien)",
+  "ja": "各グループで最も古いものを残す（推奨。通常は原本が最も古い）",
+  "ko": "그룹마다 가장 오래된 사본 유지(권장, 원본이 보통 가장 오래됨)",
+  "zh-Hans": "每组保留最早的一份（推荐，原件通常最早）",
+  "zh-Hant": "每組保留最早的一份（推薦，原件通常最早）"
+ },
+ "Listing files": {
+  "de": "Dateien werden aufgelistet",
+  "es": "Listando archivos",
+  "fr": "Liste des fichiers",
+  "ja": "ファイルを一覧中",
+  "ko": "파일 목록 작성 중",
+  "zh-Hans": "正在列出文件",
+  "zh-Hant": "正在列出檔案"
+ },
+ "Looking for duplicate files": {
+  "de": "Suche nach doppelten Dateien",
+  "es": "Buscando archivos duplicados",
+  "fr": "Recherche de doublons",
+  "ja": "重複ファイルを探しています",
+  "ko": "중복 파일을 찾는 중",
+  "zh-Hans": "正在找重复文件",
+  "zh-Hant": "正在找重複檔案"
+ },
+ "Looking for empty folders": {
+  "de": "Suche nach leeren Ordnern",
+  "es": "Buscando carpetas vacías",
+  "fr": "Recherche de dossiers vides",
+  "ja": "空のフォルダを探しています",
+  "ko": "빈 폴더를 찾는 중",
+  "zh-Hans": "正在找空文件夹",
+  "zh-Hant": "正在找空資料夾"
+ },
+ "Mark All": {
+  "de": "Alle markieren",
+  "es": "Marcar todo",
+  "fr": "Tout marquer",
+  "ja": "すべてマーク",
+  "ko": "모두 표시",
+  "zh-Hans": "全部标记",
+  "zh-Hant": "全部標記"
+ },
+ "Marked by “%@”. Groups you change by hand are not overwritten by auto marking.": {
+  "de": "Markiert nach „%@“. Von Hand geänderte Gruppen werden nicht überschrieben.",
+  "es": "Marcado según «%@». Los grupos cambiados a mano no se sobrescriben.",
+  "fr": "Marqué selon « %@ ». Les groupes modifiés à la main ne sont pas écrasés.",
+  "ja": "「%@」でマークしました。手動で変更したグループは自動マークで上書きされません。",
+  "ko": "'%@' 기준으로 표시했습니다. 직접 바꾼 그룹은 자동 표시가 덮어쓰지 않습니다.",
+  "zh-Hans": "按「%@」自动标记。手动改过的组不会被再次自动标记覆盖。",
+  "zh-Hant": "按「%@」自動標記。手動改過的組不會被再次自動標記覆蓋。"
+ },
+ "Minimum size": {
+  "de": "Mindestgröße",
+  "es": "Tamaño mínimo",
+  "fr": "Taille minimale",
+  "ja": "最小サイズ",
+  "ko": "최소 크기",
+  "zh-Hans": "最小文件大小",
+  "zh-Hant": "最小檔案大小"
+ },
+ "Modified %@": {
+  "de": "Geändert %@",
+  "es": "Modificado %@",
+  "fr": "Modifié le %@",
+  "ja": "%@ に変更",
+  "ko": "%@ 수정",
+  "zh-Hans": "修改于 %@",
+  "zh-Hant": "修改於 %@"
+ },
+ "Modified %@ · oldest": {
+  "de": "Geändert %@ · älteste",
+  "es": "Modificado %@ · el más antiguo",
+  "fr": "Modifié le %@ · le plus ancien",
+  "ja": "%@ に変更 · 最も古い",
+  "ko": "%@ 수정 · 가장 오래됨",
+  "zh-Hans": "修改于 %@ · 最早",
+  "zh-Hant": "修改於 %@ · 最早"
+ },
+ "More Conditions": {
+  "de": "Weitere Bedingungen",
+  "es": "Más condiciones",
+  "fr": "Plus de critères",
+  "ja": "詳細条件",
+  "ko": "추가 조건",
+  "zh-Hans": "更多条件",
+  "zh-Hant": "更多條件"
+ },
+ "Move %@ Items": {
+  "de": "%@ Objekte verschieben",
+  "es": "Mover %@ elementos",
+  "fr": "Déplacer %@ éléments",
+  "ja": "%@ 項目を移動",
+  "ko": "항목 %@개 이동",
+  "zh-Hans": "移动 %@ 项",
+  "zh-Hant": "移動 %@ 項"
+ },
+ "Move to Trash": {
+  "de": "In den Papierkorb legen",
+  "es": "Mover a la papelera",
+  "fr": "Placer dans la corbeille",
+  "ja": "ゴミ箱に入れる",
+  "ko": "휴지통으로 이동",
+  "zh-Hans": "移到废纸篓",
+  "zh-Hant": "移到垃圾桶"
+ },
+ "Move to a staging folder (recommended)": {
+  "de": "In einen Zwischenordner verschieben (empfohlen)",
+  "es": "Mover a una carpeta de espera (recomendado)",
+  "fr": "Déplacer vers un dossier d’attente (recommandé)",
+  "ja": "一時保管フォルダへ移動（推奨）",
+  "ko": "임시 보관 폴더로 이동(권장)",
+  "zh-Hans": "移到暂存文件夹（推荐）",
+  "zh-Hant": "移到暫存資料夾（推薦）"
+ },
+ "Moved %@ items to the Trash, freeing %@.": {
+  "de": "%@ Objekte in den Papierkorb gelegt, %@ frei.",
+  "es": "%@ elementos movidos a la papelera; se liberaron %@.",
+  "fr": "%@ éléments placés dans la corbeille, %@ libérés.",
+  "ja": "%@ 項目をゴミ箱に入れ、%@ を解放しました。",
+  "ko": "항목 %@개를 휴지통으로 옮겨 %@를 확보했습니다.",
+  "zh-Hans": "已移到废纸篓 %@ 项，释放 %@。",
+  "zh-Hant": "已移到垃圾桶 %@ 項，釋放 %@。"
+ },
+ "Moved %@ items to the staging folder, freeing %@.": {
+  "de": "%@ Objekte in den Zwischenordner verschoben, %@ frei.",
+  "es": "%@ elementos movidos a la carpeta de espera; se liberaron %@.",
+  "fr": "%@ éléments déplacés vers le dossier d’attente, %@ libérés.",
+  "ja": "%@ 項目を一時保管フォルダへ移し、%@ を解放しました。",
+  "ko": "항목 %@개를 임시 보관 폴더로 옮겨 %@를 확보했습니다.",
+  "zh-Hans": "已移到暂存文件夹 %@ 项，释放 %@。",
+  "zh-Hant": "已移到暫存資料夾 %@ 項，釋放 %@。"
+ },
+ "Music": {
+  "de": "Musik",
+  "es": "Música",
+  "fr": "Musique",
+  "ja": "ミュージック",
+  "ko": "음악",
+  "zh-Hans": "音乐",
+  "zh-Hant": "音樂"
+ },
+ "Narrow down by size": {
+  "de": "Nach Größe eingrenzen",
+  "es": "Filtrar por tamaño",
+  "fr": "Tri par taille",
+  "ja": "サイズで候補を絞り込む",
+  "ko": "크기로 후보 추리기",
+  "zh-Hans": "按大小筛出候选",
+  "zh-Hant": "按大小篩出候選"
+ },
+ "Narrowing down": {
+  "de": "Wird eingegrenzt",
+  "es": "Filtrando",
+  "fr": "Tri en cours",
+  "ja": "候補を絞り込み中",
+  "ko": "후보 추리는 중",
+  "zh-Hans": "筛选候选",
+  "zh-Hant": "篩選候選"
+ },
+ "Network Drive": {
+  "de": "Netzlaufwerk",
+  "es": "Unidad de red",
+  "fr": "Disque réseau",
+  "ja": "ネットワークドライブ",
+  "ko": "네트워크 드라이브",
+  "zh-Hans": "网络卷",
+  "zh-Hant": "網路磁碟"
+ },
+ "Network drives have no Trash; this would delete for good, so it is turned off.": {
+  "de": "Netzlaufwerke haben keinen Papierkorb; das wäre endgültiges Löschen, daher deaktiviert.",
+  "es": "Las unidades de red no tienen papelera; se borraría para siempre, así que está desactivado.",
+  "fr": "Les disques réseau n’ont pas de corbeille : la suppression serait définitive, l’option est donc désactivée.",
+  "ja": "ネットワークドライブにはゴミ箱がなく完全に削除されるため、選べません。",
+  "ko": "네트워크 드라이브에는 휴지통이 없어 영구 삭제되므로 선택할 수 없습니다.",
+  "zh-Hans": "网络卷不支持废纸篓，选了会直接删除，所以这里不可选。",
+  "zh-Hant": "網路磁碟不支援垃圾桶，選了會直接刪除，所以這裡不可選。"
+ },
+ "New Scan": {
+  "de": "Neuer Scan",
+  "es": "Nuevo análisis",
+  "fr": "Nouvelle analyse",
+  "ja": "新規スキャン",
+  "ko": "새 스캔",
+  "zh-Hans": "新建扫描",
+  "zh-Hant": "新增掃描"
+ },
+ "No Access": {
+  "de": "Kein Zugriff",
+  "es": "Sin acceso",
+  "fr": "Accès refusé",
+  "ja": "アクセス不可",
+  "ko": "접근 권한 없음",
+  "zh-Hans": "没有权限",
+  "zh-Hant": "沒有權限"
+ },
+ "No duplicate files found": {
+  "de": "Keine doppelten Dateien gefunden",
+  "es": "No se encontraron duplicados",
+  "fr": "Aucun doublon trouvé",
+  "ja": "重複ファイルは見つかりませんでした",
+  "ko": "중복 파일이 없습니다",
+  "zh-Hans": "没有找到重复文件",
+  "zh-Hant": "沒有找到重複檔案"
+ },
+ "No empty folders found": {
+  "de": "Keine leeren Ordner gefunden",
+  "es": "No se encontraron carpetas vacías",
+  "fr": "Aucun dossier vide trouvé",
+  "ja": "空のフォルダは見つかりませんでした",
+  "ko": "빈 폴더가 없습니다",
+  "zh-Hans": "没有找到空文件夹",
+  "zh-Hant": "沒有找到空資料夾"
+ },
+ "No marked item changed since the scan": {
+  "de": "Kein markiertes Objekt hat sich seit dem Scan geändert",
+  "es": "Ningún elemento marcado cambió desde el análisis",
+  "fr": "Aucun élément marqué n’a changé depuis l’analyse",
+  "ja": "マークした項目はスキャン後に変更されていません",
+  "ko": "표시한 항목은 스캔 후 바뀌지 않았습니다",
+  "zh-Hans": "标记的项目在扫描后都没有改动过",
+  "zh-Hant": "標記的項目在掃描後都沒有改動過"
+ },
+ "No matching results": {
+  "de": "Keine passenden Ergebnisse",
+  "es": "No hay resultados",
+  "fr": "Aucun résultat correspondant",
+  "ja": "一致する結果はありません",
+  "ko": "일치하는 결과가 없습니다",
+  "zh-Hans": "没有匹配的结果",
+  "zh-Hant": "沒有符合的結果"
+ },
+ "No permission to read": {
+  "de": "Keine Leseberechtigung",
+  "es": "Sin permiso de lectura",
+  "fr": "Pas d’autorisation de lecture",
+  "ja": "読み取り権限がありません",
+  "ko": "읽기 권한 없음",
+  "zh-Hans": "没有读取权限",
+  "zh-Hant": "沒有讀取權限"
+ },
+ "No scan in progress": {
+  "de": "Kein Scan aktiv",
+  "es": "No hay ningún análisis en curso",
+  "fr": "Aucune analyse en cours",
+  "ja": "実行中のスキャンはありません",
+  "ko": "진행 중인 스캔이 없습니다",
+  "zh-Hans": "没有进行中的扫描",
+  "zh-Hant": "沒有進行中的掃描"
+ },
+ "Not Connected": {
+  "de": "Nicht verbunden",
+  "es": "No conectado",
+  "fr": "Non connecté",
+  "ja": "未接続",
+  "ko": "연결 안 됨",
+  "zh-Hans": "未连接",
+  "zh-Hant": "未連線"
+ },
+ "Nothing has been removed yet": {
+  "de": "Noch wurde nichts entfernt",
+  "es": "Todavía no se ha eliminado nada",
+  "fr": "Rien n’a encore été supprimé",
+  "ja": "まだ何も削除していません",
+  "ko": "아직 아무것도 삭제하지 않았습니다",
+  "zh-Hans": "还没有删除任何东西",
+  "zh-Hant": "還沒有刪除任何東西"
+ },
+ "Nothing in a “compare only” location is marked": {
+  "de": "An Orten „nur vergleichen“ ist nichts markiert",
+  "es": "No hay nada marcado en ubicaciones «solo comparar»",
+  "fr": "Rien n’est marqué dans un emplacement « comparaison seule »",
+  "ja": "「比較のみ」の場所にマークされた項目はありません",
+  "ko": "'비교 전용' 위치에는 표시된 항목이 없습니다",
+  "zh-Hans": "「只作对照」的位置里没有项目被标记",
+  "zh-Hant": "「只作對照」的位置裡沒有項目被標記"
+ },
+ "Nothing is marked": {
+  "de": "Nichts markiert",
+  "es": "No hay nada marcado",
+  "fr": "Rien n’est marqué",
+  "ja": "何もマークされていません",
+  "ko": "표시된 항목이 없습니다",
+  "zh-Hans": "没有标记任何项目",
+  "zh-Hant": "沒有標記任何項目"
+ },
+ "OK": {
+  "de": "OK",
+  "es": "Aceptar",
+  "fr": "OK",
+  "ja": "OK",
+  "ko": "확인",
+  "zh-Hans": "好",
+  "zh-Hant": "好"
+ },
+ "Only files of the same size can match; reading the start of each rules out more": {
+  "de": "Nur gleich große Dateien kommen infrage; das Lesen des Anfangs schließt weitere aus",
+  "es": "Solo pueden coincidir archivos del mismo tamaño; leer su inicio descarta más",
+  "fr": "Seuls les fichiers de même taille peuvent correspondre ; la lecture de leur début en écarte d’autres",
+  "ja": "同じサイズのファイルだけが一致し得ます。先頭を読んでさらに絞ります",
+  "ko": "크기가 같은 파일만 중복일 수 있고, 앞부분을 읽어 더 걸러냅니다",
+  "zh-Hans": "大小相同的才可能重复，再读开头一小段排除明显不同的",
+  "zh-Hant": "大小相同的才可能重複，再讀開頭一小段排除明顯不同的"
+ },
+ "Open Full Disk Access Settings": {
+  "de": "Einstellungen für „Festplattenvollzugriff“ öffnen",
+  "es": "Abrir ajustes de acceso total al disco",
+  "fr": "Ouvrir les réglages d’accès complet au disque",
+  "ja": "「フルディスクアクセス」設定を開く",
+  "ko": "'전체 디스크 접근 권한' 설정 열기",
+  "zh-Hans": "打开「完全磁盘访问权限」设置",
+  "zh-Hant": "打開「完整磁碟取用權限」設定"
+ },
+ "Open Staging Folder": {
+  "de": "Zwischenordner öffnen",
+  "es": "Abrir carpeta de espera",
+  "fr": "Ouvrir le dossier d’attente",
+  "ja": "一時保管フォルダを開く",
+  "ko": "임시 보관 폴더 열기",
+  "zh-Hans": "打开暂存文件夹",
+  "zh-Hant": "打開暫存資料夾"
+ },
+ "Partly done": {
+  "de": "Teilweise erledigt",
+  "es": "Hecho en parte",
+  "fr": "Partiellement terminé",
+  "ja": "一部完了",
+  "ko": "일부 완료",
+  "zh-Hans": "部分完成",
+  "zh-Hant": "部分完成"
+ },
+ "Photos": {
+  "de": "Fotos",
+  "es": "Fotos",
+  "fr": "Photos",
+  "ja": "写真",
+  "ko": "사진",
+  "zh-Hans": "照片",
+  "zh-Hant": "照片"
+ },
+ "Pick at least one thing to find.": {
+  "de": "Wähle mindestens eine Sache zum Suchen.",
+  "es": "Elige al menos una cosa que buscar.",
+  "fr": "Choisissez au moins un élément à chercher.",
+  "ja": "探すものを 1 つ以上選んでください。",
+  "ko": "찾을 항목을 하나 이상 선택하세요.",
+  "zh-Hans": "至少选一项要找的内容。",
+  "zh-Hant": "至少選一項要找的內容。"
+ },
+ "Pick one or both; they run in one scan.": {
+  "de": "Eins oder beides wählen; alles läuft in einem Scan.",
+  "es": "Elige uno o ambos; se hacen en un solo análisis.",
+  "fr": "Choisissez l’un ou les deux ; tout se fait en une analyse.",
+  "ja": "複数選べます。1 回のスキャンで実行します。",
+  "ko": "여러 개를 선택해 한 번에 스캔할 수 있습니다.",
+  "zh-Hans": "可以多选，一次扫完。",
+  "zh-Hant": "可以多選，一次掃完。"
+ },
+ "Prefer This Folder": {
+  "de": "Diesen Ordner bevorzugen",
+  "es": "Preferir esta carpeta",
+  "fr": "Privilégier ce dossier",
+  "ja": "このフォルダを優先",
+  "ko": "이 폴더 우선",
+  "zh-Hans": "优先保留这里的",
+  "zh-Hant": "優先保留這裡的"
+ },
+ "Prefer copies in a folder…": {
+  "de": "Kopien in einem Ordner bevorzugen …",
+  "es": "Preferir copias de una carpeta…",
+  "fr": "Privilégier les copies d’un dossier…",
+  "ja": "指定フォルダ内のコピーを優先…",
+  "ko": "지정 폴더의 사본 우선…",
+  "zh-Hans": "优先保留在指定文件夹里的…",
+  "zh-Hant": "優先保留在指定資料夾裡的…"
+ },
+ "Prefer copies in “%@”": {
+  "de": "Kopien in „%@“ bevorzugen",
+  "es": "Preferir copias en «%@»",
+  "fr": "Privilégier les copies dans « %@ »",
+  "ja": "「%@」内のコピーを優先",
+  "ko": "'%@'의 사본 우선",
+  "zh-Hans": "优先保留在「%@」里的",
+  "zh-Hant": "優先保留在「%@」裡的"
+ },
+ "Reference": {
+  "de": "Referenz",
+  "es": "Referencia",
+  "fr": "Référence",
+  "ja": "比較用",
+  "ko": "비교용",
+  "zh-Hans": "对照",
+  "zh-Hant": "對照"
+ },
+ "Remove": {
+  "de": "Entfernen",
+  "es": "Eliminar",
+  "fr": "Supprimer",
+  "ja": "削除",
+  "ko": "삭제",
+  "zh-Hans": "删除",
+  "zh-Hant": "刪除"
+ },
+ "Remove this location": {
+  "de": "Diesen Ort entfernen",
+  "es": "Quitar esta ubicación",
+  "fr": "Retirer cet emplacement",
+  "ja": "この場所を削除",
+  "ko": "이 위치 제거",
+  "zh-Hans": "移除这个位置",
+  "zh-Hant": "移除這個位置"
+ },
+ "Restore All": {
+  "de": "Alles wiederherstellen",
+  "es": "Restaurar todo",
+  "fr": "Tout restaurer",
+  "ja": "すべて元に戻す",
+  "ko": "모두 복원",
+  "zh-Hans": "全部还原",
+  "zh-Hant": "全部還原"
+ },
+ "Restored %@ items. Scan again to see current results.": {
+  "de": "%@ Objekte wiederhergestellt. Erneut scannen, um aktuelle Ergebnisse zu sehen.",
+  "es": "Se restauraron %@ elementos. Analiza de nuevo para ver los resultados actuales.",
+  "fr": "%@ éléments restaurés. Relancez une analyse pour voir les résultats à jour.",
+  "ja": "%@ 項目を元に戻しました。再スキャンすると最新の結果が見られます。",
+  "ko": "항목 %@개를 복원했습니다. 다시 스캔하면 최신 결과를 볼 수 있습니다.",
+  "zh-Hans": "已还原 %@ 项。重新扫描可以看到最新结果。",
+  "zh-Hant": "已還原 %@ 項。重新掃描可以看到最新結果。"
+ },
+ "Restored %@ items; %@ could not be restored (something with the same name is there, or it cannot be reached).": {
+  "de": "%@ Objekte wiederhergestellt; %@ nicht (gleichnamiges Objekt vorhanden oder nicht erreichbar).",
+  "es": "Se restauraron %@ elementos; %@ no se pudieron restaurar (ya hay algo con ese nombre o no se puede acceder).",
+  "fr": "%@ éléments restaurés ; %@ n’ont pas pu l’être (un élément du même nom existe ou l’emplacement est inaccessible).",
+  "ja": "%@ 項目を元に戻しました。%@ 項目は戻せませんでした（同名の項目があるか、アクセスできません）。",
+  "ko": "항목 %@개를 복원했고 %@개는 복원하지 못했습니다(같은 이름이 있거나 접근할 수 없음).",
+  "zh-Hans": "已还原 %@ 项，%@ 项没能还原（原位置已有同名项目或无法访问）。",
+  "zh-Hant": "已還原 %@ 項，%@ 項沒能還原（原位置已有同名項目或無法存取）。"
+ },
+ "Review and Clean Up…": {
+  "de": "Prüfen und aufräumen …",
+  "es": "Revisar y limpiar…",
+  "fr": "Vérifier et nettoyer…",
+  "ja": "確認して整理…",
+  "ko": "확인 후 정리…",
+  "zh-Hans": "核对并处理…",
+  "zh-Hant": "核對並處理…"
+ },
+ "Scan finished": {
+  "de": "Scan abgeschlossen",
+  "es": "Análisis terminado",
+  "fr": "Analyse terminée",
+  "ja": "スキャン完了",
+  "ko": "스캔 완료",
+  "zh-Hans": "扫描完成",
+  "zh-Hant": "掃描完成"
+ },
+ "Scanning": {
+  "de": "Scan läuft",
+  "es": "Analizando",
+  "fr": "Analyse en cours",
+  "ja": "スキャン中",
+  "ko": "스캔 중",
+  "zh-Hans": "正在扫描",
+  "zh-Hant": "正在掃描"
+ },
+ "Scans %ld locations, including a network drive; comparing by content may take hours.": {
+  "de": "Scannt %ld Orte, darunter ein Netzlaufwerk; der Inhaltsvergleich kann Stunden dauern.",
+  "es": "Analiza %ld ubicaciones, incluida una unidad de red; comparar por contenido puede tardar horas.",
+  "fr": "Analyse %ld emplacements, dont un disque réseau ; la comparaison par contenu peut prendre des heures.",
+  "ja": "%ld か所をスキャンします。ネットワークドライブを含むため、内容の比較に数時間かかることがあります。",
+  "ko": "위치 %ld곳을 스캔합니다. 네트워크 드라이브가 포함되어 내용 비교에 몇 시간이 걸릴 수 있습니다.",
+  "zh-Hans": "将扫描 %ld 个位置。含网络卷，按内容比对可能需要几小时。",
+  "zh-Hant": "將掃描 %ld 個位置。含網路磁碟，按內容比對可能需要幾小時。"
+ },
+ "Scans %ld locations.": {
+  "de": "Scannt %ld Orte.",
+  "es": "Analiza %ld ubicaciones.",
+  "fr": "Analyse %ld emplacements.",
+  "ja": "%ld か所をスキャンします。",
+  "ko": "위치 %ld곳을 스캔합니다.",
+  "zh-Hans": "将扫描 %ld 个位置。",
+  "zh-Hant": "將掃描 %ld 個位置。"
+ },
+ "Scans 1 location on a network drive; comparing by content may take hours.": {
+  "de": "Scannt 1 Ort auf einem Netzlaufwerk; der Inhaltsvergleich kann Stunden dauern.",
+  "es": "Analiza 1 ubicación en una unidad de red; comparar por contenido puede tardar horas.",
+  "fr": "Analyse 1 emplacement sur un disque réseau ; la comparaison par contenu peut prendre des heures.",
+  "ja": "ネットワークドライブ上の 1 か所をスキャンします。内容の比較に数時間かかることがあります。",
+  "ko": "네트워크 드라이브의 위치 1곳을 스캔합니다. 내용 비교에 몇 시간이 걸릴 수 있습니다.",
+  "zh-Hans": "将扫描 1 个网络卷上的位置，按内容比对可能需要几小时。",
+  "zh-Hant": "將掃描 1 個網路磁碟上的位置，按內容比對可能需要幾小時。"
+ },
+ "Scans 1 location.": {
+  "de": "Scannt 1 Ort.",
+  "es": "Analiza 1 ubicación.",
+  "fr": "Analyse 1 emplacement.",
+  "ja": "1 か所をスキャンします。",
+  "ko": "위치 1곳을 스캔합니다.",
+  "zh-Hans": "将扫描 1 个位置。",
+  "zh-Hant": "將掃描 1 個位置。"
+ },
+ "Search names or paths": {
+  "de": "Namen oder Pfade suchen",
+  "es": "Buscar nombres o rutas",
+  "fr": "Rechercher un nom ou un chemin",
+  "ja": "名前やパスを検索",
+  "ko": "이름 또는 경로 검색",
+  "zh-Hans": "搜索文件名或路径",
+  "zh-Hant": "搜尋檔名或路徑"
+ },
+ "Select a group": {
+  "de": "Gruppe auswählen",
+  "es": "Selecciona un grupo",
+  "fr": "Sélectionnez un groupe",
+  "ja": "グループを選択",
+  "ko": "그룹을 선택하세요",
+  "zh-Hans": "选一组查看",
+  "zh-Hant": "選一組查看"
+ },
+ "Show in Finder": {
+  "de": "Im Finder zeigen",
+  "es": "Mostrar en el Finder",
+  "fr": "Afficher dans le Finder",
+  "ja": "Finder で表示",
+  "ko": "Finder에서 보기",
+  "zh-Hans": "在访达中显示",
+  "zh-Hant": "在 Finder 中顯示"
+ },
+ "Skip": {
+  "de": "Überspringen",
+  "es": "Omitir",
+  "fr": "Ignorer",
+  "ja": "除外",
+  "ko": "건너뜀",
+  "zh-Hans": "跳过",
+  "zh-Hant": "略過"
+ },
+ "Smaller files are not checked; duplicates of them take little space.": {
+  "de": "Kleinere Dateien werden nicht geprüft; ihre Duplikate belegen wenig Platz.",
+  "es": "Los archivos más pequeños no se revisan; sus duplicados ocupan poco.",
+  "fr": "Les fichiers plus petits ne sont pas vérifiés ; leurs doublons prennent peu de place.",
+  "ja": "これより小さいファイルは調べません。重複していても容量はわずかです。",
+  "ko": "더 작은 파일은 검사하지 않습니다. 중복이어도 공간을 거의 차지하지 않습니다.",
+  "zh-Hans": "更小的文件不检查，它们重复了也占不了多少空间。",
+  "zh-Hant": "更小的檔案不檢查，它們重複了也佔不了多少空間。"
+ },
+ "Something with the same name is already there": {
+  "de": "Dort gibt es bereits ein Objekt mit diesem Namen",
+  "es": "Ya hay algo con el mismo nombre",
+  "fr": "Un élément du même nom existe déjà",
+  "ja": "同じ名前の項目がすでにあります",
+  "ko": "같은 이름의 항목이 이미 있습니다",
+  "zh-Hans": "原位置已有同名项目",
+  "zh-Hant": "原位置已有同名項目"
+ },
+ "Sort": {
+  "de": "Sortieren",
+  "es": "Ordenar",
+  "fr": "Trier",
+  "ja": "並べ替え",
+  "ko": "정렬",
+  "zh-Hans": "排序",
+  "zh-Hant": "排序"
+ },
+ "Start Scan": {
+  "de": "Scan starten",
+  "es": "Iniciar análisis",
+  "fr": "Lancer l’analyse",
+  "ja": "スキャン開始",
+  "ko": "스캔 시작",
+  "zh-Hans": "开始扫描",
+  "zh-Hant": "開始掃描"
+ },
+ "Stop": {
+  "de": "Stoppen",
+  "es": "Detener",
+  "fr": "Arrêter",
+  "ja": "停止",
+  "ko": "중지",
+  "zh-Hans": "停止",
+  "zh-Hant": "停止"
+ },
+ "Stop excluding": {
+  "de": "Nicht mehr ausschließen",
+  "es": "Dejar de excluir",
+  "fr": "Ne plus exclure",
+  "ja": "除外をやめる",
+  "ko": "제외 해제",
+  "zh-Hans": "不再排除",
+  "zh-Hant": "不再排除"
+ },
+ "The scan did not finish": {
+  "de": "Der Scan wurde nicht abgeschlossen",
+  "es": "El análisis no terminó",
+  "fr": "L’analyse n’a pas abouti",
+  "ja": "スキャンが完了しませんでした",
+  "ko": "스캔을 완료하지 못했습니다",
+  "zh-Hans": "扫描没有完成",
+  "zh-Hant": "掃描沒有完成"
+ },
+ "The scan failed: %@": {
+  "de": "Der Scan ist fehlgeschlagen: %@",
+  "es": "El análisis falló: %@",
+  "fr": "L’analyse a échoué : %@",
+  "ja": "スキャンに失敗しました：%@",
+  "ko": "스캔 실패: %@",
+  "zh-Hans": "扫描出错：%@",
+  "zh-Hant": "掃描出錯：%@"
+ },
+ "The scanning component czkawka_cli is missing.": {
+  "de": "Die Scan-Komponente czkawka_cli fehlt.",
+  "es": "Falta el componente de análisis czkawka_cli.",
+  "fr": "Le composant d’analyse czkawka_cli est introuvable.",
+  "ja": "スキャン用コンポーネント czkawka_cli が見つかりません。",
+  "ko": "스캔 구성 요소 czkawka_cli가 없습니다.",
+  "zh-Hans": "找不到扫描组件 czkawka_cli。",
+  "zh-Hant": "找不到掃描元件 czkawka_cli。"
+ },
+ "These locations could not be read and were skipped, so duplicates inside them are missing from the results.": {
+  "de": "Diese Orte konnten nicht gelesen werden und wurden übersprungen; Duplikate darin fehlen in den Ergebnissen.",
+  "es": "Estas ubicaciones no se pudieron leer y se omitieron, así que sus duplicados no están en los resultados.",
+  "fr": "Ces emplacements n’ont pas pu être lus et ont été ignorés ; leurs doublons ne figurent pas dans les résultats.",
+  "ja": "これらの場所は読み取れずスキップしたため、中の重複は結果に含まれていません。",
+  "ko": "이 위치들은 읽을 수 없어 건너뛰었으므로 그 안의 중복은 결과에 없습니다.",
+  "zh-Hans": "这些位置没能读取，扫描时跳过了，里面的重复文件不在结果里。",
+  "zh-Hant": "這些位置沒能讀取，掃描時略過了，裡面的重複檔案不在結果裡。"
+ },
+ "This Mac": {
+  "de": "Dieser Mac",
+  "es": "Este Mac",
+  "fr": "Ce Mac",
+  "ja": "この Mac",
+  "ko": "이 Mac",
+  "zh-Hans": "本机",
+  "zh-Hant": "本機"
+ },
+ "This copy is in a “compare only” location and is never removed.": {
+  "de": "Diese Kopie liegt an einem Ort „nur vergleichen“ und wird nie entfernt.",
+  "es": "Esta copia está en una ubicación «solo comparar» y nunca se elimina.",
+  "fr": "Cette copie est dans un emplacement « comparaison seule » et n’est jamais supprimée.",
+  "ja": "このコピーは「比較のみ」の場所にあり、削除されません。",
+  "ko": "이 사본은 '비교 전용' 위치에 있어 삭제되지 않습니다.",
+  "zh-Hans": "这份在「只作对照」的位置里，不会删除。",
+  "zh-Hant": "這份在「只作對照」的位置裡，不會刪除。"
+ },
+ "This frees %@.": {
+  "de": "Gibt %@ frei.",
+  "es": "Libera %@.",
+  "fr": "Libère %@.",
+  "ja": "%@ を解放します。",
+  "ko": "%@를 확보합니다.",
+  "zh-Hans": "将释放 %@。",
+  "zh-Hant": "將釋放 %@。"
+ },
+ "This frees %@. %@ of the items are on a network drive.": {
+  "de": "Gibt %@ frei. %@ Objekte liegen auf einem Netzlaufwerk.",
+  "es": "Libera %@. %@ elementos están en una unidad de red.",
+  "fr": "Libère %@. %@ éléments sont sur un disque réseau.",
+  "ja": "%@ を解放します。うち %@ 項目はネットワークドライブ上にあります。",
+  "ko": "%@를 확보합니다. 그중 %@개는 네트워크 드라이브에 있습니다.",
+  "zh-Hans": "将释放 %@。其中 %@ 项在网络卷上。",
+  "zh-Hant": "將釋放 %@。其中 %@ 項在網路磁碟上。"
+ },
+ "This group has a copy in a “compare only” location. That copy is kept and every other copy is marked.": {
+  "de": "Diese Gruppe hat eine Kopie an einem Ort „nur vergleichen“. Sie bleibt, alle anderen werden markiert.",
+  "es": "Este grupo tiene una copia en una ubicación «solo comparar». Esa se conserva y las demás se marcan.",
+  "fr": "Ce groupe a une copie dans un emplacement « comparaison seule ». Elle est gardée et toutes les autres sont marquées.",
+  "ja": "このグループには「比較のみ」の場所にあるコピーがあります。それを残し、ほかはすべてマークします。",
+  "ko": "이 그룹에는 '비교 전용' 위치의 사본이 있습니다. 그 사본을 남기고 나머지는 모두 표시합니다.",
+  "zh-Hans": "这组有「只作对照」位置里的副本，以它为准，其余副本都标记删除。",
+  "zh-Hant": "這組有「只作對照」位置裡的副本，以它為準，其餘副本都標記刪除。"
+ },
+ "This record was deleted": {
+  "de": "Dieser Eintrag wurde gelöscht",
+  "es": "Este registro se eliminó",
+  "fr": "Cet historique a été supprimé",
+  "ja": "この記録は削除されました",
+  "ko": "이 기록은 삭제되었습니다",
+  "zh-Hans": "这条记录已删除",
+  "zh-Hant": "這筆記錄已刪除"
+ },
+ "To skip a subfolder, click “Exclude Subfolder” on its location in step 1.": {
+  "de": "Um einen Unterordner zu überspringen, bei seinem Ort in Schritt 1 auf „Unterordner ausschließen“ klicken.",
+  "es": "Para omitir una subcarpeta, haz clic en «Excluir subcarpeta» en su ubicación del paso 1.",
+  "fr": "Pour ignorer un sous-dossier, cliquez sur « Exclure un sous-dossier » sur son emplacement à l’étape 1.",
+  "ja": "サブフォルダを除外するには、手順 1 の該当する場所で「サブフォルダを除外」をクリックします。",
+  "ko": "하위 폴더를 건너뛰려면 1단계의 해당 위치에서 '하위 폴더 제외'를 클릭하세요.",
+  "zh-Hans": "要跳过某个子文件夹，在第 1 步对应位置上点「排除子文件夹」。",
+  "zh-Hant": "要略過某個子資料夾，在第 1 步對應位置上點「排除子資料夾」。"
+ },
+ "Today %@": {
+  "de": "Heute %@",
+  "es": "Hoy %@",
+  "fr": "Aujourd’hui %@",
+  "ja": "今日 %@",
+  "ko": "오늘 %@",
+  "zh-Hans": "今天 %@",
+  "zh-Hant": "今天 %@"
+ },
+ "Trash, system caches, NAS recycle bins and thumbnail folders are always skipped": {
+  "de": "Papierkorb, System-Caches, NAS-Papierkörbe und Vorschauordner werden immer übersprungen",
+  "es": "Siempre se omiten la papelera, las cachés del sistema, las papeleras del NAS y las miniaturas",
+  "fr": "La corbeille, les caches système, les corbeilles NAS et les vignettes sont toujours ignorés",
+  "ja": "ゴミ箱、システムキャッシュ、NAS のごみ箱、サムネイルフォルダは常に除外します",
+  "ko": "휴지통, 시스템 캐시, NAS 휴지통, 썸네일 폴더는 항상 건너뜁니다",
+  "zh-Hans": "已自动跳过废纸篓、系统缓存、NAS 回收站和缩略图目录",
+  "zh-Hant": "已自動略過垃圾桶、系統快取、NAS 資源回收筒和縮圖目錄"
+ },
+ "Type “%@” to confirm": {
+  "de": "Zum Bestätigen „%@“ eingeben",
+  "es": "Escribe «%@» para confirmar",
+  "fr": "Tapez « %@ » pour confirmer",
+  "ja": "確認のため「%@」と入力",
+  "ko": "확인하려면 '%@' 입력",
+  "zh-Hans": "输入「%@」确认",
+  "zh-Hant": "輸入「%@」確認"
+ },
+ "Unmark All": {
+  "de": "Alle Markierungen entfernen",
+  "es": "Desmarcar todo",
+  "fr": "Tout démarquer",
+  "ja": "すべてのマークを解除",
+  "ko": "모두 표시 해제",
+  "zh-Hans": "全部取消标记",
+  "zh-Hant": "全部取消標記"
+ },
+ "Videos": {
+  "de": "Videos",
+  "es": "Vídeos",
+  "fr": "Vidéos",
+  "ja": "ビデオ",
+  "ko": "동영상",
+  "zh-Hans": "视频",
+  "zh-Hant": "影片"
+ },
+ "Waiting": {
+  "de": "Wartet",
+  "es": "En espera",
+  "fr": "En attente",
+  "ja": "待機中",
+  "ko": "대기 중",
+  "zh-Hans": "等待中",
+  "zh-Hant": "等待中"
+ },
+ "What to Find": {
+  "de": "Was suchen",
+  "es": "Qué buscar",
+  "fr": "Que chercher",
+  "ja": "探すもの",
+  "ko": "찾을 항목",
+  "zh-Hans": "找什么",
+  "zh-Hant": "找什麼"
+ },
+ "Where to Look": {
+  "de": "Wo suchen",
+  "es": "Dónde buscar",
+  "fr": "Où chercher",
+  "ja": "スキャンする場所",
+  "ko": "스캔할 위치",
+  "zh-Hans": "扫描哪里",
+  "zh-Hant": "掃描哪裡"
+ },
+ "You can get items back from the Trash.": {
+  "de": "Objekte lassen sich aus dem Papierkorb zurückholen.",
+  "es": "Puedes recuperarlos de la papelera.",
+  "fr": "Vous pourrez les récupérer dans la corbeille.",
+  "ja": "ゴミ箱から戻せます。",
+  "ko": "휴지통에서 되살릴 수 있습니다.",
+  "zh-Hans": "可以在废纸篓里找回。",
+  "zh-Hant": "可以在垃圾桶裡找回。"
+ },
+ "You changed this group by hand, so auto marking leaves it alone.": {
+  "de": "Diese Gruppe wurde von Hand geändert; die automatische Markierung lässt sie in Ruhe.",
+  "es": "Cambiaste este grupo a mano, así que el marcado automático no lo toca.",
+  "fr": "Vous avez modifié ce groupe à la main ; le marquage auto n’y touche pas.",
+  "ja": "このグループは手動で変更したため、自動マークでは変わりません。",
+  "ko": "이 그룹은 직접 바꿨으므로 자동 표시가 덮어쓰지 않습니다.",
+  "zh-Hans": "这组手动改过，自动标记不会覆盖。",
+  "zh-Hant": "這組手動改過，自動標記不會覆蓋。"
+ },
+ "about %@ left": {
+  "de": "noch etwa %@",
+  "es": "quedan unos %@",
+  "fr": "encore environ %@",
+  "ja": "残り約 %@",
+  "ko": "약 %@ 남음",
+  "zh-Hans": "剩约 %@",
+  "zh-Hant": "剩約 %@"
+ },
+ "all file types": {
+  "de": "alle Dateitypen",
+  "es": "todos los tipos",
+  "fr": "tous les types",
+  "ja": "すべての種類",
+  "ko": "모든 유형",
+  "zh-Hans": "全部类型",
+  "zh-Hant": "全部類型"
+ },
+ "any size": {
+  "de": "jede Größe",
+  "es": "cualquier tamaño",
+  "fr": "toutes tailles",
+  "ja": "サイズ制限なし",
+  "ko": "크기 제한 없음",
+  "zh-Hans": "不限大小",
+  "zh-Hant": "不限大小"
+ },
+ "can be freed": {
+  "de": "freigebbar",
+  "es": "liberables",
+  "fr": "libérables",
+  "ja": "解放可能",
+  "ko": "확보 가능",
+  "zh-Hans": "可释放",
+  "zh-Hant": "可釋放"
+ },
+ "delete": {
+  "de": "löschen",
+  "es": "eliminar",
+  "fr": "supprimer",
+  "ja": "削除",
+  "ko": "삭제",
+  "zh-Hans": "删除",
+  "zh-Hant": "刪除"
+ },
+ "exit code %ld": {
+  "de": "Exit-Code %ld",
+  "es": "código de salida %ld",
+  "fr": "code de sortie %ld",
+  "ja": "終了コード %ld",
+  "ko": "종료 코드 %ld",
+  "zh-Hans": "退出码 %ld",
+  "zh-Hant": "結束代碼 %ld"
+ },
+ "loading cache": {
+  "de": "Cache wird geladen",
+  "es": "cargando caché",
+  "fr": "chargement du cache",
+  "ja": "キャッシュを読み込み中",
+  "ko": "캐시 불러오는 중",
+  "zh-Hans": "读取缓存",
+  "zh-Hant": "讀取快取"
+ },
+ "only %@": {
+  "de": "nur %@",
+  "es": "solo %@",
+  "fr": "seulement %@",
+  "ja": "%@ のみ",
+  "ko": "%@만",
+  "zh-Hans": "只查%@",
+  "zh-Hant": "只查%@"
+ },
+ "saving cache": {
+  "de": "Cache wird gespeichert",
+  "es": "guardando caché",
+  "fr": "enregistrement du cache",
+  "ja": "キャッシュを保存中",
+  "ko": "캐시 저장 중",
+  "zh-Hans": "保存缓存",
+  "zh-Hant": "儲存快取"
+ },
+ "skipping hard links": {
+  "de": "Hardlinks werden übersprungen",
+  "es": "omitiendo enlaces duros",
+  "fr": "exclusion des liens physiques",
+  "ja": "ハードリンクを除外中",
+  "ko": "하드 링크 제외 중",
+  "zh-Hans": "排除硬链接",
+  "zh-Hant": "排除硬連結"
+ },
+ "skips files under %@": {
+  "de": "überspringt Dateien unter %@",
+  "es": "omite archivos de menos de %@",
+  "fr": "ignore les fichiers de moins de %@",
+  "ja": "%@ 未満のファイルは除外",
+  "ko": "%@ 미만 파일 건너뜀",
+  "zh-Hans": "跳过小于 %@ 的文件",
+  "zh-Hant": "略過小於 %@ 的檔案"
+ }
+}

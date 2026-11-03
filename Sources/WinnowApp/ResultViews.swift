@@ -6,10 +6,16 @@ import UniformTypeIdentifiers
 // MARK: Duplicates
 
 enum SortKey: String, CaseIterable {
-    case reclaim = "按可释放空间"
-    case size = "按单个文件大小"
-    case copies = "按份数"
-    case name = "按名称"
+    case reclaim, size, copies, name
+
+    var title: String {
+        switch self {
+        case .reclaim: return L("By Space Freed")
+        case .size: return L("By File Size")
+        case .copies: return L("By Number of Copies")
+        case .name: return L("By Name")
+        }
+    }
 }
 
 struct DuplicatesView: View {
@@ -24,7 +30,7 @@ struct DuplicatesView: View {
         if let record = model.record(id) {
             content(record)
         } else {
-            ContentUnavailableView("这条记录已删除", systemImage: "trash")
+            ContentUnavailableView(L("This record was deleted"), systemImage: "trash")
         }
     }
 
@@ -33,9 +39,9 @@ struct DuplicatesView: View {
         return HStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack {
-                    Text(sort.rawValue + "排序")
+                    Text(sort.title)
                     Spacer()
-                    Text("已标记 \(Fmt.number(record.markedFiles)) 个")
+                    Text(L("%@ marked", Fmt.number(record.markedFiles)))
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -43,7 +49,7 @@ struct DuplicatesView: View {
                 .padding(.vertical, 8)
                 Divider()
                 if groups.isEmpty {
-                    ContentUnavailableView(record.groups.isEmpty ? "没有找到重复文件" : "没有匹配的结果",
+                    ContentUnavailableView(record.groups.isEmpty ? L("No duplicate files found") : L("No matching results"),
                                            systemImage: record.groups.isEmpty ? "checkmark.circle" : "magnifyingglass")
                 } else {
                     List(groups, selection: $selected) { g in
@@ -67,21 +73,21 @@ struct DuplicatesView: View {
                     }
                     .id(gid)
                 } else {
-                    ContentUnavailableView("选一组查看", systemImage: "doc.on.doc")
+                    ContentUnavailableView(L("Select a group"), systemImage: "doc.on.doc")
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .safeAreaInset(edge: .top, spacing: 0) { StagedBanner(id: id) }
         .safeAreaInset(edge: .bottom, spacing: 0) { ProcessBar(record: record) { showProcess = true } }
-        .navigationTitle("重复文件")
-        .navigationSubtitle("\(Fmt.number(record.groups.count)) 组 · 可释放 \(Fmt.bytes(record.reclaimable))")
-        .searchable(text: $query, placement: .toolbar, prompt: "搜索文件名或路径")
+        .navigationTitle(L("Duplicate Files"))
+        .navigationSubtitle(L("%@ groups · %@ can be freed", Fmt.number(record.groups.count), Fmt.bytes(record.reclaimable)))
+        .searchable(text: $query, placement: .toolbar, prompt: L("Search names or paths"))
         .toolbar {
             ToolbarItemGroup {
                 AutoMarkMenu(id: id, rule: record.rule)
-                Picker("排序", selection: $sort) {
-                    ForEach(SortKey.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                Picker(L("Sort"), selection: $sort) {
+                    ForEach(SortKey.allCases, id: \.self) { Text($0.title).tag($0) }
                 }
                 .pickerStyle(.menu)
                 .fixedSize()
@@ -114,30 +120,30 @@ struct AutoMarkMenu: View {
 
     var body: some View {
         Menu {
-            item("每组保留最早的一份（推荐，原件通常最早）", .oldest)
-            item("每组保留最新的一份", .newest)
-            item("每组保留路径最短的一份", .shortestPath)
+            item(L("Keep the oldest copy in each group (recommended; the original is usually oldest)"), .oldest)
+            item(L("Keep the newest copy in each group"), .newest)
+            item(L("Keep the copy with the shortest path"), .shortestPath)
             Button {
                 let panel = NSOpenPanel()
                 panel.canChooseDirectories = true
                 panel.canChooseFiles = false
-                panel.prompt = "优先保留这里的"
+                panel.prompt = L("Prefer This Folder")
                 if panel.runModal() == .OK, let url = panel.url {
                     apply(.preferFolder(url.standardizedFileURL.path))
                 }
             } label: {
                 if case .preferFolder(let f) = rule {
-                    Label("优先保留在「\(Paths.displayName(f))」里的", systemImage: "checkmark")
+                    Label(L("Prefer copies in “%@”", Paths.displayName(f)), systemImage: "checkmark")
                 } else {
-                    Text("优先保留在指定文件夹里的…")
+                    Text(L("Prefer copies in a folder…"))
                 }
             }
             Divider()
-            Button("全部取消标记") { model.mutate(id) { Marking.clearAll(&$0) } }
+            Button(L("Unmark All")) { model.mutate(id) { Marking.clearAll(&$0) } }
         } label: {
-            Label("自动标记", systemImage: "wand.and.stars")
+            Label(L("Auto Mark"), systemImage: "wand.and.stars")
         }
-        .help("手动改过的组不会被自动标记覆盖")
+        .help(L("Groups you changed by hand are never overwritten"))
     }
 
     @ViewBuilder
@@ -162,13 +168,13 @@ struct GroupRow: View {
             FileIcon(name: group.name, size: 32)
             VStack(alignment: .leading, spacing: 2) {
                 Text(group.name).lineLimit(1).truncationMode(.middle)
-                Text("\(group.files.count) 份 · 每份 \(Fmt.bytes(group.size))")
+                Text(L("%ld copies · %@ each", group.files.count, Fmt.bytes(group.size)))
                     .font(.caption).foregroundStyle(.secondary)
             }
             Spacer(minLength: 8)
             VStack(alignment: .trailing, spacing: 1) {
                 Text(Fmt.bytes(group.reclaimable)).fontWeight(.semibold).monospacedDigit()
-                Text("可释放").font(.caption2).foregroundStyle(.secondary)
+                Text(L("can be freed")).font(.caption2).foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, 3)
@@ -184,18 +190,19 @@ struct GroupDetail: View {
     var body: some View {
         let oldest = group.files.min { $0.modified < $1.modified }?.path
         let ext = (group.name as NSString).pathExtension
-        let kind = UTType(filenameExtension: ext)?.localizedDescription ?? "文件"
+        let kind = UTType(filenameExtension: ext)?.localizedDescription ?? L("File")
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 16) {
                     FileIcon(name: group.name, size: 72)
                     VStack(alignment: .leading, spacing: 3) {
                         Text(group.name).font(.title3.weight(.semibold)).textSelection(.enabled)
-                        Text("\(kind) · \(Fmt.bytes(group.size)) · \(group.files.count) 份"
-                             + (record.config.method == .hash ? "内容完全相同" : "大小和文件名相同"))
+                        Text(record.config.method == .hash
+                             ? L("%@ · %@ · %ld copies with identical content", kind, Fmt.bytes(group.size), group.files.count)
+                             : L("%@ · %@ · %ld copies with the same size and name", kind, Fmt.bytes(group.size), group.files.count))
                             .font(.callout).foregroundStyle(.secondary)
                         if record.config.method == .sizeName {
-                            Text("内容没有逐字节核对，处理前建议打开确认。").font(.callout).foregroundStyle(.orange)
+                            Text(L("Contents were not compared byte by byte. Open the files to check before removing.")).font(.callout).foregroundStyle(.orange)
                         }
                     }
                 }
@@ -203,7 +210,8 @@ struct GroupDetail: View {
                     ForEach(Array(group.files.enumerated()), id: \.element.id) { i, file in
                         CopyRow(file: file, isOldest: file.path == oldest && group.files.count > 1) { mark in
                             refusal = set(mark, file.path) ? nil
-                                : (file.isReference ? "这份在「只作对照」的位置里，不会删除。" : "每组至少要保留一份。")
+                                : (file.isReference ? L("This copy is in a “compare only” location and is never removed.")
+                                                    : L("Every group must keep at least one copy."))
                         }
                         if i < group.files.count - 1 { Divider() }
                     }
@@ -221,18 +229,18 @@ struct GroupDetail: View {
 
     private var note: String {
         if group.files.contains(where: \.isReference) {
-            return "这组有「只作对照」位置里的副本，以它为准，其余副本都标记删除。"
+            return L("This group has a copy in a “compare only” location. That copy is kept and every other copy is marked.")
         }
-        if group.edited { return "这组手动改过，自动标记不会覆盖。" }
-        return "按「\(Self.ruleName(record.rule))」自动标记。手动改过的组不会被再次自动标记覆盖。"
+        if group.edited { return L("You changed this group by hand, so auto marking leaves it alone.") }
+        return L("Marked by “%@”. Groups you change by hand are not overwritten by auto marking.", Self.ruleName(record.rule))
     }
 
     static func ruleName(_ rule: AutoRule) -> String {
         switch rule {
-        case .oldest: return "每组保留最早的一份"
-        case .newest: return "每组保留最新的一份"
-        case .shortestPath: return "每组保留路径最短的一份"
-        case .preferFolder(let f): return "优先保留在\(Paths.displayName(f))里的"
+        case .oldest: return L("Keep the oldest copy in each group")
+        case .newest: return L("Keep the newest copy in each group")
+        case .shortestPath: return L("Keep the copy with the shortest path")
+        case .preferFolder(let f): return L("Prefer copies in “%@”", Paths.displayName(f))
         }
     }
 }
@@ -245,22 +253,22 @@ struct CopyRow: View {
     var body: some View {
         HStack(spacing: 12) {
             if file.isReference {
-                Label("对照", systemImage: "lock.fill")
+                Label(L("Reference"), systemImage: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                    .frame(width: 96, alignment: .leading)
-                    .help("这份在「只作对照」的位置里，不会删除")
+                    .frame(width: 110, alignment: .leading)
+                    .help(L("This copy is in a “compare only” location and is never removed."))
             } else {
                 KeepDeletePill(mark: file.mark, set: set)
-                    .frame(width: 96, alignment: .leading)
+                    .frame(width: 110, alignment: .leading)
             }
             VStack(alignment: .leading, spacing: 2) {
                 PathCrumbs(path: file.path)
-                Text("修改于 \(Fmt.day(file.modified))" + (isOldest ? " · 最早" : ""))
+                Text(isOldest ? L("Modified %@ · oldest", Fmt.day(file.modified)) : L("Modified %@", Fmt.day(file.modified)))
                     .font(.caption2).foregroundStyle(.secondary)
             }
             Spacer(minLength: 8)
-            Button("在访达中显示") {
+            Button(L("Show in Finder")) {
                 NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: file.path)])
             }
             .buttonStyle(.link)
@@ -277,11 +285,12 @@ struct KeepDeletePill: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            segment("保留", .keep, .green)
-            segment("删除", .delete, .red)
+            segment(L("Keep"), .keep, .green)
+            segment(L("Remove"), .delete, .red)
         }
         .padding(2)
         .background(RoundedRectangle(cornerRadius: 7).fill(Color.primary.opacity(0.07)))
+        .fixedSize()
     }
 
     private func segment(_ title: String, _ value: Mark, _ color: Color) -> some View {
@@ -292,6 +301,7 @@ struct KeepDeletePill: View {
             Text(title)
                 .font(.system(size: 12, weight: on ? .semibold : .regular))
                 .foregroundStyle(on ? color : Color.secondary)
+                .lineLimit(1)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 3)
                 .background(RoundedRectangle(cornerRadius: 5)
@@ -308,13 +318,14 @@ struct PathCrumbs: View {
 
     var body: some View {
         let c = Paths.crumbs(path)
-        (Text(c.head).fontWeight(.medium).foregroundStyle(.primary)
-            + Text(c.rest.isEmpty ? "" : " › " + c.rest.joined(separator: " › ")).foregroundStyle(.secondary))
-            .font(.system(size: 12))
-            .lineLimit(2)
-            .truncationMode(.middle)
-            .help(path)
-            .textSelection(.enabled)
+        HStack(spacing: 0) {
+            Text(c.head).fontWeight(.medium).foregroundStyle(.primary)
+            Text(c.rest.isEmpty ? "" : " › " + c.rest.joined(separator: " › ")).foregroundStyle(.secondary)
+        }
+        .font(.system(size: 12))
+        .lineLimit(1)
+        .truncationMode(.middle)
+        .help(path)
     }
 }
 
@@ -345,10 +356,10 @@ struct ProcessBar: View {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(summary).fontWeight(.semibold)
-                    Text("还没有删除任何东西").font(.caption).foregroundStyle(.secondary)
+                    Text(L("Nothing has been removed yet")).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
-                Button("核对并处理…", action: action)
+                Button(L("Review and Clean Up…"), action: action)
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .disabled(record.markedFiles + record.markedFolders == 0)
@@ -360,11 +371,11 @@ struct ProcessBar: View {
     }
 
     private var summary: String {
-        var parts: [String] = []
-        if record.markedFiles > 0 { parts.append("\(Fmt.number(record.markedFiles)) 个文件") }
-        if record.markedFolders > 0 { parts.append("\(Fmt.number(record.markedFolders)) 个空文件夹") }
-        if parts.isEmpty { return "没有标记任何项目" }
-        return "已标记 " + parts.joined(separator: "、") + (record.markedFiles > 0 ? "，将释放 \(Fmt.bytes(record.reclaimable))" : "")
+        let files = record.markedFiles, folders = record.markedFolders
+        if files == 0 && folders == 0 { return L("Nothing is marked") }
+        if folders == 0 { return L("%@ files marked, %@ will be freed", Fmt.number(files), Fmt.bytes(record.reclaimable)) }
+        if files == 0 { return L("%@ empty folders marked", Fmt.number(folders)) }
+        return L("%@ files and %@ empty folders marked, %@ will be freed", Fmt.number(files), Fmt.number(folders), Fmt.bytes(record.reclaimable))
     }
 }
 
@@ -383,12 +394,13 @@ struct StagedBanner: View {
                     if let message {
                         Text(message)
                     } else {
-                        Text("已移到暂存文件夹 \(Fmt.number(record.moves.count)) 项。确认没问题后可以在访达里删掉暂存文件夹。")
+                        Text(L("%@ items were moved to a staging folder. Once you are sure, delete the staging folder in Finder.",
+                               Fmt.number(record.moves.count)))
                     }
                     Spacer()
                     if !record.moves.isEmpty {
-                        Button("打开暂存文件夹") { open(record.moves) }
-                        Button("全部还原") { restore(record.moves) }.disabled(working)
+                        Button(L("Open Staging Folder")) { open(record.moves) }
+                        Button(L("Restore All")) { restore(record.moves) }.disabled(working)
                     }
                 }
                 .font(.callout)
@@ -407,7 +419,7 @@ struct StagedBanner: View {
 
     static func stagingRoot(_ path: String) -> String? {
         let parts = path.split(separator: "/", omittingEmptySubsequences: false)
-        guard let i = parts.firstIndex(where: { $0.hasPrefix(Processor.stagingPrefix) }) else { return nil }
+        guard let i = parts.firstIndex(where: { part in Processor.allStagingPrefixes.contains { part.hasPrefix($0) } }) else { return nil }
         return parts[...i].joined(separator: "/")
     }
 
@@ -418,8 +430,9 @@ struct StagedBanner: View {
             let restored = Set(result.restored)
             model.mutate(id) { $0.moves.removeAll { restored.contains($0) } }
             message = result.failures.isEmpty
-                ? "已还原 \(Fmt.number(result.restored.count)) 项。重新扫描可以看到最新结果。"
-                : "已还原 \(Fmt.number(result.restored.count)) 项，\(result.failures.count) 项没能还原（原位置已有同名项目或无法访问）。"
+                ? L("Restored %@ items. Scan again to see current results.", Fmt.number(result.restored.count))
+                : L("Restored %@ items; %@ could not be restored (something with the same name is there, or it cannot be reached).",
+                    Fmt.number(result.restored.count), Fmt.number(result.failures.count))
             working = false
         }
     }
@@ -436,7 +449,7 @@ struct EmptyFoldersView: View {
         if let record = model.record(id) {
             Group {
                 if record.emptyFolders.isEmpty {
-                    ContentUnavailableView("没有找到空文件夹", systemImage: "checkmark.circle")
+                    ContentUnavailableView(L("No empty folders found"), systemImage: "checkmark.circle")
                 } else {
                     List {
                         ForEach(record.emptyFolders) { folder in
@@ -455,7 +468,7 @@ struct EmptyFoldersView: View {
                                 FileIcon(name: folder.path, size: 20, folder: true)
                                 PathCrumbs(path: folder.path)
                                 Spacer()
-                                Button("在访达中显示") {
+                                Button(L("Show in Finder")) {
                                     NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: folder.path)])
                                 }
                                 .buttonStyle(.link)
@@ -468,17 +481,17 @@ struct EmptyFoldersView: View {
             }
             .safeAreaInset(edge: .top, spacing: 0) { StagedBanner(id: id) }
             .safeAreaInset(edge: .bottom, spacing: 0) { ProcessBar(record: record) { showProcess = true } }
-            .navigationTitle("空文件夹")
-            .navigationSubtitle("\(Fmt.number(record.emptyFolders.count)) 个，只含空文件夹的也算")
+            .navigationTitle(L("Empty Folders"))
+            .navigationSubtitle(L("%@ found; folders holding only empty folders count too", Fmt.number(record.emptyFolders.count)))
             .toolbar {
                 ToolbarItemGroup {
-                    Button("全部标记") { setAll(.delete) }
-                    Button("全部取消") { setAll(.keep) }
+                    Button(L("Mark All")) { setAll(.delete) }
+                    Button(L("Unmark All")) { setAll(.keep) }
                 }
             }
             .sheet(isPresented: $showProcess) { ProcessSheet(id: id) }
         } else {
-            ContentUnavailableView("这条记录已删除", systemImage: "trash")
+            ContentUnavailableView(L("This record was deleted"), systemImage: "trash")
         }
     }
 
@@ -498,13 +511,14 @@ struct SkippedView: View {
     var body: some View {
         let items = model.record(id)?.skipped ?? []
         VStack(alignment: .leading, spacing: 12) {
-            Text("这些位置没能读取，扫描时跳过了，里面的重复文件不在结果里。")
+            Text(L("These locations could not be read and were skipped, so duplicates inside them are missing from the results."))
                 .foregroundStyle(.secondary)
             HStack {
-                Button("打开「完全磁盘访问权限」设置") {
+                Button(L("Open Full Disk Access Settings")) {
                     NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
                 }
-                Text("给本应用授权后重新扫描。网络卷上的权限要在 NAS 上改。").font(.caption).foregroundStyle(.secondary)
+                Text(L("Allow Winnow there, then scan again. Permissions on a network drive are set on the NAS."))
+                    .font(.caption).foregroundStyle(.secondary)
             }
             List(Array(items.enumerated()), id: \.offset) { _, item in
                 VStack(alignment: .leading, spacing: 2) {
@@ -516,12 +530,12 @@ struct SkippedView: View {
             .listStyle(.bordered(alternatesRowBackgrounds: true))
         }
         .padding(24)
-        .navigationTitle("没有权限")
-        .navigationSubtitle("\(items.count) 个位置被跳过")
+        .navigationTitle(L("No Access"))
+        .navigationSubtitle(L("%@ locations skipped", Fmt.number(items.count)))
     }
 
     static func reason(_ text: String) -> String {
-        if text.contains("Permission denied") || text.contains("Operation not permitted") { return "没有读取权限" }
+        if text.contains("Permission denied") || text.contains("Operation not permitted") { return L("No permission to read") }
         return text
     }
 }

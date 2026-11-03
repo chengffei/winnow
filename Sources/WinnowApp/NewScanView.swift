@@ -7,36 +7,39 @@ struct NewScanView: View {
     @State private var dropTargeted = false
     @State private var showMore = ProcessInfo.processInfo.environment["WINNOW_SNAPSHOT_MORE"] != nil
 
-    static let sizes: [(UInt64, String)] = [(1, "不限"), (8 * 1024, "8 KB（默认）"), (1 << 20, "1 MB"),
-                                             (10 << 20, "10 MB"), (100 << 20, "100 MB")]
+    static var sizes: [(UInt64, String)] {
+        [(1, L("Any size")), (8 * 1024, L("8 KB (default)")), (1 << 20, "1 MB"), (10 << 20, "10 MB"), (100 << 20, "100 MB")]
+    }
 
     var body: some View {
         @Bindable var model = model
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                Step(number: 1, title: "扫描哪里",
-                     hint: "可以把文件夹直接拖进来。打开「只作对照」的位置，里面的文件只用来比对，永远不会被标记删除。") {
+                Step(number: 1, title: L("Where to Look"),
+                     hint: L("Drag folders here, or add them below. Files in a “compare only” location are used for matching and are never marked for removal.")) {
                     locations
                 }
-                Step(number: 2, title: "找什么", hint: "可以多选，一次扫完。") {
+                Step(number: 2, title: L("What to Find"), hint: L("Pick one or both; they run in one scan.")) {
                     HStack(spacing: 10) {
-                        ToolTile(title: "重复文件", detail: "内容完全一样的文件", on: binding(.duplicates))
-                        ToolTile(title: "空文件夹", detail: "里面什么都没有", on: binding(.emptyFolders))
+                        ToolTile(title: L("Duplicate Files"), detail: L("Files with exactly the same content"), on: binding(.duplicates))
+                        ToolTile(title: L("Empty Folders"), detail: L("Folders with nothing in them"), on: binding(.emptyFolders))
                     }
                     .frame(maxWidth: 520)
                 }
                 if model.draft.tools.contains(.duplicates) {
-                    Step(number: 3, title: "怎么比对重复文件", hint: nil) {
+                    Step(number: 3, title: L("How to Compare Duplicates"), hint: nil) {
                         Picker("", selection: $model.draft.method) {
-                            Text("按内容（推荐）").tag(CompareMethod.hash)
-                            Text("按大小和文件名").tag(CompareMethod.sizeName)
+                            Text(L("By content (recommended)")).tag(CompareMethod.hash)
+                            Text(L("By size and name")).tag(CompareMethod.sizeName)
                         }
                         .pickerStyle(.segmented)
                         .labelsHidden()
                         .fixedSize()
                         HStack(alignment: .top, spacing: 16) {
-                            Explain(title: "按内容", text: "逐字节比，结果可以放心删。要把候选文件读一遍，网络卷上较慢。")
-                            Explain(title: "按大小和文件名", text: "很快出结果，但同名同大小不一定相同，只适合先摸底。")
+                            Explain(title: L("By content"),
+                                    text: L("Compares every byte, so results are safe to delete. Candidates are read in full, which is slow on network drives."))
+                            Explain(title: L("By size and name"),
+                                    text: L("Fast, but files with the same name and size are not always the same. Good for a first look."))
                         }
                         .padding(.top, 6)
                         moreConditions
@@ -49,7 +52,7 @@ struct NewScanView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) { footer }
-        .navigationTitle("新建扫描")
+        .navigationTitle(L("New Scan"))
         .dropDestination(for: URL.self) { urls, _ in
             add(urls)
             return true
@@ -82,11 +85,11 @@ struct NewScanView: View {
                 Button {
                     choose()
                 } label: {
-                    Label("添加位置…", systemImage: "plus")
+                    Label(L("Add Location…"), systemImage: "plus")
                 }
                 .buttonStyle(.link)
                 Spacer()
-                Text("已自动跳过废纸篓、系统缓存、NAS 回收站和缩略图目录")
+                Text(L("Trash, system caches, NAS recycle bins and thumbnail folders are always skipped"))
                     .font(.caption).foregroundStyle(.secondary)
             }
             .padding(.horizontal, 14)
@@ -109,39 +112,45 @@ struct NewScanView: View {
                         .font(.system(size: 10, weight: .semibold))
                         .rotationEffect(.degrees(showMore ? 90 : 0))
                         .foregroundStyle(.secondary)
-                    (Text("更多条件　").fontWeight(.medium) + Text(conditionSummary).foregroundStyle(.secondary))
-                        .font(.callout)
+                    Text(L("More Conditions")).fontWeight(.medium)
+                    Text(conditionSummary).foregroundStyle(.secondary)
                 }
+                .font(.callout)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             if showMore {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack(spacing: 12) {
-                    Text("最小文件大小").frame(width: 84, alignment: .leading)
-                    Picker("", selection: $model.draft.minSize) {
-                        ForEach(Self.sizes, id: \.0) { Text($0.1).tag($0.0) }
+                Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 12, verticalSpacing: 14) {
+                    GridRow {
+                        Text(L("Minimum size"))
+                        HStack(spacing: 12) {
+                            Picker("", selection: $model.draft.minSize) {
+                                ForEach(Self.sizes, id: \.0) { Text($0.1).tag($0.0) }
+                            }
+                            .labelsHidden()
+                            .fixedSize()
+                            Text(L("Smaller files are not checked; duplicates of them take little space."))
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
                     }
-                    .labelsHidden()
-                    .fixedSize()
-                    Text("更小的文件不检查，它们重复了也占不了多少空间。").font(.caption).foregroundStyle(.secondary)
-                }
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Text("文件类型").frame(width: 84, alignment: .leading)
-                    HStack(spacing: 6) {
-                        Chip(title: "全部", on: model.draft.kinds.isEmpty) { model.draft.kinds = [] }
-                        ForEach(FileKind.allCases, id: \.self) { kind in
-                            Chip(title: Self.kindName(kind), on: model.draft.kinds.contains(kind)) {
-                                if model.draft.kinds.contains(kind) { model.draft.kinds.remove(kind) } else { model.draft.kinds.insert(kind) }
+                    GridRow {
+                        Text(L("File types"))
+                        HStack(spacing: 6) {
+                            Chip(title: L("All"), on: model.draft.kinds.isEmpty) { model.draft.kinds = [] }
+                            ForEach(FileKind.allCases, id: \.self) { kind in
+                                Chip(title: Self.kindName(kind), on: model.draft.kinds.contains(kind)) {
+                                    if model.draft.kinds.contains(kind) { model.draft.kinds.remove(kind) } else { model.draft.kinds.insert(kind) }
+                                }
                             }
                         }
                     }
                 }
-                Text("要跳过某个子文件夹，在第 1 步对应位置上点「排除子文件夹」。")
+                .padding(.top, 12)
+                .padding(.leading, 16)
+                Text(L("To skip a subfolder, click “Exclude Subfolder” on its location in step 1."))
                     .font(.caption).foregroundStyle(.secondary)
-            }
-            .padding(.top, 12)
-            .padding(.leading, 16)
+                    .padding(.top, 10)
+                    .padding(.leading, 16)
             }
         }
         .padding(.top, 10)
@@ -150,19 +159,20 @@ struct NewScanView: View {
     private var conditionSummary: String {
         let d = model.draft
         var parts: [String] = []
-        parts.append(d.minSize <= 1 ? "不限大小" : "跳过小于 \(Fmt.bytes(d.minSize)) 的文件")
-        parts.append(d.kinds.isEmpty ? "全部类型" : "只查" + FileKind.allCases.filter(d.kinds.contains).map(Self.kindName).joined(separator: "、"))
-        if !d.excluded.isEmpty { parts.append("排除 \(d.excluded.count) 个文件夹") }
+        parts.append(d.minSize <= 1 ? L("any size") : L("skips files under %@", Fmt.bytes(d.minSize)))
+        parts.append(d.kinds.isEmpty ? L("all file types")
+                     : L("only %@", joinedList(FileKind.allCases.filter(d.kinds.contains).map(Self.kindName))))
+        if d.excluded.count == 1 { parts.append(L("1 folder excluded")) } else if !d.excluded.isEmpty { parts.append(L("%ld folders excluded", d.excluded.count)) }
         return parts.joined(separator: " · ")
     }
 
     static func kindName(_ kind: FileKind) -> String {
         switch kind {
-        case .photos: return "照片"
-        case .videos: return "视频"
-        case .music: return "音乐"
-        case .documents: return "文档"
-        case .archives: return "压缩包和安装包"
+        case .photos: return L("Photos")
+        case .videos: return L("Videos")
+        case .music: return L("Music")
+        case .documents: return L("Documents")
+        case .archives: return L("Archives & Installers")
         }
     }
 
@@ -172,8 +182,8 @@ struct NewScanView: View {
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = true
         panel.directoryURL = URL(fileURLWithPath: root)
-        panel.prompt = "排除"
-        panel.message = "选「\(Paths.displayName(root))」里扫描时要跳过的文件夹"
+        panel.prompt = L("Exclude")
+        panel.message = L("Choose folders inside “%@” to skip", Paths.displayName(root))
         guard panel.runModal() == .OK else { return }
         for url in panel.urls {
             let path = url.standardizedFileURL.path
@@ -189,7 +199,7 @@ struct NewScanView: View {
             HStack {
                 Text(footerText).font(.callout).foregroundStyle(.secondary)
                 Spacer()
-                Button("开始扫描") { model.startScan() }
+                Button(L("Start Scan")) { model.startScan() }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .keyboardShortcut(.defaultAction)
@@ -203,17 +213,22 @@ struct NewScanView: View {
     }
 
     private var footerText: String {
-        if model.job != nil { return "已有一个扫描在进行，完成后才能开始新的。" }
-        if model.draft.locations.isEmpty { return "先添加要扫描的位置。" }
-        if model.draft.tools.isEmpty { return "至少选一项要找的内容。" }
+        if model.job != nil { return L("Another scan is running. Start a new one when it finishes.") }
+        if model.draft.locations.isEmpty { return L("Add a location to scan first.") }
+        if model.draft.tools.isEmpty { return L("Pick at least one thing to find.") }
         let missing = model.draft.locations.filter { !FileManager.default.fileExists(atPath: $0.path) }
         if !missing.isEmpty {
-            return "\(missing.map { Paths.displayName($0.path) }.joined(separator: "、")) 没有连接。连上或移除后才能扫描。"
+            return L("%@ is not connected. Connect or remove it to scan.", joinedList(missing.map { Paths.displayName($0.path) }))
         }
-        let scanned = model.draft.locations.filter { !$0.isReference }.count
-        if scanned == 0 { return "所有位置都是「只作对照」，没有可以清理的地方。" }
+        if model.draft.locations.allSatisfy(\.isReference) {
+            return L("Every location is “compare only”, so nothing can be cleaned.")
+        }
         let network = model.draft.locations.contains { !Processor.isLocal($0.path) }
-        return "将扫描 \(model.draft.locations.count) 个位置" + (network ? "。含网络卷，按内容比对可能需要几小时。" : "。")
+        if model.draft.locations.count == 1 {
+            return network ? L("Scans 1 location on a network drive; comparing by content may take hours.") : L("Scans 1 location.")
+        }
+        return network ? L("Scans %ld locations, including a network drive; comparing by content may take hours.", model.draft.locations.count)
+                       : L("Scans %ld locations.", model.draft.locations.count)
     }
 
     private func binding(_ tool: Tool) -> Binding<Bool> {
@@ -228,7 +243,7 @@ struct NewScanView: View {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = true
-        panel.prompt = "添加"
+        panel.prompt = L("Add")
         if panel.runModal() == .OK { add(panel.urls) }
     }
 
@@ -285,15 +300,15 @@ private struct LocationRow: View {
                 Text(location.path).font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
             }
             if connected {
-                Tag(text: local ? (external ? "外接磁盘" : "本机") : "网络卷", tone: local ? .plain : .orange)
+                Tag(text: local ? (external ? L("External Drive") : L("This Mac")) : L("Network Drive"), tone: local ? .plain : .orange)
             } else {
-                Tag(text: "未连接", tone: .orange)
+                Tag(text: L("Not Connected"), tone: .orange)
             }
             Spacer()
-            Button("排除子文件夹…", action: exclude)
+            Button(L("Exclude Subfolder…"), action: exclude)
                 .buttonStyle(.link)
                 .font(.caption)
-            Toggle("只作对照", isOn: $reference)
+            Toggle(L("Compare only"), isOn: $reference)
                 .toggleStyle(.switch)
                 .controlSize(.mini)
                 .font(.caption)
@@ -301,10 +316,35 @@ private struct LocationRow: View {
                 Image(systemName: "minus.circle")
             }
             .buttonStyle(.borderless)
-            .help("移除这个位置")
+            .help(L("Remove this location"))
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
+    }
+}
+
+private struct ExcludedRow: View {
+    let path: String
+    let root: String
+    let remove: () -> Void
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "eye.slash").foregroundStyle(.secondary).frame(width: 20)
+            Text(L("Skip")).font(.caption).foregroundStyle(.secondary)
+            Text(String(path.dropFirst(root.count)).split(separator: "/").joined(separator: " › "))
+                .font(.caption)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .help(path)
+            Spacer()
+            Button(action: remove) { Image(systemName: "xmark.circle.fill").foregroundStyle(.tertiary) }
+                .buttonStyle(.borderless)
+                .help(L("Stop excluding"))
+        }
+        .padding(.leading, 46)
+        .padding(.trailing, 14)
+        .padding(.bottom, 8)
     }
 }
 
@@ -342,9 +382,31 @@ private struct Explain: View {
     let text: String
 
     var body: some View {
-        (Text(title + "：").fontWeight(.semibold) + Text(text).foregroundStyle(.secondary))
-            .font(.caption)
-            .frame(maxWidth: 300, alignment: .leading)
+        VStack(alignment: .leading, spacing: 1) {
+            Text(title).fontWeight(.semibold)
+            Text(text).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .font(.caption)
+        .frame(maxWidth: 300, alignment: .leading)
+    }
+}
+
+private struct Chip: View {
+    let title: String
+    let on: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.callout)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .foregroundStyle(on ? Color.white : Color.primary)
+                .background(Capsule().fill(on ? Color.accentColor : Color.primary.opacity(0.07)))
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -369,49 +431,5 @@ struct Tag: View {
         case .green: return .green
         case .blue: return .accentColor
         }
-    }
-}
-
-private struct ExcludedRow: View {
-    let path: String
-    let root: String
-    let remove: () -> Void
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "eye.slash").foregroundStyle(.secondary).frame(width: 20)
-            Text("跳过").font(.caption).foregroundStyle(.secondary)
-            Text(String(path.dropFirst(root.count)).split(separator: "/").joined(separator: " › "))
-                .font(.caption)
-                .lineLimit(1)
-                .truncationMode(.middle)
-                .help(path)
-            Spacer()
-            Button(action: remove) { Image(systemName: "xmark.circle.fill").foregroundStyle(.tertiary) }
-                .buttonStyle(.borderless)
-                .help("不再排除")
-        }
-        .padding(.leading, 46)
-        .padding(.trailing, 14)
-        .padding(.bottom, 8)
-    }
-}
-
-private struct Chip: View {
-    let title: String
-    let on: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.callout)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 4)
-                .foregroundStyle(on ? Color.white : Color.primary)
-                .background(Capsule().fill(on ? Color.accentColor : Color.primary.opacity(0.07)))
-                .contentShape(Capsule())
-        }
-        .buttonStyle(.plain)
     }
 }
