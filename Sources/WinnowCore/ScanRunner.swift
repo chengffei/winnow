@@ -52,9 +52,12 @@ public final class ScanRunner {
     }
 
     /// Command line for one tool. Size and file kinds only apply to duplicates.
-    public static func arguments(_ tool: Tool, config: ScanConfig, output: String) -> [String] {
+    public static func arguments(_ tool: Tool, config: ScanConfig, options: ScanOptions = ScanOptions(),
+                                 output: String) -> [String] {
         let dirs = config.locations.flatMap { ["-d", $0.path] }
-        let excludes = config.excluded.flatMap { ["-e", $0] } + excludedItems.flatMap { ["-E", $0] }
+        let excludes = config.excluded.flatMap { ["-e", $0] }
+            + (excludedItems + options.skipPatterns).flatMap { ["-E", $0] }
+            + (options.speed == .full ? [] : ["-T", String(options.speed.threads)])
         switch tool {
         case .duplicates:
             var args = ["dup"] + dirs + excludes
@@ -63,7 +66,8 @@ public final class ScanRunner {
                 let exts = FileKind.allCases.filter(config.kinds.contains).flatMap(\.extensions)
                 args += ["-x", exts.joined(separator: ",")]
             }
-            return args + ["-u", "-p", output, "-N", "-W"]
+            args += options.useCache ? ["-u"] : ["-H"]
+            return args + ["-p", output, "-N", "-W"]
         case .emptyFolders:
             return ["empty-folders"] + dirs + excludes + ["-p", output, "-N"]
         }
@@ -76,7 +80,7 @@ public final class ScanRunner {
         return String(cString: resolved)
     }
 
-    public func run(_ config: ScanConfig, onProgress: @escaping (ScanProgress) -> Void) async throws -> ScanRecord {
+    public func run(_ config: ScanConfig, options: ScanOptions = ScanOptions(), onProgress: @escaping (ScanProgress) -> Void) async throws -> ScanRecord {
         guard let cli = Self.locateCLI() else { throw ScanError.cliMissing }
         var config = config
         for i in config.locations.indices { config.locations[i].path = Self.realPath(config.locations[i].path) }
@@ -89,7 +93,7 @@ public final class ScanRunner {
         var skipped: [SkippedItem] = []
         if config.tools.contains(.duplicates) {
             let out = work.appendingPathComponent("dup.json")
-            let args = Self.arguments(.duplicates, config: config, output: out.path)
+            let args = Self.arguments(.duplicates, config: config, options: options, output: out.path)
             skipped += try await execute(cli, args, output: out, stage: .collecting, onProgress: onProgress)
             if FileManager.default.fileExists(atPath: out.path) {
                 record.groups = try ResultParser.duplicates(Data(contentsOf: out), config: config)
@@ -97,7 +101,7 @@ public final class ScanRunner {
         }
         if config.tools.contains(.emptyFolders) {
             let out = work.appendingPathComponent("empty.json")
-            let args = Self.arguments(.emptyFolders, config: config, output: out.path)
+            let args = Self.arguments(.emptyFolders, config: config, options: options, output: out.path)
             skipped += try await execute(cli, args, output: out, stage: .emptyFolders, onProgress: onProgress)
             if FileManager.default.fileExists(atPath: out.path) {
                 record.emptyFolders = try ResultParser.emptyFolders(Data(contentsOf: out), config: config)

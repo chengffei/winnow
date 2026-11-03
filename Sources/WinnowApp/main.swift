@@ -22,11 +22,16 @@ struct WinnowApp: App {
                 .frame(minWidth: 900, minHeight: 560)
         }
         .defaultSize(width: 1180, height: 760)
+
+        Settings {
+            SettingsView()
+                .environment(model)
+        }
     }
 }
 
 /// `WinnowApp --snapshot out.png` renders a screen with demo data offscreen and exits.
-/// WINNOW_SNAPSHOT_SCREEN = new | scanning | dups | empty | sheet. Needs no screen-recording permission.
+/// WINNOW_SNAPSHOT_SCREEN = new | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
 @MainActor
 enum Snapshot {
     static func run(to file: URL, screen: String) {
@@ -47,6 +52,14 @@ enum Snapshot {
         case "empty":
             model.route = .result(record.id, .emptyFolders)
             root = AnyView(ContentView().environment(model))
+        case "settings-general", "settings-scan":
+            size = NSSize(width: 520, height: screen == "settings-general" ? 200 : 560)
+            model.options.alwaysSkip = ["node_modules", "*.tmp"]
+            root = AnyView(Group {
+                if screen == "settings-general" { GeneralSettings() } else { ScanSettings() }
+            }
+            .environment(model)
+            .background(Color(nsColor: .windowBackgroundColor)))
         case "sheet":
             size = NSSize(width: 540, height: 600)
             root = AnyView(ProcessSheet(id: record.id, preset: Demo.report(record)).environment(model)

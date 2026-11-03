@@ -31,13 +31,22 @@ final class AppModel {
     var draft: ScanConfig {
         didSet { saveDraft() }
     }
+    var options: ScanOptions {
+        didSet {
+            guard persists, let data = try? JSONEncoder().encode(options) else { return }
+            UserDefaults.standard.set(data, forKey: "options")
+        }
+    }
     var job: Job?
     var scanError: String?
 
+    /// Snapshot mode passes demo records and must not touch the user's saved settings.
+    @ObservationIgnored private let persists: Bool
     @ObservationIgnored private var runner: ScanRunner?
     @ObservationIgnored private var saveTasks: [UUID: Task<Void, Never>] = [:]
 
     init(records: [ScanRecord]? = nil, draft: ScanConfig? = nil) {
+        self.persists = records == nil
         self.records = records ?? Store.loadAll()
         if let draft {
             self.draft = draft
@@ -46,6 +55,12 @@ final class AppModel {
             self.draft = saved
         } else {
             self.draft = ScanConfig()
+        }
+        if let data = UserDefaults.standard.data(forKey: "options"),
+           let saved = try? JSONDecoder().decode(ScanOptions.self, from: data) {
+            self.options = saved
+        } else {
+            self.options = ScanOptions()
         }
     }
 
@@ -58,6 +73,7 @@ final class AppModel {
     func startScan() {
         guard job == nil, !draft.locations.isEmpty, !draft.tools.isEmpty else { return }
         let config = draft
+        let options = options
         job = Job(config: config)
         route = .scanning
         let runner = ScanRunner()
@@ -65,7 +81,7 @@ final class AppModel {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
         Task {
             do {
-                let record = try await runner.run(config) { progress in
+                let record = try await runner.run(config, options: options) { progress in
                     Task { @MainActor in self.update(progress) }
                 }
                 records.insert(record, at: 0)

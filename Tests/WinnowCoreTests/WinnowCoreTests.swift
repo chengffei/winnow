@@ -180,6 +180,24 @@ final class ConditionTests: XCTestCase {
         XCTAssertTrue(empty.contains("/v/skip"))
         XCTAssertEqual(c.excluded(in: "/v"), ["/v/skip"])
         XCTAssertEqual(c.excluded(in: "/w"), [])
+        XCTAssertTrue(dup.contains("-u"))
+        XCTAssertFalse(dup.contains("-T"))
+    }
+
+    func testOptions() throws {
+        let c = ScanConfig(locations: [Location(path: "/v")])
+        let o = ScanOptions(speed: .minimal, useCache: false, alwaysSkip: ["node_modules", "*.tmp", " "])
+        XCTAssertEqual(o.skipPatterns, ["*/node_modules", "*/node_modules/*", "*.tmp"])
+        let dup = ScanRunner.arguments(.duplicates, config: c, options: o, output: "/o.json")
+        XCTAssertEqual(dup[dup.firstIndex(of: "-T")! + 1], "1")
+        XCTAssertTrue(dup.contains("-H"))
+        XCTAssertFalse(dup.contains("-u"))
+        XCTAssertTrue(dup.contains("*/node_modules/*"))
+        let empty = ScanRunner.arguments(.emptyFolders, config: c, options: o, output: "/o.json")
+        XCTAssertTrue(empty.contains("*.tmp"))
+        XCTAssertFalse(empty.contains("-H"))
+        let old = try JSONDecoder().decode(ScanOptions.self, from: Data("{}".utf8))
+        XCTAssertEqual(old, ScanOptions())
     }
 
     /// Real CLI: only photos, nothing under 8 KB, one folder skipped.

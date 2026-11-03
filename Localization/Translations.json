@@ -269,6 +269,15 @@
   "zh-Hans": "全部",
   "zh-Hant": "全部"
  },
+ "All cores": {
+  "zh-Hans": "全部核心",
+  "zh-Hant": "全部核心",
+  "ja": "すべてのコア",
+  "ko": "모든 코어",
+  "fr": "Tous les cœurs",
+  "de": "Alle Kerne",
+  "es": "Todos los núcleos"
+ },
  "Allow Winnow there, then scan again. Permissions on a network drive are set on the NAS.": {
   "de": "Winnow dort erlauben und erneut scannen. Rechte auf Netzlaufwerken werden am NAS eingestellt.",
   "es": "Permite Winnow allí y vuelve a analizar. Los permisos de una unidad de red se cambian en el NAS.",
@@ -277,6 +286,15 @@
   "ko": "그곳에서 Winnow를 허용한 뒤 다시 스캔하세요. 네트워크 드라이브 권한은 NAS에서 설정합니다.",
   "zh-Hans": "给 Winnow 授权后重新扫描。网络卷上的权限要在 NAS 上改。",
   "zh-Hant": "給 Winnow 授權後重新掃描。網路磁碟上的權限要在 NAS 上改。"
+ },
+ "Always Skip": {
+  "zh-Hans": "始终跳过",
+  "zh-Hant": "一律略過",
+  "ja": "常にスキップ",
+  "ko": "항상 건너뛰기",
+  "fr": "Toujours ignorer",
+  "de": "Immer überspringen",
+  "es": "Omitir siempre"
  },
  "Another scan is running. Start a new one when it finishes.": {
   "de": "Ein anderer Scan läuft. Starte einen neuen, wenn er fertig ist.",
@@ -295,6 +313,15 @@
   "ko": "제한 없음",
   "zh-Hans": "不限",
   "zh-Hant": "不限"
+ },
+ "Applies to every scan. A plain name skips any file or folder with that name. Trash, caches and NAS recycle bins are always skipped.": {
+  "zh-Hans": "对所有扫描生效。只写名称会跳过所有同名文件和文件夹。废纸篓、缓存和 NAS 回收站始终跳过。",
+  "zh-Hant": "對所有掃描生效。只寫名稱會略過所有同名檔案和檔案夾。垃圾桶、快取和 NAS 資源回收筒一律略過。",
+  "ja": "すべてのスキャンに適用されます。名前だけを書くと、その名前のファイルとフォルダをすべてスキップします。ゴミ箱、キャッシュ、NAS のごみ箱は常にスキップされます。",
+  "ko": "모든 스캔에 적용됩니다. 이름만 쓰면 같은 이름의 파일과 폴더를 모두 건너뜁니다. 휴지통, 캐시, NAS 휴지통은 항상 건너뜁니다.",
+  "fr": "S’applique à toutes les analyses. Un simple nom ignore tout fichier ou dossier portant ce nom. La corbeille, les caches et les corbeilles du NAS sont toujours ignorés.",
+  "de": "Gilt für jeden Scan. Ein einfacher Name überspringt jede Datei und jeden Ordner mit diesem Namen. Papierkorb, Caches und NAS-Papierkörbe werden immer übersprungen.",
+  "es": "Se aplica a todos los análisis. Un nombre simple omite cualquier archivo o carpeta con ese nombre. La papelera, las cachés y las papeleras del NAS siempre se omiten."
  },
  "Archives & Installers": {
   "de": "Archive und Installer",
@@ -377,6 +404,24 @@
   "zh-Hans": "按大小和文件名",
   "zh-Hant": "按大小和檔名"
  },
+ "Cache": {
+  "zh-Hans": "缓存",
+  "zh-Hant": "快取",
+  "ja": "キャッシュ",
+  "ko": "캐시",
+  "fr": "Cache",
+  "de": "Cache",
+  "es": "Caché"
+ },
+ "Cache size": {
+  "zh-Hans": "缓存大小",
+  "zh-Hant": "快取大小",
+  "ja": "キャッシュのサイズ",
+  "ko": "캐시 크기",
+  "fr": "Taille du cache",
+  "de": "Cache-Größe",
+  "es": "Tamaño de la caché"
+ },
  "Cancel": {
   "de": "Abbrechen",
   "es": "Cancelar",
@@ -430,6 +475,15 @@
   "ko": "항목 %@개를 정리할까요?",
   "zh-Hans": "处理 %@ 项？",
   "zh-Hant": "處理 %@ 項？"
+ },
+ "Clear Cache": {
+  "zh-Hans": "清除缓存",
+  "zh-Hant": "清除快取",
+  "ja": "キャッシュを消去",
+  "ko": "캐시 지우기",
+  "fr": "Vider le cache",
+  "de": "Cache leeren",
+  "es": "Vaciar caché"
  },
  "Collect files": {
   "de": "Dateien sammeln",
@@ -683,6 +737,15 @@
   "zh-Hans": "文件类型",
   "zh-Hant": "檔案類型"
  },
+ "Files that have not changed are not read again on the next scan. Clear the cache if results look out of date.": {
+  "zh-Hans": "没变过的文件下次扫描不再重读。结果看起来过时，就清除缓存。",
+  "zh-Hant": "沒變過的檔案下次掃描不再重讀。結果看起來過時，就清除快取。",
+  "ja": "変更のないファイルは次回のスキャンで読み直しません。結果が古いと感じたらキャッシュを消去してください。",
+  "ko": "변경되지 않은 파일은 다음 스캔에서 다시 읽지 않습니다. 결과가 오래된 것 같으면 캐시를 지우세요.",
+  "fr": "Les fichiers inchangés ne sont pas relus à l’analyse suivante. Videz le cache si les résultats semblent périmés.",
+  "de": "Unveränderte Dateien werden beim nächsten Scan nicht erneut gelesen. Leere den Cache, wenn Ergebnisse veraltet wirken.",
+  "es": "Los archivos sin cambios no se vuelven a leer en el siguiente análisis. Vacía la caché si los resultados parecen desactualizados."
+ },
  "Files with exactly the same content": {
   "de": "Dateien mit identischem Inhalt",
   "es": "Archivos con el mismo contenido exacto",
@@ -710,6 +773,15 @@
   "zh-Hans": "里面什么都没有",
   "zh-Hant": "裡面什麼都沒有"
  },
+ "General": {
+  "zh-Hans": "通用",
+  "zh-Hant": "一般",
+  "ja": "一般",
+  "ko": "일반",
+  "fr": "Général",
+  "de": "Allgemein",
+  "es": "General"
+ },
  "Groups you changed by hand are never overwritten": {
   "de": "Von Hand geänderte Gruppen werden nie überschrieben",
   "es": "Los grupos cambiados a mano nunca se sobrescriben",
@@ -718,6 +790,15 @@
   "ko": "직접 바꾼 그룹은 덮어쓰지 않습니다",
   "zh-Hans": "手动改过的组不会被自动标记覆盖",
   "zh-Hant": "手動改過的組不會被自動標記覆蓋"
+ },
+ "Half the cores": {
+  "zh-Hans": "一半核心",
+  "zh-Hant": "一半核心",
+  "ja": "半分のコア",
+  "ko": "코어 절반",
+  "fr": "La moitié des cœurs",
+  "de": "Die Hälfte der Kerne",
+  "es": "La mitad de los núcleos"
  },
  "How to Compare Duplicates": {
   "de": "Wie Duplikate vergleichen",
@@ -800,6 +881,15 @@
   "zh-Hans": "每组保留最早的一份（推荐，原件通常最早）",
   "zh-Hant": "每組保留最早的一份（推薦，原件通常最早）"
  },
+ "Language": {
+  "zh-Hans": "语言",
+  "zh-Hant": "語言",
+  "ja": "言語",
+  "ko": "언어",
+  "fr": "Langue",
+  "de": "Sprache",
+  "es": "Idioma"
+ },
  "Listing files": {
   "de": "Dateien werden aufgelistet",
   "es": "Listando archivos",
@@ -844,6 +934,15 @@
   "ko": "'%@' 기준으로 표시했습니다. 직접 바꾼 그룹은 자동 표시가 덮어쓰지 않습니다.",
   "zh-Hans": "按「%@」自动标记。手动改过的组不会被再次自动标记覆盖。",
   "zh-Hant": "按「%@」自動標記。手動改過的組不會被再次自動標記覆蓋。"
+ },
+ "Match System": {
+  "zh-Hans": "跟随系统",
+  "zh-Hant": "跟隨系統",
+  "ja": "システムに合わせる",
+  "ko": "시스템 설정 따르기",
+  "fr": "Comme le système",
+  "de": "Wie System",
+  "es": "Igual que el sistema"
  },
  "Minimum size": {
   "de": "Mindestgröße",
@@ -934,6 +1033,15 @@
   "ko": "음악",
   "zh-Hans": "音乐",
   "zh-Hant": "音樂"
+ },
+ "Name or pattern, e.g. node_modules or *.tmp": {
+  "zh-Hans": "名称或通配符，如 node_modules 或 *.tmp",
+  "zh-Hant": "名稱或萬用字元，如 node_modules 或 *.tmp",
+  "ja": "名前またはパターン（例：node_modules、*.tmp）",
+  "ko": "이름 또는 패턴(예: node_modules, *.tmp)",
+  "fr": "Nom ou motif, p. ex. node_modules ou *.tmp",
+  "de": "Name oder Muster, z. B. node_modules oder *.tmp",
+  "es": "Nombre o patrón, p. ej. node_modules o *.tmp"
  },
  "Narrow down by size": {
   "de": "Nach Größe eingrenzen",
@@ -1088,6 +1196,15 @@
   "zh-Hans": "好",
   "zh-Hant": "好"
  },
+ "One core": {
+  "zh-Hans": "单个核心",
+  "zh-Hant": "單個核心",
+  "ja": "1 コア",
+  "ko": "코어 1개",
+  "fr": "Un seul cœur",
+  "de": "Ein Kern",
+  "es": "Un núcleo"
+ },
  "Only files of the same size can match; reading the start of each rules out more": {
   "de": "Nur gleich große Dateien kommen infrage; das Lesen des Anfangs schließt weitere aus",
   "es": "Solo pueden coincidir archivos del mismo tamaño; leer su inicio descarta más",
@@ -1178,6 +1295,15 @@
   "zh-Hans": "优先保留在「%@」里的",
   "zh-Hant": "優先保留在「%@」裡的"
  },
+ "Processor use": {
+  "zh-Hans": "处理器占用",
+  "zh-Hant": "處理器佔用",
+  "ja": "プロセッサの使用",
+  "ko": "프로세서 사용",
+  "fr": "Utilisation du processeur",
+  "de": "Prozessornutzung",
+  "es": "Uso del procesador"
+ },
  "Reference": {
   "de": "Referenz",
   "es": "Referencia",
@@ -1186,6 +1312,15 @@
   "ko": "비교용",
   "zh-Hans": "对照",
   "zh-Hant": "對照"
+ },
+ "Remember file fingerprints": {
+  "zh-Hans": "记住文件指纹",
+  "zh-Hant": "記住檔案指紋",
+  "ja": "ファイルの指紋を記憶",
+  "ko": "파일 지문 기억",
+  "fr": "Mémoriser les empreintes des fichiers",
+  "de": "Datei-Fingerabdrücke merken",
+  "es": "Recordar huellas de archivos"
  },
  "Remove": {
   "de": "Entfernen",
@@ -1204,6 +1339,15 @@
   "ko": "이 위치 제거",
   "zh-Hans": "移除这个位置",
   "zh-Hant": "移除這個位置"
+ },
+ "Restart Now": {
+  "zh-Hans": "立即重新启动",
+  "zh-Hant": "立即重新啟動",
+  "ja": "今すぐ再起動",
+  "ko": "지금 다시 시작",
+  "fr": "Redémarrer",
+  "de": "Jetzt neu starten",
+  "es": "Reiniciar ahora"
  },
  "Restore All": {
   "de": "Alles wiederherstellen",
@@ -1358,6 +1502,15 @@
   "zh-Hans": "排序",
   "zh-Hant": "排序"
  },
+ "Speed": {
+  "zh-Hans": "速度",
+  "zh-Hant": "速度",
+  "ja": "速度",
+  "ko": "속도",
+  "fr": "Vitesse",
+  "de": "Geschwindigkeit",
+  "es": "Velocidad"
+ },
  "Start Scan": {
   "de": "Scan starten",
   "es": "Iniciar análisis",
@@ -1384,6 +1537,24 @@
   "ko": "제외 해제",
   "zh-Hans": "不再排除",
   "zh-Hant": "不再排除"
+ },
+ "The new language applies after Winnow restarts.": {
+  "zh-Hans": "新语言在 Winnow 重新启动后生效。",
+  "zh-Hant": "新語言在 Winnow 重新啟動後生效。",
+  "ja": "新しい言語は Winnow の再起動後に適用されます。",
+  "ko": "새 언어는 Winnow를 다시 시작한 후 적용됩니다.",
+  "fr": "La nouvelle langue s’applique après le redémarrage de Winnow.",
+  "de": "Die neue Sprache gilt nach einem Neustart von Winnow.",
+  "es": "El nuevo idioma se aplica al reiniciar Winnow."
+ },
+ "The new language applies after Winnow restarts. Wait for the scan to finish first.": {
+  "zh-Hans": "新语言在 Winnow 重新启动后生效。请先等扫描完成。",
+  "zh-Hant": "新語言在 Winnow 重新啟動後生效。請先等掃描完成。",
+  "ja": "新しい言語は Winnow の再起動後に適用されます。スキャンの完了を待ってください。",
+  "ko": "새 언어는 Winnow를 다시 시작한 후 적용됩니다. 먼저 스캔이 끝날 때까지 기다리세요.",
+  "fr": "La nouvelle langue s’applique après le redémarrage de Winnow. Attendez d’abord la fin de l’analyse.",
+  "de": "Die neue Sprache gilt nach einem Neustart von Winnow. Warte zuerst, bis der Scan fertig ist.",
+  "es": "El nuevo idioma se aplica al reiniciar Winnow. Espera primero a que termine el análisis."
  },
  "The scan did not finish": {
   "de": "Der Scan wurde nicht abgeschlossen",
@@ -1519,6 +1690,15 @@
   "ko": "모두 표시 해제",
   "zh-Hans": "全部取消标记",
   "zh-Hant": "全部取消標記"
+ },
+ "Using less keeps the Mac responsive during long scans, but scans take longer.": {
+  "zh-Hans": "占用越少，长时间扫描时 Mac 越流畅，但扫描更慢。",
+  "zh-Hant": "佔用越少，長時間掃描時 Mac 越流暢，但掃描更慢。",
+  "ja": "使用を減らすと長いスキャン中も Mac が快適に動きますが、スキャンに時間がかかります。",
+  "ko": "적게 사용할수록 긴 스캔 중에도 Mac이 원활하지만 스캔이 오래 걸립니다.",
+  "fr": "En utiliser moins garde le Mac réactif pendant les longues analyses, mais elles durent plus longtemps.",
+  "de": "Weniger Nutzung hält den Mac bei langen Scans reaktionsschnell, aber Scans dauern länger.",
+  "es": "Usar menos mantiene el Mac ágil durante análisis largos, pero tardan más."
  },
  "Videos": {
   "de": "Videos",
