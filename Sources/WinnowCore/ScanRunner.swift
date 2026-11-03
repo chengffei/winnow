@@ -52,6 +52,24 @@ public final class ScanRunner {
         p.terminate()
     }
 
+    /// Command line for one tool. Size and file kinds only apply to duplicates.
+    public static func arguments(_ tool: Tool, config: ScanConfig, output: String) -> [String] {
+        let dirs = config.locations.flatMap { ["-d", $0.path] }
+        let excludes = config.excluded.flatMap { ["-e", $0] } + excludedItems.flatMap { ["-E", $0] }
+        switch tool {
+        case .duplicates:
+            var args = ["dup"] + dirs + excludes
+            args += ["-s", config.method.cliValue, "-m", String(max(config.minSize, 1))]
+            if !config.kinds.isEmpty {
+                let exts = FileKind.allCases.filter(config.kinds.contains).flatMap(\.extensions)
+                args += ["-x", exts.joined(separator: ",")]
+            }
+            return args + ["-u", "-p", output, "-N", "-W"]
+        case .emptyFolders:
+            return ["empty-folders"] + dirs + excludes + ["-p", output, "-N"]
+        }
+    }
+
     /// The CLI reports real paths (/private/var, not /var), so locations are resolved the same way.
     static func realPath(_ path: String) -> String {
         guard let resolved = realpath(path, nil) else { return path }
@@ -63,18 +81,16 @@ public final class ScanRunner {
         guard let cli = Self.locateCLI() else { throw ScanError.cliMissing }
         var config = config
         for i in config.locations.indices { config.locations[i].path = Self.realPath(config.locations[i].path) }
+        config.excluded = config.excluded.map(Self.realPath)
         let work = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: work, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: work) }
 
         var record = ScanRecord(config: config)
         var skipped: [SkippedItem] = []
-        let dirs = config.locations.flatMap { ["-d", $0.path] }
-        let excludes = Self.excludedItems.flatMap { ["-E", $0] }
-
         if config.tools.contains(.duplicates) {
             let out = work.appendingPathComponent("dup.json")
-            let args = ["dup"] + dirs + excludes + ["-s", config.method.cliValue, "-u", "-p", out.path, "-N", "-W"]
+            let args = Self.arguments(.duplicates, config: config, output: out.path)
             skipped += try await execute(cli, args, output: out, stage: .collecting, onProgress: onProgress)
             if FileManager.default.fileExists(atPath: out.path) {
                 record.groups = try ResultParser.duplicates(Data(contentsOf: out), config: config)
@@ -82,7 +98,7 @@ public final class ScanRunner {
         }
         if config.tools.contains(.emptyFolders) {
             let out = work.appendingPathComponent("empty.json")
-            let args = ["empty-folders"] + dirs + excludes + ["-p", out.path, "-N"]
+            let args = Self.arguments(.emptyFolders, config: config, output: out.path)
             skipped += try await execute(cli, args, output: out, stage: .emptyFolders, onProgress: onProgress)
             if FileManager.default.fileExists(atPath: out.path) {
                 record.emptyFolders = try ResultParser.emptyFolders(Data(contentsOf: out), config: config)

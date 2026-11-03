@@ -22,15 +22,64 @@ public enum CompareMethod: String, Codable, CaseIterable, Hashable {
     var cliValue: String { self == .hash ? "HASH" : "SIZE_NAME" }
 }
 
+public enum FileKind: String, Codable, CaseIterable, Hashable {
+    case photos, videos, music, documents, archives
+
+    public var extensions: [String] {
+        switch self {
+        case .photos:
+            return ["jpg", "jpeg", "png", "heic", "heif", "gif", "webp", "tif", "tiff", "bmp", "avif",
+                    "dng", "cr2", "cr3", "nef", "arw", "raf", "orf", "rw2"]
+        case .videos:
+            return ["mp4", "mov", "m4v", "mkv", "avi", "wmv", "flv", "webm", "mpg", "mpeg", "3gp", "mts", "m2ts", "ts"]
+        case .music:
+            return ["mp3", "flac", "m4a", "aac", "wav", "aif", "aiff", "ogg", "opus", "wma", "ape"]
+        case .documents:
+            return ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pages", "numbers", "key",
+                    "txt", "md", "rtf", "odt", "csv", "epub"]
+        case .archives:
+            return ["zip", "rar", "7z", "tar", "gz", "tgz", "bz2", "xz", "dmg", "iso", "pkg"]
+        }
+    }
+}
+
 public struct ScanConfig: Codable, Hashable {
     public var locations: [Location]
     public var tools: Set<Tool>
     public var method: CompareMethod
+    /// Duplicates smaller than this are not looked at.
+    public var minSize: UInt64
+    /// Empty means every kind of file.
+    public var kinds: Set<FileKind>
+    /// Folders inside the locations that are skipped entirely.
+    public var excluded: [String]
 
-    public init(locations: [Location] = [], tools: Set<Tool> = [.duplicates, .emptyFolders], method: CompareMethod = .hash) {
+    public static let defaultMinSize: UInt64 = 8 * 1024
+
+    public init(locations: [Location] = [], tools: Set<Tool> = [.duplicates, .emptyFolders], method: CompareMethod = .hash,
+                minSize: UInt64 = ScanConfig.defaultMinSize, kinds: Set<FileKind> = [], excluded: [String] = []) {
         self.locations = locations
         self.tools = tools
         self.method = method
+        self.minSize = minSize
+        self.kinds = kinds
+        self.excluded = excluded
+    }
+
+    // Scans saved before these fields existed still load.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        locations = try c.decode([Location].self, forKey: .locations)
+        tools = try c.decode(Set<Tool>.self, forKey: .tools)
+        method = try c.decode(CompareMethod.self, forKey: .method)
+        minSize = try c.decodeIfPresent(UInt64.self, forKey: .minSize) ?? Self.defaultMinSize
+        kinds = try c.decodeIfPresent(Set<FileKind>.self, forKey: .kinds) ?? []
+        excluded = try c.decodeIfPresent([String].self, forKey: .excluded) ?? []
+    }
+
+    /// Excluded folders that lie inside `location`.
+    public func excluded(in location: String) -> [String] {
+        excluded.filter { Paths.contains(location, $0) && $0 != location }
     }
 
     public func isReference(_ path: String) -> Bool {

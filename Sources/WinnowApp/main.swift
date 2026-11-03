@@ -75,7 +75,8 @@ enum Snapshot {
 
 enum Demo {
     static let config = ScanConfig(locations: [Location(path: "/Volumes/hdd0"),
-                                               Location(path: NSHomeDirectory() + "/Pictures", isReference: true)])
+                                               Location(path: NSHomeDirectory() + "/Pictures", isReference: true)],
+                                   kinds: [.photos, .videos], excluded: ["/Volumes/hdd0/备份/Time Machine"])
 
     static func record() -> ScanRecord {
         let base: Int64 = 1_758_000_000

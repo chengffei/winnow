@@ -5,6 +5,10 @@ import SwiftUI
 struct NewScanView: View {
     @Environment(AppModel.self) private var model
     @State private var dropTargeted = false
+    @State private var showMore = ProcessInfo.processInfo.environment["WINNOW_SNAPSHOT_MORE"] != nil
+
+    static let sizes: [(UInt64, String)] = [(1, "不限"), (8 * 1024, "8 KB（默认）"), (1 << 20, "1 MB"),
+                                             (10 << 20, "10 MB"), (100 << 20, "100 MB")]
 
     var body: some View {
         @Bindable var model = model
@@ -35,6 +39,7 @@ struct NewScanView: View {
                             Explain(title: "按大小和文件名", text: "很快出结果，但同名同大小不一定相同，只适合先摸底。")
                         }
                         .padding(.top, 6)
+                        moreConditions
                     }
                 }
             }
@@ -62,7 +67,15 @@ struct NewScanView: View {
                                         model.draft.locations[i].isReference = v
                                     }
                                 }),
-                            remove: { model.draft.locations.removeAll { $0.id == loc.id } })
+                            exclude: { chooseExcluded(in: loc.path) },
+                            remove: {
+                                let gone = model.draft.excluded(in: loc.path)
+                                model.draft.excluded.removeAll { gone.contains($0) }
+                                model.draft.locations.removeAll { $0.id == loc.id }
+                            })
+                ForEach(model.draft.excluded(in: loc.path), id: \.self) { path in
+                    ExcludedRow(path: path, root: loc.path) { model.draft.excluded.removeAll { $0 == path } }
+                }
                 Divider()
             }
             HStack {
@@ -85,6 +98,91 @@ struct NewScanView: View {
             .strokeBorder(dropTargeted ? Color.accentColor : Color(nsColor: .separatorColor), lineWidth: dropTargeted ? 2 : 1))
     }
 
+    private var moreConditions: some View {
+        @Bindable var model = model
+        return VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.easeOut(duration: 0.15)) { showMore.toggle() }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 10, weight: .semibold))
+                        .rotationEffect(.degrees(showMore ? 90 : 0))
+                        .foregroundStyle(.secondary)
+                    (Text("更多条件　").fontWeight(.medium) + Text(conditionSummary).foregroundStyle(.secondary))
+                        .font(.callout)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            if showMore {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 12) {
+                    Text("最小文件大小").frame(width: 84, alignment: .leading)
+                    Picker("", selection: $model.draft.minSize) {
+                        ForEach(Self.sizes, id: \.0) { Text($0.1).tag($0.0) }
+                    }
+                    .labelsHidden()
+                    .fixedSize()
+                    Text("更小的文件不检查，它们重复了也占不了多少空间。").font(.caption).foregroundStyle(.secondary)
+                }
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Text("文件类型").frame(width: 84, alignment: .leading)
+                    HStack(spacing: 6) {
+                        Chip(title: "全部", on: model.draft.kinds.isEmpty) { model.draft.kinds = [] }
+                        ForEach(FileKind.allCases, id: \.self) { kind in
+                            Chip(title: Self.kindName(kind), on: model.draft.kinds.contains(kind)) {
+                                if model.draft.kinds.contains(kind) { model.draft.kinds.remove(kind) } else { model.draft.kinds.insert(kind) }
+                            }
+                        }
+                    }
+                }
+                Text("要跳过某个子文件夹，在第 1 步对应位置上点「排除子文件夹」。")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            .padding(.top, 12)
+            .padding(.leading, 16)
+            }
+        }
+        .padding(.top, 10)
+    }
+
+    private var conditionSummary: String {
+        let d = model.draft
+        var parts: [String] = []
+        parts.append(d.minSize <= 1 ? "不限大小" : "跳过小于 \(Fmt.bytes(d.minSize)) 的文件")
+        parts.append(d.kinds.isEmpty ? "全部类型" : "只查" + FileKind.allCases.filter(d.kinds.contains).map(Self.kindName).joined(separator: "、"))
+        if !d.excluded.isEmpty { parts.append("排除 \(d.excluded.count) 个文件夹") }
+        return parts.joined(separator: " · ")
+    }
+
+    static func kindName(_ kind: FileKind) -> String {
+        switch kind {
+        case .photos: return "照片"
+        case .videos: return "视频"
+        case .music: return "音乐"
+        case .documents: return "文档"
+        case .archives: return "压缩包和安装包"
+        }
+    }
+
+    private func chooseExcluded(in root: String) {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = true
+        panel.directoryURL = URL(fileURLWithPath: root)
+        panel.prompt = "排除"
+        panel.message = "选「\(Paths.displayName(root))」里扫描时要跳过的文件夹"
+        guard panel.runModal() == .OK else { return }
+        for url in panel.urls {
+            let path = url.standardizedFileURL.path
+            if Paths.contains(root, path), path != root, !model.draft.excluded.contains(path) {
+                model.draft.excluded.append(path)
+            }
+        }
+    }
+
     private var footer: some View {
         VStack(spacing: 0) {
             Divider()
@@ -95,7 +193,8 @@ struct NewScanView: View {
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .keyboardShortcut(.defaultAction)
-                    .disabled(model.job != nil || model.draft.locations.isEmpty || model.draft.tools.isEmpty)
+                    .disabled(model.job != nil || model.draft.locations.isEmpty || model.draft.tools.isEmpty
+                              || model.draft.locations.contains { !FileManager.default.fileExists(atPath: $0.path) })
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 12)
@@ -107,6 +206,10 @@ struct NewScanView: View {
         if model.job != nil { return "已有一个扫描在进行，完成后才能开始新的。" }
         if model.draft.locations.isEmpty { return "先添加要扫描的位置。" }
         if model.draft.tools.isEmpty { return "至少选一项要找的内容。" }
+        let missing = model.draft.locations.filter { !FileManager.default.fileExists(atPath: $0.path) }
+        if !missing.isEmpty {
+            return "\(missing.map { Paths.displayName($0.path) }.joined(separator: "、")) 没有连接。连上或移除后才能扫描。"
+        }
         let scanned = model.draft.locations.filter { !$0.isReference }.count
         if scanned == 0 { return "所有位置都是「只作对照」，没有可以清理的地方。" }
         let network = model.draft.locations.contains { !Processor.isLocal($0.path) }
@@ -166,9 +269,11 @@ private struct Step<Content: View>: View {
 private struct LocationRow: View {
     let location: Location
     @Binding var reference: Bool
+    let exclude: () -> Void
     let remove: () -> Void
 
     var body: some View {
+        let connected = FileManager.default.fileExists(atPath: location.path)
         let local = Processor.isLocal(location.path)
         let external = local && location.path.hasPrefix("/Volumes/")
         HStack(spacing: 12) {
@@ -179,8 +284,15 @@ private struct LocationRow: View {
                 Text(Paths.displayName(location.path)).fontWeight(.medium)
                 Text(location.path).font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
             }
-            Tag(text: local ? (external ? "外接磁盘" : "本机") : "网络卷", tone: local ? .plain : .orange)
+            if connected {
+                Tag(text: local ? (external ? "外接磁盘" : "本机") : "网络卷", tone: local ? .plain : .orange)
+            } else {
+                Tag(text: "未连接", tone: .orange)
+            }
             Spacer()
+            Button("排除子文件夹…", action: exclude)
+                .buttonStyle(.link)
+                .font(.caption)
             Toggle("只作对照", isOn: $reference)
                 .toggleStyle(.switch)
                 .controlSize(.mini)
@@ -257,5 +369,49 @@ struct Tag: View {
         case .green: return .green
         case .blue: return .accentColor
         }
+    }
+}
+
+private struct ExcludedRow: View {
+    let path: String
+    let root: String
+    let remove: () -> Void
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "eye.slash").foregroundStyle(.secondary).frame(width: 20)
+            Text("跳过").font(.caption).foregroundStyle(.secondary)
+            Text(String(path.dropFirst(root.count)).split(separator: "/").joined(separator: " › "))
+                .font(.caption)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .help(path)
+            Spacer()
+            Button(action: remove) { Image(systemName: "xmark.circle.fill").foregroundStyle(.tertiary) }
+                .buttonStyle(.borderless)
+                .help("不再排除")
+        }
+        .padding(.leading, 46)
+        .padding(.trailing, 14)
+        .padding(.bottom, 8)
+    }
+}
+
+private struct Chip: View {
+    let title: String
+    let on: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.callout)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .foregroundStyle(on ? Color.white : Color.primary)
+                .background(Capsule().fill(on ? Color.accentColor : Color.primary.opacity(0.07)))
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 }

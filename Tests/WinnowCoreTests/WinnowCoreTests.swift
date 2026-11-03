@@ -159,3 +159,53 @@ final class ProcessorTests: XCTestCase {
         XCTAssertEqual(t.target, t.root + "/Movies/a.mov")
     }
 }
+
+final class ConditionTests: XCTestCase {
+    func testOldConfigStillLoads() throws {
+        let old = #"{"locations":[{"path":"/a","isReference":false}],"tools":["duplicates"],"method":"hash"}"#
+        let c = try JSONDecoder().decode(ScanConfig.self, from: Data(old.utf8))
+        XCTAssertEqual(c.minSize, ScanConfig.defaultMinSize)
+        XCTAssertTrue(c.kinds.isEmpty)
+        XCTAssertTrue(c.excluded.isEmpty)
+    }
+
+    func testArguments() {
+        let c = ScanConfig(locations: [Location(path: "/v")], minSize: 1 << 20, kinds: [.music], excluded: ["/v/skip"])
+        let dup = ScanRunner.arguments(.duplicates, config: c, output: "/o.json")
+        XCTAssertTrue(dup.contains("1048576"))
+        XCTAssertEqual(dup[dup.firstIndex(of: "-x")! + 1], FileKind.music.extensions.joined(separator: ","))
+        XCTAssertEqual(dup[dup.firstIndex(of: "-e")! + 1], "/v/skip")
+        let empty = ScanRunner.arguments(.emptyFolders, config: c, output: "/o.json")
+        XCTAssertFalse(empty.contains("-x"), "size and kinds only apply to duplicates")
+        XCTAssertTrue(empty.contains("/v/skip"))
+        XCTAssertEqual(c.excluded(in: "/v"), ["/v/skip"])
+        XCTAssertEqual(c.excluded(in: "/w"), [])
+    }
+
+    /// Real CLI: only photos, nothing under 8 KB, one folder skipped.
+    func testConditionsWithCLI() async throws {
+        try XCTSkipIf(ScanRunner.locateCLI() == nil, "czkawka_cli not installed")
+        var root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-cond-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
+        defer { try? FileManager.default.removeItem(at: root) }
+        func put(_ rel: String, _ data: Data) throws {
+            let u = root.appendingPathComponent(rel)
+            try FileManager.default.createDirectory(at: u.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try data.write(to: u)
+        }
+        let big = Data((0..<20000).map { UInt8($0 % 251) })
+        let big2 = Data((0..<20000).map { UInt8($0 % 239) })
+        let small = Data((0..<3000).map { UInt8($0 % 233) })
+        try put("a/p.JPG", big); try put("b/p.JPG", big)
+        try put("a/v.mov", big2); try put("b/v.mov", big2)
+        try put("a/s.jpg", small); try put("b/s.jpg", small)
+        try put("skip/p.JPG", big)
+        let config = ScanConfig(locations: [Location(path: root.path)], tools: [.duplicates],
+                                kinds: [.photos], excluded: [root.path + "/skip"])
+        let record = try await ScanRunner().run(config) { _ in }
+        XCTAssertEqual(record.groups.count, 1)
+        XCTAssertEqual(Set(record.groups[0].files.map { ($0.path as NSString).lastPathComponent }), ["p.JPG"])
+        XCTAssertEqual(record.groups[0].files.count, 2, "the excluded folder is skipped")
+    }
+}
