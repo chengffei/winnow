@@ -10,7 +10,6 @@ struct RenameView: View {
     @State private var items: [Renamer.Item]
     @State private var searchedText: String?
     @State private var searching = false
-    @State private var dropTargeted = false
     @State private var lastBatch: [Renamer.Move] = Renamer.loadLast()
     @State private var message: String?
 
@@ -35,43 +34,13 @@ struct RenameView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         .navigationTitle(L("Remove Text from Names"))
-        .dropDestination(for: URL.self) { urls, _ in
-            add(urls)
-            return true
-        } isTargeted: { dropTargeted = $0 }
     }
 
     private var form: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(L("Finds files whose names contain the text and takes it out. Nothing changes until you click Rename."))
                 .font(.callout).foregroundStyle(.secondary)
-            VStack(spacing: 0) {
-                ForEach(folders, id: \.self) { path in
-                    HStack(spacing: 12) {
-                        Image(systemName: "folder").foregroundStyle(.secondary).frame(width: 20)
-                        VStack(alignment: .leading, spacing: 1) {
-                            Text(Paths.displayName(path)).fontWeight(.medium)
-                            Text(path).font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.middle)
-                        }
-                        Spacer()
-                        Button { folders.removeAll { $0 == path } } label: { Image(systemName: "minus.circle") }
-                            .buttonStyle(.borderless)
-                            .help(L("Remove this location"))
-                    }
-                    .padding(.horizontal, 14).padding(.vertical, 8)
-                    Divider()
-                }
-                HStack {
-                    Button { choose() } label: { Label(L("Add Location…"), systemImage: "plus") }
-                        .buttonStyle(.link)
-                    Spacer()
-                }
-                .padding(.horizontal, 14).padding(.vertical, 10)
-                .background(Color.primary.opacity(0.025))
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(dropTargeted ? Color.accentColor : Color(nsColor: .separatorColor), lineWidth: dropTargeted ? 2 : 1))
+            FolderList(folders: $folders)
 
             HStack(spacing: 12) {
                 TextField(L("Text to remove"), text: $text)
@@ -188,23 +157,5 @@ struct RenameView: View {
             ? L("Restored %ld names.", outcome.done.count)
             : L("Restored %ld names; %ld could not be restored.", outcome.done.count, outcome.failures.count)
         if searchedText != nil { find() }
-    }
-
-    private func choose() {
-        let panel = NSOpenPanel()
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = false
-        panel.allowsMultipleSelection = true
-        panel.prompt = L("Add")
-        if panel.runModal() == .OK { add(panel.urls) }
-    }
-
-    private func add(_ urls: [URL]) {
-        for url in urls {
-            var isDir: ObjCBool = false
-            guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir), isDir.boolValue else { continue }
-            let path = url.standardizedFileURL.path
-            if !folders.contains(path) { folders.append(path) }
-        }
     }
 }

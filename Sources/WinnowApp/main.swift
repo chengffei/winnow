@@ -31,7 +31,7 @@ struct WinnowApp: App {
 }
 
 /// `WinnowApp --snapshot out.png` renders a screen with demo data offscreen and exits.
-/// WINNOW_SNAPSHOT_SCREEN = new | rename | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
+/// WINNOW_SNAPSHOT_SCREEN = new | rename | nested | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
 @MainActor
 enum Snapshot {
     static func run(to file: URL, screen: String) {
@@ -52,6 +52,9 @@ enum Snapshot {
         case "rename":
             model.route = .rename
             root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.rename() }.environment(model))
+        case "nested":
+            model.route = .nested
+            root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.nested() }.environment(model))
         case "empty":
             model.route = .result(record.id, .emptyFolders)
             root = AnyView(ContentView().environment(model))
@@ -127,6 +130,15 @@ enum Demo {
         items[3] = Renamer.Item(path: dir + "/" + names[3], newName: ".pdf", problem: .emptyName)
         items[4] = Renamer.Item(path: dir + "/Old/" + names[4], newName: "围城.pdf", problem: .nameTaken)
         return RenameView(folders: [dir], text: "【书香网】", items: items, searched: true)
+    }
+
+    static func nested() -> NestedFoldersView {
+        let dir = "/Volumes/hdd0/Downloads"
+        var items = [("三体全集", "三体全集"), ("Xcode_17", "Xcode"), ("课程资料-2025", "课程资料"), ("照片备份", "2024")].map {
+            Unnester.Item(outer: "\(dir)/\($0.0)", inner: "\(dir)/\($0.0)/\($0.1)")
+        }
+        items[1].include = false
+        return NestedFoldersView(folders: [dir], items: items, searched: true, destination: "/Volumes/hdd0/整理")
     }
 
     static func job() -> Job {

@@ -233,6 +233,24 @@
   "zh-Hans": "排除 %ld 个文件夹",
   "zh-Hant": "排除 %ld 個資料夾"
  },
+ "%ld folders found.": {
+  "zh-Hans": "找到 %ld 个文件夹。",
+  "zh-Hant": "找到 %ld 個資料夾。",
+  "ja": "%ld 個のフォルダが見つかりました。",
+  "ko": "폴더 %ld개를 찾았습니다.",
+  "fr": "%ld dossiers trouvés.",
+  "de": "%ld Ordner gefunden.",
+  "es": "%ld carpetas encontradas."
+ },
+ "%ld found. Choose where to move them.": {
+  "zh-Hans": "找到 %ld 个，请选择移到哪里。",
+  "zh-Hant": "找到 %ld 個，請選擇移到哪裡。",
+  "ja": "%ld 個見つかりました。移動先を選んでください。",
+  "ko": "%ld개를 찾았습니다. 옮길 위치를 고르세요.",
+  "fr": "%ld trouvés. Choisissez où les déplacer.",
+  "de": "%ld gefunden. Wähle, wohin sie sollen.",
+  "es": "%ld encontradas. Elige adónde moverlas."
+ },
  "1 folder excluded": {
   "de": "1 Ordner ausgeschlossen",
   "es": "1 carpeta excluida",
@@ -277,6 +295,15 @@
   "ko": "먼저 스캔할 위치를 추가하세요.",
   "zh-Hans": "先添加要扫描的位置。",
   "zh-Hant": "先加入要掃描的位置。"
+ },
+ "Add a location, then click Find Folders.": {
+  "zh-Hans": "添加位置，再点「查找文件夹」。",
+  "zh-Hant": "加入位置，再按「尋找資料夾」。",
+  "ja": "場所を追加して「フォルダを検索」を押します。",
+  "ko": "위치를 추가한 뒤 ‘폴더 찾기’를 누르세요.",
+  "fr": "Ajoutez un emplacement, puis cliquez sur Rechercher.",
+  "de": "Ort hinzufügen, dann „Ordner suchen“ klicken.",
+  "es": "Añade una ubicación y pulsa Buscar carpetas."
  },
  "Add a location, type the text, then click Find Files.": {
   "zh-Hans": "添加位置，输入文字，再点「查找文件」。",
@@ -484,6 +511,24 @@
   "ko": "각 폴더에 파일이 있는지 확인 중",
   "zh-Hans": "检查每个文件夹里有没有文件",
   "zh-Hant": "檢查每個資料夾裡有沒有檔案"
+ },
+ "Choose": {
+  "zh-Hans": "选择",
+  "zh-Hant": "選擇",
+  "ja": "選択",
+  "ko": "선택",
+  "fr": "Choisir",
+  "de": "Wählen",
+  "es": "Elegir"
+ },
+ "Choose Destination…": {
+  "zh-Hans": "选择目标位置…",
+  "zh-Hant": "選擇目標位置…",
+  "ja": "移動先を選択…",
+  "ko": "대상 선택…",
+  "fr": "Choisir la destination…",
+  "de": "Ziel wählen…",
+  "es": "Elegir destino…"
  },
  "Choose folders inside “%@” to skip": {
   "de": "Ordner in „%@“ wählen, die übersprungen werden",
@@ -809,6 +854,15 @@
   "de": "Dateien suchen",
   "es": "Buscar archivos"
  },
+ "Find Folders": {
+  "zh-Hans": "查找文件夹",
+  "zh-Hant": "尋找資料夾",
+  "ja": "フォルダを検索",
+  "ko": "폴더 찾기",
+  "fr": "Rechercher",
+  "de": "Ordner suchen",
+  "es": "Buscar carpetas"
+ },
  "Find empty folders": {
   "de": "Leere Ordner suchen",
   "es": "Buscar carpetas vacías",
@@ -827,6 +881,15 @@
   "de": "Findet Dateien, deren Name den Text enthält, und entfernt ihn. Erst „Umbenennen“ ändert etwas.",
   "es": "Busca archivos cuyo nombre contiene el texto y lo quita. Nada cambia hasta que pulses Renombrar."
  },
+ "Finds folders whose only content is one folder, such as A/B, and moves B to the place you choose.": {
+  "zh-Hans": "找出里面只有一个文件夹的文件夹（如 A/B），把 B 移到你选的位置。",
+  "zh-Hant": "找出裡面只有一個資料夾的資料夾（如 A/B），把 B 移到你選的位置。",
+  "ja": "中身がフォルダ 1 つだけのフォルダ（A/B など）を探し、B を指定した場所へ移動します。",
+  "ko": "폴더 하나만 들어 있는 폴더(예: A/B)를 찾아 B를 원하는 위치로 옮깁니다.",
+  "fr": "Trouve les dossiers qui ne contiennent qu’un dossier, comme A/B, et déplace B à l’endroit choisi.",
+  "de": "Findet Ordner, die nur einen Ordner enthalten, etwa A/B, und verschiebt B an den gewählten Ort.",
+  "es": "Busca carpetas que solo contienen otra carpeta, como A/B, y mueve B al lugar que elijas."
+ },
  "Folder": {
   "zh-Hans": "文件夹",
   "zh-Hant": "資料夾",
@@ -835,6 +898,24 @@
   "fr": "Dossier",
   "de": "Ordner",
   "es": "Carpeta"
+ },
+ "Folder to Move": {
+  "zh-Hans": "要移动的文件夹",
+  "zh-Hant": "要移動的資料夾",
+  "ja": "移動するフォルダ",
+  "ko": "옮길 폴더",
+  "fr": "Dossier à déplacer",
+  "de": "Zu verschiebender Ordner",
+  "es": "Carpeta a mover"
+ },
+ "Folders are moved, not copied. Undo puts them back.": {
+  "zh-Hans": "文件夹是移动而非复制，撤销可放回原处。",
+  "zh-Hant": "資料夾是移動而非拷貝，還原可放回原處。",
+  "ja": "フォルダはコピーではなく移動します。取り消すと元に戻ります。",
+  "ko": "폴더는 복사가 아니라 이동됩니다. 취소하면 제자리로 돌아갑니다.",
+  "fr": "Les dossiers sont déplacés, pas copiés. Annuler les remet en place.",
+  "de": "Ordner werden verschoben, nicht kopiert. Widerrufen legt sie zurück.",
+  "es": "Las carpetas se mueven, no se copian. Deshacer las devuelve."
  },
  "Folders with nothing in them": {
   "de": "Ordner ohne Inhalt",
@@ -1070,6 +1151,24 @@
   "zh-Hans": "移动 %@ 项",
   "zh-Hant": "移動 %@ 項"
  },
+ "Move %ld Folders": {
+  "zh-Hans": "移动 %ld 个文件夹",
+  "zh-Hant": "移動 %ld 個資料夾",
+  "ja": "%ld 個のフォルダを移動",
+  "ko": "폴더 %ld개 이동",
+  "fr": "Déplacer %ld dossiers",
+  "de": "%ld Ordner verschieben",
+  "es": "Mover %ld carpetas"
+ },
+ "Move emptied folders to the Trash": {
+  "zh-Hans": "变空的外层文件夹移到废纸篓",
+  "zh-Hant": "變空的外層資料夾移到垃圾桶",
+  "ja": "空になったフォルダをゴミ箱へ",
+  "ko": "비게 된 폴더는 휴지통으로",
+  "fr": "Placer les dossiers vidés dans la corbeille",
+  "de": "Geleerte Ordner in den Papierkorb",
+  "es": "Mover carpetas vaciadas a la papelera"
+ },
  "Move to Trash": {
   "de": "In den Papierkorb legen",
   "es": "Mover a la papelera",
@@ -1105,6 +1204,42 @@
   "ko": "항목 %@개를 임시 보관 폴더로 옮겨 %@를 확보했습니다.",
   "zh-Hans": "已移到暂存文件夹 %@ 项，释放 %@。",
   "zh-Hant": "已移到暫存資料夾 %@ 項，釋放 %@。"
+ },
+ "Moved %ld folders back.": {
+  "zh-Hans": "已放回 %ld 个文件夹。",
+  "zh-Hant": "已放回 %ld 個資料夾。",
+  "ja": "%ld 個のフォルダを元に戻しました。",
+  "ko": "폴더 %ld개를 되돌렸습니다.",
+  "fr": "%ld dossiers remis en place.",
+  "de": "%ld Ordner zurückgelegt.",
+  "es": "%ld carpetas devueltas."
+ },
+ "Moved %ld folders back; %ld could not be restored.": {
+  "zh-Hans": "已放回 %ld 个文件夹；%ld 个无法恢复。",
+  "zh-Hant": "已放回 %ld 個資料夾；%ld 個無法恢復。",
+  "ja": "%ld 個を元に戻しました。%ld 個は戻せませんでした。",
+  "ko": "폴더 %ld개를 되돌렸습니다. %ld개는 되돌리지 못했습니다.",
+  "fr": "%ld dossiers remis en place ; %ld n’ont pas pu l’être.",
+  "de": "%ld Ordner zurückgelegt; %ld ließen sich nicht wiederherstellen.",
+  "es": "%ld carpetas devueltas; %ld no se pudieron restaurar."
+ },
+ "Moved %ld folders.": {
+  "zh-Hans": "已移动 %ld 个文件夹。",
+  "zh-Hant": "已移動 %ld 個資料夾。",
+  "ja": "%ld 個のフォルダを移動しました。",
+  "ko": "폴더 %ld개를 옮겼습니다.",
+  "fr": "%ld dossiers déplacés.",
+  "de": "%ld Ordner verschoben.",
+  "es": "%ld carpetas movidas."
+ },
+ "Moved %ld folders; %ld were skipped because they changed or the name is taken in the destination.": {
+  "zh-Hans": "已移动 %ld 个文件夹；%ld 个已变动或目标位置有同名项，已跳过。",
+  "zh-Hant": "已移動 %ld 個資料夾；%ld 個已變動或目標位置有同名項目，已略過。",
+  "ja": "%ld 個を移動しました。%ld 個は変更されたか移動先に同名があるためスキップしました。",
+  "ko": "폴더 %ld개를 옮겼습니다. %ld개는 변경되었거나 대상에 같은 이름이 있어 건너뛰었습니다.",
+  "fr": "%ld dossiers déplacés ; %ld ignorés car modifiés ou nom déjà pris dans la destination.",
+  "de": "%ld Ordner verschoben; %ld übersprungen, weil sie sich geändert haben oder der Name am Ziel vergeben ist.",
+  "es": "%ld carpetas movidas; %ld omitidas porque cambiaron o el nombre ya existe en el destino."
  },
  "Music": {
   "de": "Musik",
@@ -1159,6 +1294,15 @@
   "ko": "후보 추리는 중",
   "zh-Hans": "筛选候选",
   "zh-Hant": "篩選候選"
+ },
+ "Nested Folders": {
+  "zh-Hans": "套娃文件夹",
+  "zh-Hant": "套娃資料夾",
+  "ja": "入れ子フォルダ",
+  "ko": "중첩 폴더",
+  "fr": "Dossiers imbriqués",
+  "de": "Verschachtelte Ordner",
+  "es": "Carpetas anidadas"
  },
  "Network Drive": {
   "de": "Netzlaufwerk",
@@ -1241,6 +1385,15 @@
   "de": "Kein Dateiname enthält „%@“.",
   "es": "Ningún nombre de archivo contiene «%@»."
  },
+ "No folder here holds just one folder.": {
+  "zh-Hans": "这里没有只装着一个文件夹的文件夹。",
+  "zh-Hant": "這裡沒有只裝著一個資料夾的資料夾。",
+  "ja": "フォルダ 1 つだけを含むフォルダはありません。",
+  "ko": "폴더 하나만 들어 있는 폴더가 없습니다.",
+  "fr": "Aucun dossier ici ne contient un seul dossier.",
+  "de": "Hier enthält kein Ordner nur einen einzelnen Ordner.",
+  "es": "Aquí ninguna carpeta contiene solo una carpeta."
+ },
  "No marked item changed since the scan": {
   "de": "Kein markiertes Objekt hat sich seit dem Scan geändert",
   "es": "Ningún elemento marcado cambió desde el análisis",
@@ -1321,6 +1474,15 @@
   "ko": "표시된 항목이 없습니다",
   "zh-Hans": "没有标记任何项目",
   "zh-Hant": "沒有標記任何項目"
+ },
+ "Now Inside": {
+  "zh-Hans": "当前所在",
+  "zh-Hant": "目前位於",
+  "ja": "現在の場所",
+  "ko": "현재 위치",
+  "fr": "Actuellement dans",
+  "de": "Liegt in",
+  "es": "Dentro de"
  },
  "OK": {
   "de": "OK",
@@ -1853,6 +2015,15 @@
   "zh-Hans": "要跳过某个子文件夹，在第 1 步对应位置上点「排除子文件夹」。",
   "zh-Hant": "要略過某個子資料夾，在第 1 步對應位置上點「排除子資料夾」。"
  },
+ "To: %@": {
+  "zh-Hans": "移到：%@",
+  "zh-Hant": "移到：%@",
+  "ja": "移動先：%@",
+  "ko": "대상: %@",
+  "fr": "Vers : %@",
+  "de": "Nach: %@",
+  "es": "A: %@"
+ },
  "Today %@": {
   "de": "Heute %@",
   "es": "Hoy %@",
@@ -1879,6 +2050,15 @@
   "ko": "확인하려면 '%@' 입력",
   "zh-Hans": "输入「%@」确认",
   "zh-Hant": "輸入「%@」確認"
+ },
+ "Undo Last Move (%ld)": {
+  "zh-Hans": "撤销上次移动（%ld）",
+  "zh-Hant": "還原上次移動（%ld）",
+  "ja": "前回の移動を取り消す（%ld）",
+  "ko": "마지막 이동 취소(%ld)",
+  "fr": "Annuler le dernier déplacement (%ld)",
+  "de": "Letztes Verschieben widerrufen (%ld)",
+  "es": "Deshacer último movimiento (%ld)"
  },
  "Undo Last Rename (%ld)": {
   "zh-Hans": "撤销上次重命名（%ld）",

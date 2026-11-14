@@ -287,3 +287,55 @@ final class RenamerTests: XCTestCase {
         XCTAssertTrue(exists("【网】a.txt")); XCTAssertFalse(exists("a.txt"))
     }
 }
+
+final class UnnesterTests: XCTestCase {
+    var root: URL!
+
+    override func setUpWithError() throws {
+        root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-unnest-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
+    }
+
+    override func tearDownWithError() throws {
+        try? FileManager.default.removeItem(at: root)
+    }
+
+    func dir(_ rel: String) { try? FileManager.default.createDirectory(at: root.appendingPathComponent(rel), withIntermediateDirectories: true) }
+    func touch(_ rel: String) { FileManager.default.createFile(atPath: root.appendingPathComponent(rel).path, contents: Data("x".utf8)) }
+    func exists(_ rel: String) -> Bool { FileManager.default.fileExists(atPath: root.appendingPathComponent(rel).path) }
+    func p(_ rel: String) -> String { root.appendingPathComponent(rel).path }
+
+    func testPlanMoveUndo() throws {
+        dir("src/A/B"); touch("src/A/B/f.txt"); touch("src/A/.DS_Store")    // hidden files do not count
+        dir("src/C/D/E"); touch("src/C/D/E/f.txt")                          // chain: only C is listed
+        dir("src/F/G"); touch("src/F/note.txt")                             // has a file too
+        dir("src/H/I"); dir("src/H/J")                                      // two folders
+        dir("src/K/L"); dir("dest/L")                                       // name taken in destination
+        dir("src/M/N"); dir("src/M/N.app")                                  // a package counts as content
+        dir("dest/keep")
+
+        let items = Unnester.plan(roots: [p("src")])
+        XCTAssertEqual(items.map(\.outer), [p("src/A"), p("src/C"), p("src/K")])
+        XCTAssertEqual(items[1].inner, p("src/C/D"))
+        XCTAssertTrue(Unnester.plan(roots: [p("src/A")]).isEmpty, "the location itself is not listed")
+
+        let batch = Unnester.apply(items, to: p("dest"), trashEmptied: true)
+        XCTAssertEqual(batch.moves.map(\.to), [p("dest/B"), p("dest/D")])
+        XCTAssertEqual(batch.failures, [p("src/K/L")])
+        XCTAssertTrue(exists("dest/B/f.txt")); XCTAssertTrue(exists("dest/D/E/f.txt"))
+        XCTAssertFalse(exists("src/C"), "emptied outer folder went to the Trash")
+        XCTAssertFalse(exists("src/A"), "a folder left with only .DS_Store counts as empty")
+        XCTAssertEqual(batch.trashed.map(\.from), [p("src/A"), p("src/C")])
+
+        let back = Unnester.undo(batch)
+        XCTAssertTrue(back.failures.isEmpty, "\(back.failures)")
+        XCTAssertTrue(exists("src/A/B/f.txt")); XCTAssertTrue(exists("src/C/D/E/f.txt"))
+        XCTAssertFalse(exists("dest/B"))
+
+        // Without trashing, the outer folder stays behind empty.
+        let kept = Unnester.apply([Unnester.Item(outer: p("src/C"), inner: p("src/C/D"))], to: p("dest"), trashEmptied: false)
+        XCTAssertTrue(kept.trashed.isEmpty)
+        XCTAssertTrue(exists("src/C")); XCTAssertTrue(exists("dest/D"))
+    }
+}

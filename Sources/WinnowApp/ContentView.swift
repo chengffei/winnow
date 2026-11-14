@@ -17,6 +17,8 @@ struct ContentView: View {
                 ScanningView()
             case .rename:
                 RenameView()
+            case .nested:
+                NestedFoldersView()
             case .result(let id, let category):
                 switch category {
                 case .duplicates: DuplicatesView(id: id).id(id)
@@ -44,6 +46,8 @@ struct Sidebar: View {
                 .tag(Route.newScan)
             Label(L("Remove Text from Names"), systemImage: "pencil.line")
                 .tag(Route.rename)
+            Label(L("Nested Folders"), systemImage: "tray.and.arrow.up")
+                .tag(Route.nested)
 
             if let job = model.job {
                 Section(L("In Progress")) {

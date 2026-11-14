@@ -12,6 +12,7 @@ enum Route: Hashable {
     case newScan
     case scanning
     case rename
+    case nested
     case result(UUID, Category)
 }
 
