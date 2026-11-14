@@ -43,20 +43,12 @@ public enum Unnester {
     /// Folders under `roots` (the roots themselves excluded) whose only visible entry is a folder.
     /// In a chain A/B/C only A is listed: moving B out brings C along.
     public static func plan(roots: [String]) -> [Item] {
-        var found: [Item] = []
-        for root in roots {
-            let rootURL = URL(fileURLWithPath: root)
-            guard let e = FileManager.default.enumerator(at: rootURL, includingPropertiesForKeys: [.isDirectoryKey, .isPackageKey, .isSymbolicLinkKey],
-                                                         options: [.skipsHiddenFiles, .skipsPackageDescendants]) else { continue }
-            for case let url as URL in e where isPlainFolder(url) {
-                let path = url.path
-                guard let entries = visible(path), entries.count == 1 else { continue }
-                let child = url.appendingPathComponent(entries[0])
-                if isPlainFolder(child) {
-                    found.append(Item(outer: path, inner: child.path))
-                    e.skipDescendants()
-                }
+        let rootSet = Set(roots)
+        let found = FastWalk.walk(roots) { dir, entries -> (found: [Item], descend: [String]) in
+            if !rootSet.contains(dir), entries.count == 1, entries[0].isFolder {
+                return ([Item(outer: dir, inner: dir + "/" + entries[0].name)], [])
             }
+            return ([], entries.filter(\.isFolder).map { dir + "/" + $0.name })
         }
         return found.sorted { $0.outer.localizedStandardCompare($1.outer) == .orderedAscending }
     }

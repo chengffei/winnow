@@ -48,21 +48,13 @@ public enum Renamer {
         return ext.isEmpty ? trimmed : trimmed + "." + ext
     }
 
-    /// Files under `roots` whose names contain `text`, with their new names. Hidden files and package contents are skipped.
+    /// Files under `roots` whose names contain `text`, with their new names. Hidden files, package contents and NAS housekeeping folders are skipped.
     public static func plan(roots: [String], text: String, subfolders: Bool = true) -> [Item] {
         guard !text.isEmpty else { return [] }
         let fm = FileManager.default
-        var paths: [String] = []
-        for root in roots {
-            let url = URL(fileURLWithPath: root)
-            var options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants]
-            if !subfolders { options.insert(.skipsSubdirectoryDescendants) }
-            guard let e = fm.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey, .isPackageKey], options: options) else { continue }
-            for case let file as URL in e {
-                let values = try? file.resourceValues(forKeys: [.isDirectoryKey, .isPackageKey])
-                if values?.isDirectory == true && values?.isPackage != true { continue }
-                if file.lastPathComponent.contains(text) { paths.append(file.standardizedFileURL.path) }
-            }
+        var paths = FastWalk.walk(roots) { dir, entries -> (found: [String], descend: [String]) in
+            (entries.filter { !$0.isFolder && $0.name.contains(text) }.map { dir + "/" + $0.name },
+             subfolders ? entries.filter(\.isFolder).map { dir + "/" + $0.name } : [])
         }
         paths = Array(Set(paths)).sorted()
 
