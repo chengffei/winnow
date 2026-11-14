@@ -249,6 +249,7 @@ final class RenamerTests: XCTestCase {
         XCTAssertEqual(Renamer.strip("三体 www.x.com .pdf", removing: "www.x.com"), "三体.pdf")
         XCTAssertEqual(Renamer.strip("a-AD-b-AD", removing: "-AD"), "a-b")
         XCTAssertEqual(Renamer.strip("AD.pdf", removing: "AD"), ".pdf")
+        XCTAssertEqual(Renamer.strip("【书香网】三体 高清版.pdf", removing: ["书香网", "高清版", "【书香网】"]), "三体.pdf")
     }
 
     func testPlanApplyUndo() throws {
@@ -266,6 +267,9 @@ final class RenamerTests: XCTestCase {
         XCTAssertEqual(byName["c【网】.txt"]?.problem, .nameTaken)
         XCTAssertEqual(byName["【网】.txt"]?.problem, .emptyName)
         XCTAssertEqual(Renamer.plan(roots: [root.path], text: "【网】", subfolders: false).count, 4)
+        touch("plain-AD.txt")
+        XCTAssertEqual(Renamer.plan(roots: [root.path], texts: ["【网】", "-AD", ""]).count, 6, "a name with any of the texts is found")
+        try FileManager.default.removeItem(at: root.appendingPathComponent("plain-AD.txt"))
 
         let outcome = Renamer.apply(items)
         XCTAssertEqual(outcome.done.count, 1)

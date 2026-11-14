@@ -40,26 +40,38 @@ public enum Renamer {
 
     /// The name with every `text` taken out, trimmed of spaces left at either end of the base name.
     public static func strip(_ name: String, removing text: String) -> String {
-        guard !text.isEmpty else { return name }
-        let removed = name.replacingOccurrences(of: text, with: "")
+        strip(name, removing: [text])
+    }
+
+    /// Longer texts go first, so "【书香网】" is taken out whole before "书香网" could split it.
+    public static func strip(_ name: String, removing texts: [String]) -> String {
+        let texts = texts.filter { !$0.isEmpty }.sorted { $0.count > $1.count }
+        guard !texts.isEmpty else { return name }
+        let removed = texts.reduce(name) { $0.replacingOccurrences(of: $1, with: "") }
         let ext = (removed as NSString).pathExtension
         let base = ext.isEmpty ? removed : String(removed.dropLast(ext.count + 1))
         let trimmed = base.trimmingCharacters(in: .whitespaces)
         return ext.isEmpty ? trimmed : trimmed + "." + ext
     }
 
-    /// Files under `roots` whose names contain `text`, with their new names. Hidden files, package contents and NAS housekeeping folders are skipped.
     public static func plan(roots: [String], text: String, subfolders: Bool = true) -> [Item] {
-        guard !text.isEmpty else { return [] }
+        plan(roots: roots, texts: [text], subfolders: subfolders)
+    }
+
+    /// Files under `roots` whose names contain any of `texts`, with all of them taken out.
+    /// Hidden files, package contents and NAS housekeeping folders are skipped.
+    public static func plan(roots: [String], texts: [String], subfolders: Bool = true) -> [Item] {
+        let texts = texts.filter { !$0.isEmpty }
+        guard !texts.isEmpty else { return [] }
         let fm = FileManager.default
         var paths = FastWalk.walk(roots) { dir, entries -> (found: [String], descend: [String]) in
-            (entries.filter { !$0.isFolder && $0.name.contains(text) }.map { dir + "/" + $0.name },
+            (entries.filter { entry in !entry.isFolder && texts.contains { entry.name.contains($0) } }.map { dir + "/" + $0.name },
              subfolders ? entries.filter(\.isFolder).map { dir + "/" + $0.name } : [])
         }
         paths = Array(Set(paths)).sorted()
 
         var items = paths.map { path -> Item in
-            let name = strip((path as NSString).lastPathComponent, removing: text)
+            let name = strip((path as NSString).lastPathComponent, removing: texts)
             let base = (name as NSString).deletingPathExtension
             return Item(path: path, newName: name, problem: base.isEmpty || name.hasPrefix(".") ? .emptyName : nil)
         }

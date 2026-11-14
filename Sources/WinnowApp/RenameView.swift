@@ -2,22 +2,37 @@ import AppKit
 import WinnowCore
 import SwiftUI
 
-/// Finds files whose names contain a piece of text and takes that text out, after a preview.
+/// Finds files whose names contain any of several texts and takes them out, after a preview.
 struct RenameView: View {
     @State private var folders: [String]
-    @State private var text: String
+    /// Texts to take out; kept between launches, since the same ad tags come back.
+    @State private var texts: [String]
+    @State private var text = ""
     @State private var subfolders = true
     @State private var items: [Renamer.Item]
-    @State private var searchedText: String?
+    @State private var searchedTexts: [String]?
     @State private var searching = false
     @State private var lastBatch: [Renamer.Move] = Renamer.loadLast()
     @State private var message: String?
 
-    init(folders: [String] = [], text: String = "", items: [Renamer.Item] = [], searched: Bool = false) {
+    private let persists: Bool
+
+    /// `texts` is passed only by snapshot mode, which must not touch the saved list.
+    init(folders: [String] = [], texts: [String]? = nil, items: [Renamer.Item] = [], searched: Bool = false) {
+        persists = texts == nil
+        let saved = texts ?? UserDefaults.standard.stringArray(forKey: "removeTexts") ?? []
         _folders = State(initialValue: folders)
-        _text = State(initialValue: text)
+        _texts = State(initialValue: saved)
         _items = State(initialValue: items)
-        _searchedText = State(initialValue: searched ? text : nil)
+        _searchedTexts = State(initialValue: searched ? saved : nil)
+    }
+
+    /// Adds what is typed; a pasted list adds one text per line.
+    private func addTyped() {
+        for line in text.components(separatedBy: .newlines) where !line.isEmpty && !texts.contains(line) {
+            texts.append(line)
+        }
+        text = ""
     }
 
     private var included: [Renamer.Item] { items.filter { $0.include && $0.problem == nil } }
@@ -34,24 +49,47 @@ struct RenameView: View {
         }
         .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         .navigationTitle(L("Remove Text from Names"))
+        .onChange(of: texts) { _, new in
+            if persists { UserDefaults.standard.set(new, forKey: "removeTexts") }
+        }
     }
 
     private var form: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(L("Finds files whose names contain the text and takes it out. Nothing changes until you click Rename."))
+            Text(L("Finds files whose names contain any of the texts and takes them all out. Nothing changes until you click Rename."))
                 .font(.callout).foregroundStyle(.secondary)
             FolderList(folders: $folders)
 
             HStack(spacing: 12) {
-                TextField(L("Text to remove"), text: $text)
+                TextField(L("Text to remove, then Return"), text: $text)
                     .textFieldStyle(.roundedBorder)
                     .frame(maxWidth: 320)
-                    .onSubmit(find)
+                    .onSubmit(addTyped)
                 Toggle(L("Include subfolders"), isOn: $subfolders)
                     .toggleStyle(.checkbox)
                 Spacer()
                 Button(L("Find Files"), action: find)
-                    .disabled(folders.isEmpty || text.isEmpty || searching)
+                    .disabled(folders.isEmpty || (texts.isEmpty && text.isEmpty) || searching)
+            }
+            if !texts.isEmpty {
+                FlowLayout(spacing: 6) {
+                    ForEach(texts, id: \.self) { t in
+                        HStack(spacing: 4) {
+                            Text(t).lineLimit(1)
+                            Button { texts.removeAll { $0 == t } } label: {
+                                Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.borderless)
+                            .help(L("Remove"))
+                        }
+                        .font(.callout)
+                        .padding(.leading, 10).padding(.trailing, 6).padding(.vertical, 3)
+                        .background(Capsule().fill(Color.primary.opacity(0.07)))
+                    }
+                    Button(L("Clear All")) { texts = [] }
+                        .buttonStyle(.link)
+                        .font(.callout)
+                }
             }
         }
     }
@@ -59,10 +97,10 @@ struct RenameView: View {
     @ViewBuilder private var results: some View {
         if searching {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else if let searched = searchedText, items.isEmpty {
+        } else if let searched = searchedTexts, items.isEmpty {
             ContentUnavailableView(L("No Matches"), systemImage: "magnifyingglass",
-                                   description: Text(L("No file name contains “%@”.", searched)))
-        } else if searchedText == nil {
+                                   description: Text(L("No file name contains %@.", joinedList(searched.map { "“\($0)”" }))))
+        } else if searchedTexts == nil {
             ContentUnavailableView(L("Nothing Found Yet"), systemImage: "textformat",
                                    description: Text(L("Add a location, type the text, then click Find Files.")))
         } else {
@@ -114,7 +152,7 @@ struct RenameView: View {
     }
 
     private var footerText: String {
-        guard searchedText != nil, !items.isEmpty else { return L("Files are renamed in place. Undo puts the old names back.") }
+        guard searchedTexts != nil, !items.isEmpty else { return L("Files are renamed in place. Undo puts the old names back.") }
         let blocked = items.filter { $0.problem != nil }.count
         return blocked == 0 ? L("%ld files found.", items.count)
                             : L("%ld files found; %ld are left out because of a name problem.", items.count, blocked)
@@ -126,14 +164,15 @@ struct RenameView: View {
     }
 
     private func find() {
-        guard !folders.isEmpty, !text.isEmpty else { return }
-        let roots = folders, needle = text, deep = subfolders
+        addTyped()
+        guard !folders.isEmpty, !texts.isEmpty else { return }
+        let roots = folders, needles = texts, deep = subfolders
         searching = true
         message = nil
         Task {
-            let found = await Task.detached { Renamer.plan(roots: roots, text: needle, subfolders: deep) }.value
+            let found = await Task.detached { Renamer.plan(roots: roots, texts: needles, subfolders: deep) }.value
             items = found
-            searchedText = needle
+            searchedTexts = needles
             searching = false
         }
     }
@@ -156,6 +195,44 @@ struct RenameView: View {
         message = outcome.failures.isEmpty
             ? L("Restored %ld names.", outcome.done.count)
             : L("Restored %ld names; %ld could not be restored.", outcome.done.count, outcome.failures.count)
-        if searchedText != nil { find() }
+        if searchedTexts != nil { find() }
+    }
+}
+
+/// Lays children out left to right and wraps to a new line when the row is full.
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 6
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let rows = arrange(width: proposal.width ?? .infinity, subviews: subviews)
+        return CGSize(width: rows.map(\.width).max() ?? 0, height: rows.last.map { $0.y + $0.height } ?? 0)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        for row in arrange(width: bounds.width, subviews: subviews) {
+            for (i, x) in zip(row.indices, row.xs) {
+                subviews[i].place(at: CGPoint(x: bounds.minX + x, y: bounds.minY + row.y), proposal: .unspecified)
+            }
+        }
+    }
+
+    private struct Row { var indices: [Int] = []; var xs: [CGFloat] = []; var width: CGFloat = 0; var y: CGFloat = 0; var height: CGFloat = 0 }
+
+    private func arrange(width: CGFloat, subviews: Subviews) -> [Row] {
+        var rows = [Row()]
+        for (i, view) in subviews.enumerated() {
+            let size = view.sizeThatFits(.unspecified)
+            if !rows[rows.count - 1].indices.isEmpty, rows[rows.count - 1].width + spacing + size.width > width {
+                let last = rows[rows.count - 1]
+                rows.append(Row(y: last.y + last.height + spacing))
+            }
+            var row = rows[rows.count - 1]
+            let x = row.indices.isEmpty ? 0 : row.width + spacing
+            row.indices.append(i); row.xs.append(x)
+            row.width = x + size.width
+            row.height = max(row.height, size.height)
+            rows[rows.count - 1] = row
+        }
+        return rows
     }
 }

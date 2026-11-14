@@ -129,7 +129,7 @@ enum Demo {
         var items = names.map { Renamer.Item(path: dir + "/" + $0, newName: Renamer.strip($0, removing: "【书香网】")) }
         items[3] = Renamer.Item(path: dir + "/" + names[3], newName: ".pdf", problem: .emptyName)
         items[4] = Renamer.Item(path: dir + "/Old/" + names[4], newName: "围城.pdf", problem: .nameTaken)
-        return RenameView(folders: [dir], text: "【书香网】", items: items, searched: true)
+        return RenameView(folders: [dir], texts: ["【书香网】", "高清版", "www.example.com"], items: items, searched: true)
     }
 
     static func nested() -> NestedFoldersView {

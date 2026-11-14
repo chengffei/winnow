@@ -548,6 +548,15 @@
   "zh-Hans": "处理 %@ 项？",
   "zh-Hant": "處理 %@ 項？"
  },
+ "Clear All": {
+  "zh-Hans": "全部清除",
+  "zh-Hant": "全部清除",
+  "ja": "すべて消去",
+  "ko": "모두 지우기",
+  "fr": "Tout effacer",
+  "de": "Alle entfernen",
+  "es": "Borrar todo"
+ },
  "Clear Cache": {
   "zh-Hans": "清除缓存",
   "zh-Hant": "清除快取",
@@ -872,14 +881,14 @@
   "zh-Hans": "找空文件夹",
   "zh-Hant": "找空資料夾"
  },
- "Finds files whose names contain the text and takes it out. Nothing changes until you click Rename.": {
-  "zh-Hans": "找出文件名含有这段文字的文件，并把它删掉。点「重命名」之前不会改动任何文件。",
-  "zh-Hant": "找出檔名含有這段文字的檔案，並把它刪掉。按「重新命名」之前不會改動任何檔案。",
-  "ja": "名前にこの文字を含むファイルを探し、文字を取り除きます。「名称変更」を押すまで何も変わりません。",
-  "ko": "이름에 이 텍스트가 들어 있는 파일을 찾아 텍스트를 지웁니다. ‘이름 변경’을 누르기 전에는 아무것도 바뀌지 않습니다.",
-  "fr": "Trouve les fichiers dont le nom contient ce texte et le retire. Rien ne change avant de cliquer sur Renommer.",
-  "de": "Findet Dateien, deren Name den Text enthält, und entfernt ihn. Erst „Umbenennen“ ändert etwas.",
-  "es": "Busca archivos cuyo nombre contiene el texto y lo quita. Nada cambia hasta que pulses Renombrar."
+ "Finds files whose names contain any of the texts and takes them all out. Nothing changes until you click Rename.": {
+  "zh-Hans": "找出文件名含有任一段文字的文件，把这些文字全部删掉。点「重命名」之前不会改动任何文件。",
+  "zh-Hant": "找出檔名含有任一段文字的檔案，把這些文字全部刪掉。按「重新命名」之前不會改動任何檔案。",
+  "ja": "いずれかの文字を名前に含むファイルを探し、それらをすべて取り除きます。「名称変更」を押すまで何も変わりません。",
+  "ko": "이름에 텍스트 중 하나라도 들어 있는 파일을 찾아 모두 지웁니다. ‘이름 변경’을 누르기 전에는 아무것도 바뀌지 않습니다.",
+  "fr": "Trouve les fichiers dont le nom contient l’un des textes et les retire tous. Rien ne change avant de cliquer sur Renommer.",
+  "de": "Findet Dateien, deren Name einen der Texte enthält, und entfernt alle. Erst „Umbenennen“ ändert etwas.",
+  "es": "Busca archivos cuyo nombre contiene alguno de los textos y los quita todos. Nada cambia hasta que pulses Renombrar."
  },
  "Finds folders whose only content is one folder, such as A/B, and moves B to the place you choose.": {
   "zh-Hans": "找出里面只有一个文件夹的文件夹（如 A/B），把 B 移到你选的位置。",
@@ -1376,14 +1385,14 @@
   "zh-Hans": "没有找到空文件夹",
   "zh-Hant": "沒有找到空資料夾"
  },
- "No file name contains “%@”.": {
-  "zh-Hans": "没有文件名包含「%@」。",
-  "zh-Hant": "沒有檔名包含「%@」。",
-  "ja": "「%@」を含むファイル名はありません。",
-  "ko": "‘%@’이(가) 들어간 파일 이름이 없습니다.",
-  "fr": "Aucun nom de fichier ne contient « %@ ».",
-  "de": "Kein Dateiname enthält „%@“.",
-  "es": "Ningún nombre de archivo contiene «%@»."
+ "No file name contains %@.": {
+  "zh-Hans": "没有文件名包含 %@。",
+  "zh-Hant": "沒有檔名包含 %@。",
+  "ja": "%@ を含むファイル名はありません。",
+  "ko": "%@이(가) 들어간 파일 이름이 없습니다.",
+  "fr": "Aucun nom de fichier ne contient %@.",
+  "de": "Kein Dateiname enthält %@.",
+  "es": "Ningún nombre de archivo contiene %@."
  },
  "No folder here holds just one folder.": {
   "zh-Hans": "这里没有只装着一个文件夹的文件夹。",
@@ -1889,14 +1898,14 @@
   "zh-Hans": "不再排除",
   "zh-Hant": "不再排除"
  },
- "Text to remove": {
-  "zh-Hans": "要删除的文字",
-  "zh-Hant": "要刪除的文字",
-  "ja": "削除する文字",
-  "ko": "제거할 텍스트",
-  "fr": "Texte à retirer",
-  "de": "Zu entfernender Text",
-  "es": "Texto a quitar"
+ "Text to remove, then Return": {
+  "zh-Hans": "输入要删的文字，按回车添加",
+  "zh-Hant": "輸入要刪的文字，按 Return 加入",
+  "ja": "削除する文字を入力して Return",
+  "ko": "제거할 텍스트 입력 후 Return",
+  "fr": "Texte à retirer, puis Retour",
+  "de": "Zu entfernender Text, dann Return",
+  "es": "Texto a quitar y pulsa Intro"
  },
  "The new language applies after Winnow restarts.": {
   "zh-Hans": "新语言在 Winnow 重新启动后生效。",
