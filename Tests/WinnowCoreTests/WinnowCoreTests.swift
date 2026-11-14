@@ -227,3 +227,63 @@ final class ConditionTests: XCTestCase {
         XCTAssertEqual(record.groups[0].files.count, 2, "the excluded folder is skipped")
     }
 }
+
+final class RenamerTests: XCTestCase {
+    var root: URL!
+
+    override func setUpWithError() throws {
+        root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-rename-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root.appendingPathComponent("sub"), withIntermediateDirectories: true)
+        root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
+    }
+
+    override func tearDownWithError() throws {
+        try? FileManager.default.removeItem(at: root)
+    }
+
+    func touch(_ rel: String) { FileManager.default.createFile(atPath: root.appendingPathComponent(rel).path, contents: Data("x".utf8)) }
+    func exists(_ rel: String) -> Bool { FileManager.default.fileExists(atPath: root.appendingPathComponent(rel).path) }
+
+    func testStrip() {
+        XCTAssertEqual(Renamer.strip("【网】三体.epub", removing: "【网】"), "三体.epub")
+        XCTAssertEqual(Renamer.strip("三体 www.x.com .pdf", removing: "www.x.com"), "三体.pdf")
+        XCTAssertEqual(Renamer.strip("a-AD-b-AD", removing: "-AD"), "a-b")
+        XCTAssertEqual(Renamer.strip("AD.pdf", removing: "AD"), ".pdf")
+    }
+
+    func testPlanApplyUndo() throws {
+        touch("【网】a.txt"); touch("sub/【网】b.txt"); touch("sub/b.txt")      // b is taken on disk
+        touch("【网】c.txt"); touch("c【网】.txt")                              // both would become c.txt
+        touch("【网】.txt"); touch(".【网】hidden"); touch("plain.txt")
+        try FileManager.default.createDirectory(at: root.appendingPathComponent("【网】folder"), withIntermediateDirectories: true)
+
+        let items = Renamer.plan(roots: [root.path], text: "【网】")
+        let byName = Dictionary(uniqueKeysWithValues: items.map { ($0.oldName, $0) })
+        XCTAssertEqual(Set(byName.keys), ["【网】a.txt", "【网】b.txt", "【网】c.txt", "c【网】.txt", "【网】.txt"], "no folders, no hidden files")
+        XCTAssertNil(byName["【网】a.txt"]?.problem)
+        XCTAssertEqual(byName["【网】b.txt"]?.problem, .nameTaken)
+        XCTAssertEqual(byName["【网】c.txt"]?.problem, .nameTaken)
+        XCTAssertEqual(byName["c【网】.txt"]?.problem, .nameTaken)
+        XCTAssertEqual(byName["【网】.txt"]?.problem, .emptyName)
+        XCTAssertEqual(Renamer.plan(roots: [root.path], text: "【网】", subfolders: false).count, 4)
+
+        let outcome = Renamer.apply(items)
+        XCTAssertEqual(outcome.done.count, 1)
+        XCTAssertTrue(exists("a.txt")); XCTAssertFalse(exists("【网】a.txt"))
+        XCTAssertTrue(exists("sub/【网】b.txt"), "blocked items are untouched")
+
+        // Things that change after the preview are skipped, and the rest of the batch still runs.
+        touch("x【网】.txt"); touch("y【网】.txt")
+        let later = Renamer.plan(roots: [root.path], text: "【网】").filter { $0.oldName.hasPrefix("x") || $0.oldName.hasPrefix("y") }
+        try FileManager.default.removeItem(atPath: root.appendingPathComponent("x【网】.txt").path)
+        touch("y.txt")
+        let skipped = Renamer.apply(later)
+        XCTAssertEqual(skipped.done.count, 0)
+        XCTAssertEqual(skipped.failures.count, 2)
+        XCTAssertTrue(exists("y【网】.txt"))
+
+        let back = Renamer.undo(outcome.done)
+        XCTAssertEqual(back.done.count, 1)
+        XCTAssertTrue(exists("【网】a.txt")); XCTAssertFalse(exists("a.txt"))
+    }
+}

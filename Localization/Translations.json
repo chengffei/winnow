@@ -206,6 +206,24 @@
   "zh-Hans": "%ld 份 · 每份 %@",
   "zh-Hant": "%ld 份 · 每份 %@"
  },
+ "%ld files found.": {
+  "zh-Hans": "找到 %ld 个文件。",
+  "zh-Hant": "找到 %ld 個檔案。",
+  "ja": "%ld 個のファイルが見つかりました。",
+  "ko": "파일 %ld개를 찾았습니다.",
+  "fr": "%ld fichiers trouvés.",
+  "de": "%ld Dateien gefunden.",
+  "es": "%ld archivos encontrados."
+ },
+ "%ld files found; %ld are left out because of a name problem.": {
+  "zh-Hans": "找到 %ld 个文件，其中 %ld 个因名称问题不改。",
+  "zh-Hant": "找到 %ld 個檔案，其中 %ld 個因名稱問題不改。",
+  "ja": "%ld 個見つかりました。うち %ld 個は名前の問題で除外します。",
+  "ko": "파일 %ld개를 찾았습니다. 그중 %ld개는 이름 문제로 제외됩니다.",
+  "fr": "%ld fichiers trouvés ; %ld sont exclus à cause d’un problème de nom.",
+  "de": "%ld Dateien gefunden; %ld bleiben wegen eines Namensproblems außen vor.",
+  "es": "%ld archivos encontrados; %ld se excluyen por un problema de nombre."
+ },
  "%ld folders excluded": {
   "de": "%ld Ordner ausgeschlossen",
   "es": "%ld carpetas excluidas",
@@ -259,6 +277,15 @@
   "ko": "먼저 스캔할 위치를 추가하세요.",
   "zh-Hans": "先添加要扫描的位置。",
   "zh-Hant": "先加入要掃描的位置。"
+ },
+ "Add a location, type the text, then click Find Files.": {
+  "zh-Hans": "添加位置，输入文字，再点「查找文件」。",
+  "zh-Hant": "加入位置，輸入文字，再按「尋找檔案」。",
+  "ja": "場所を追加し、文字を入力して「ファイルを検索」を押します。",
+  "ko": "위치를 추가하고 텍스트를 입력한 뒤 ‘파일 찾기’를 누르세요.",
+  "fr": "Ajoutez un emplacement, saisissez le texte, puis cliquez sur Rechercher.",
+  "de": "Ort hinzufügen, Text eingeben, dann „Dateien suchen“ klicken.",
+  "es": "Añade una ubicación, escribe el texto y pulsa Buscar archivos."
  },
  "All": {
   "de": "Alle",
@@ -566,6 +593,15 @@
   "zh-Hans": "内容没有逐字节核对，处理前建议打开确认。",
   "zh-Hant": "內容沒有逐位元組核對，處理前建議打開確認。"
  },
+ "Current Name": {
+  "zh-Hans": "当前名称",
+  "zh-Hant": "目前名稱",
+  "ja": "現在の名前",
+  "ko": "현재 이름",
+  "fr": "Nom actuel",
+  "de": "Aktueller Name",
+  "es": "Nombre actual"
+ },
  "Delete %@ Items": {
   "de": "%@ Objekte löschen",
   "es": "Eliminar %@ elementos",
@@ -737,6 +773,15 @@
   "zh-Hans": "文件类型",
   "zh-Hant": "檔案類型"
  },
+ "Files are renamed in place. Undo puts the old names back.": {
+  "zh-Hans": "文件原地改名，撤销可恢复原名。",
+  "zh-Hant": "檔案原地改名，還原可恢復原名。",
+  "ja": "ファイルはその場で名称変更されます。取り消すと元の名前に戻ります。",
+  "ko": "파일은 제자리에서 이름이 바뀝니다. 취소하면 원래 이름으로 돌아갑니다.",
+  "fr": "Les fichiers sont renommés sur place. Annuler rétablit les anciens noms.",
+  "de": "Dateien werden an Ort und Stelle umbenannt. Widerrufen stellt die alten Namen wieder her.",
+  "es": "Los archivos se renombran en su sitio. Deshacer recupera los nombres anteriores."
+ },
  "Files that have not changed are not read again on the next scan. Clear the cache if results look out of date.": {
   "zh-Hans": "没变过的文件下次扫描不再重读。结果看起来过时，就清除缓存。",
   "zh-Hant": "沒變過的檔案下次掃描不再重讀。結果看起來過時，就清除快取。",
@@ -755,6 +800,15 @@
   "zh-Hans": "内容完全一样的文件",
   "zh-Hant": "內容完全一樣的檔案"
  },
+ "Find Files": {
+  "zh-Hans": "查找文件",
+  "zh-Hant": "尋找檔案",
+  "ja": "ファイルを検索",
+  "ko": "파일 찾기",
+  "fr": "Rechercher",
+  "de": "Dateien suchen",
+  "es": "Buscar archivos"
+ },
  "Find empty folders": {
   "de": "Leere Ordner suchen",
   "es": "Buscar carpetas vacías",
@@ -763,6 +817,24 @@
   "ko": "빈 폴더 찾기",
   "zh-Hans": "找空文件夹",
   "zh-Hant": "找空資料夾"
+ },
+ "Finds files whose names contain the text and takes it out. Nothing changes until you click Rename.": {
+  "zh-Hans": "找出文件名含有这段文字的文件，并把它删掉。点「重命名」之前不会改动任何文件。",
+  "zh-Hant": "找出檔名含有這段文字的檔案，並把它刪掉。按「重新命名」之前不會改動任何檔案。",
+  "ja": "名前にこの文字を含むファイルを探し、文字を取り除きます。「名称変更」を押すまで何も変わりません。",
+  "ko": "이름에 이 텍스트가 들어 있는 파일을 찾아 텍스트를 지웁니다. ‘이름 변경’을 누르기 전에는 아무것도 바뀌지 않습니다.",
+  "fr": "Trouve les fichiers dont le nom contient ce texte et le retire. Rien ne change avant de cliquer sur Renommer.",
+  "de": "Findet Dateien, deren Name den Text enthält, und entfernt ihn. Erst „Umbenennen“ ändert etwas.",
+  "es": "Busca archivos cuyo nombre contiene el texto y lo quita. Nada cambia hasta que pulses Renombrar."
+ },
+ "Folder": {
+  "zh-Hans": "文件夹",
+  "zh-Hant": "資料夾",
+  "ja": "フォルダ",
+  "ko": "폴더",
+  "fr": "Dossier",
+  "de": "Ordner",
+  "es": "Carpeta"
  },
  "Folders with nothing in them": {
   "de": "Ordner ohne Inhalt",
@@ -826,6 +898,15 @@
   "ko": "진행 중",
   "zh-Hans": "进行中",
   "zh-Hant": "進行中"
+ },
+ "Include subfolders": {
+  "zh-Hans": "包含子文件夹",
+  "zh-Hant": "包含子資料夾",
+  "ja": "サブフォルダを含める",
+  "ko": "하위 폴더 포함",
+  "fr": "Inclure les sous-dossiers",
+  "de": "Unterordner einbeziehen",
+  "es": "Incluir subcarpetas"
  },
  "Items go into a dated “%@…” folder at the top of their drive, keeping their folder structure. Items on this Mac’s disk go into your home folder. Delete the folder yourself once you are sure, or restore everything in one click.": {
   "de": "Objekte kommen in einen datierten Ordner „%@…“ oben auf ihrem Laufwerk, mit ihrer Ordnerstruktur. Objekte auf dem Laufwerk dieses Macs landen in deinem Benutzerordner. Lösche den Ordner selbst, wenn du sicher bist, oder stelle alles mit einem Klick wieder her.",
@@ -1043,6 +1124,24 @@
   "de": "Name oder Muster, z. B. node_modules oder *.tmp",
   "es": "Nombre o patrón, p. ej. node_modules o *.tmp"
  },
+ "Name taken": {
+  "zh-Hans": "名称已占用",
+  "zh-Hant": "名稱已被使用",
+  "ja": "名前が使用中",
+  "ko": "이름 중복",
+  "fr": "Nom déjà pris",
+  "de": "Name vergeben",
+  "es": "Nombre en uso"
+ },
+ "Name would be empty": {
+  "zh-Hans": "名称会变空",
+  "zh-Hant": "名稱會變空",
+  "ja": "名前が空になる",
+  "ko": "이름이 비게 됨",
+  "fr": "Nom vide",
+  "de": "Name wäre leer",
+  "es": "Nombre vacío"
+ },
  "Narrow down by size": {
   "de": "Nach Größe eingrenzen",
   "es": "Filtrar por tamaño",
@@ -1079,6 +1178,15 @@
   "zh-Hans": "网络卷不支持废纸篓，选了会直接删除，所以这里不可选。",
   "zh-Hant": "網路磁碟不支援垃圾桶，選了會直接刪除，所以這裡不可選。"
  },
+ "New Name": {
+  "zh-Hans": "新名称",
+  "zh-Hant": "新名稱",
+  "ja": "新しい名前",
+  "ko": "새 이름",
+  "fr": "Nouveau nom",
+  "de": "Neuer Name",
+  "es": "Nombre nuevo"
+ },
  "New Scan": {
   "de": "Neuer Scan",
   "es": "Nuevo análisis",
@@ -1097,6 +1205,15 @@
   "zh-Hans": "没有权限",
   "zh-Hant": "沒有權限"
  },
+ "No Matches": {
+  "zh-Hans": "没有匹配",
+  "zh-Hant": "沒有符合項目",
+  "ja": "一致なし",
+  "ko": "일치 항목 없음",
+  "fr": "Aucune correspondance",
+  "de": "Keine Treffer",
+  "es": "Sin coincidencias"
+ },
  "No duplicate files found": {
   "de": "Keine doppelten Dateien gefunden",
   "es": "No se encontraron duplicados",
@@ -1114,6 +1231,15 @@
   "ko": "빈 폴더가 없습니다",
   "zh-Hans": "没有找到空文件夹",
   "zh-Hant": "沒有找到空資料夾"
+ },
+ "No file name contains “%@”.": {
+  "zh-Hans": "没有文件名包含「%@」。",
+  "zh-Hant": "沒有檔名包含「%@」。",
+  "ja": "「%@」を含むファイル名はありません。",
+  "ko": "‘%@’이(가) 들어간 파일 이름이 없습니다.",
+  "fr": "Aucun nom de fichier ne contient « %@ ».",
+  "de": "Kein Dateiname enthält „%@“.",
+  "es": "Ningún nombre de archivo contiene «%@»."
  },
  "No marked item changed since the scan": {
   "de": "Kein markiertes Objekt hat sich seit dem Scan geändert",
@@ -1159,6 +1285,15 @@
   "ko": "연결 안 됨",
   "zh-Hans": "未连接",
   "zh-Hant": "未連線"
+ },
+ "Nothing Found Yet": {
+  "zh-Hans": "还没有查找",
+  "zh-Hant": "尚未尋找",
+  "ja": "まだ検索していません",
+  "ko": "아직 찾지 않음",
+  "fr": "Aucune recherche",
+  "de": "Noch nichts gesucht",
+  "es": "Aún no hay resultados"
  },
  "Nothing has been removed yet": {
   "de": "Noch wurde nichts entfernt",
@@ -1331,6 +1466,15 @@
   "zh-Hans": "删除",
   "zh-Hant": "刪除"
  },
+ "Remove Text from Names": {
+  "zh-Hans": "清理文件名",
+  "zh-Hant": "清理檔名",
+  "ja": "ファイル名から文字を削除",
+  "ko": "파일 이름에서 텍스트 제거",
+  "fr": "Retirer du texte des noms",
+  "de": "Text aus Namen entfernen",
+  "es": "Quitar texto de los nombres"
+ },
  "Remove this location": {
   "de": "Diesen Ort entfernen",
   "es": "Quitar esta ubicación",
@@ -1339,6 +1483,33 @@
   "ko": "이 위치 제거",
   "zh-Hans": "移除这个位置",
   "zh-Hant": "移除這個位置"
+ },
+ "Rename %ld Files": {
+  "zh-Hans": "重命名 %ld 个文件",
+  "zh-Hant": "重新命名 %ld 個檔案",
+  "ja": "%ld 個のファイルを名称変更",
+  "ko": "파일 %ld개 이름 변경",
+  "fr": "Renommer %ld fichiers",
+  "de": "%ld Dateien umbenennen",
+  "es": "Renombrar %ld archivos"
+ },
+ "Renamed %ld files.": {
+  "zh-Hans": "已重命名 %ld 个文件。",
+  "zh-Hant": "已重新命名 %ld 個檔案。",
+  "ja": "%ld 個のファイルを名称変更しました。",
+  "ko": "파일 %ld개의 이름을 바꿨습니다.",
+  "fr": "%ld fichiers renommés.",
+  "de": "%ld Dateien umbenannt.",
+  "es": "%ld archivos renombrados."
+ },
+ "Renamed %ld files; %ld were skipped because they changed or the name was taken.": {
+  "zh-Hans": "已重命名 %ld 个文件；%ld 个已变动或名称被占用，已跳过。",
+  "zh-Hant": "已重新命名 %ld 個檔案；%ld 個已變動或名稱被使用，已略過。",
+  "ja": "%ld 個を名称変更しました。%ld 個は変更されたか名前が使用中のためスキップしました。",
+  "ko": "파일 %ld개의 이름을 바꿨습니다. %ld개는 변경되었거나 이름이 중복되어 건너뛰었습니다.",
+  "fr": "%ld fichiers renommés ; %ld ignorés car modifiés ou nom déjà pris.",
+  "de": "%ld Dateien umbenannt; %ld übersprungen, weil sie sich geändert haben oder der Name vergeben ist.",
+  "es": "%ld archivos renombrados; %ld omitidos porque cambiaron o el nombre está en uso."
  },
  "Restart Now": {
   "zh-Hans": "立即重新启动",
@@ -1375,6 +1546,24 @@
   "ko": "항목 %@개를 복원했고 %@개는 복원하지 못했습니다(같은 이름이 있거나 접근할 수 없음).",
   "zh-Hans": "已还原 %@ 项，%@ 项没能还原（原位置已有同名项目或无法访问）。",
   "zh-Hant": "已還原 %@ 項，%@ 項沒能還原（原位置已有同名項目或無法存取）。"
+ },
+ "Restored %ld names.": {
+  "zh-Hans": "已恢复 %ld 个原名。",
+  "zh-Hant": "已恢復 %ld 個原名。",
+  "ja": "%ld 個の名前を元に戻しました。",
+  "ko": "이름 %ld개를 되돌렸습니다.",
+  "fr": "%ld noms rétablis.",
+  "de": "%ld Namen wiederhergestellt.",
+  "es": "%ld nombres restaurados."
+ },
+ "Restored %ld names; %ld could not be restored.": {
+  "zh-Hans": "已恢复 %ld 个原名；%ld 个无法恢复。",
+  "zh-Hant": "已恢復 %ld 個原名；%ld 個無法恢復。",
+  "ja": "%ld 個を元に戻しました。%ld 個は戻せませんでした。",
+  "ko": "이름 %ld개를 되돌렸습니다. %ld개는 되돌리지 못했습니다.",
+  "fr": "%ld noms rétablis ; %ld n’ont pas pu l’être.",
+  "de": "%ld Namen wiederhergestellt; %ld ließen sich nicht wiederherstellen.",
+  "es": "%ld nombres restaurados; %ld no se pudieron restaurar."
  },
  "Review and Clean Up…": {
   "de": "Prüfen und aufräumen …",
@@ -1538,6 +1727,15 @@
   "zh-Hans": "不再排除",
   "zh-Hant": "不再排除"
  },
+ "Text to remove": {
+  "zh-Hans": "要删除的文字",
+  "zh-Hant": "要刪除的文字",
+  "ja": "削除する文字",
+  "ko": "제거할 텍스트",
+  "fr": "Texte à retirer",
+  "de": "Zu entfernender Text",
+  "es": "Texto a quitar"
+ },
  "The new language applies after Winnow restarts.": {
   "zh-Hans": "新语言在 Winnow 重新启动后生效。",
   "zh-Hant": "新語言在 Winnow 重新啟動後生效。",
@@ -1681,6 +1879,15 @@
   "ko": "확인하려면 '%@' 입력",
   "zh-Hans": "输入「%@」确认",
   "zh-Hant": "輸入「%@」確認"
+ },
+ "Undo Last Rename (%ld)": {
+  "zh-Hans": "撤销上次重命名（%ld）",
+  "zh-Hant": "還原上次重新命名（%ld）",
+  "ja": "前回の名称変更を取り消す（%ld）",
+  "ko": "마지막 이름 변경 취소(%ld)",
+  "fr": "Annuler le dernier renommage (%ld)",
+  "de": "Letztes Umbenennen widerrufen (%ld)",
+  "es": "Deshacer último cambio (%ld)"
  },
  "Unmark All": {
   "de": "Alle Markierungen entfernen",

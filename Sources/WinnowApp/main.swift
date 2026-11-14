@@ -31,7 +31,7 @@ struct WinnowApp: App {
 }
 
 /// `WinnowApp --snapshot out.png` renders a screen with demo data offscreen and exits.
-/// WINNOW_SNAPSHOT_SCREEN = new | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
+/// WINNOW_SNAPSHOT_SCREEN = new | rename | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
 @MainActor
 enum Snapshot {
     static func run(to file: URL, screen: String) {
@@ -49,6 +49,9 @@ enum Snapshot {
             model.job = Demo.job()
             model.route = .scanning
             root = AnyView(ContentView().environment(model))
+        case "rename":
+            model.route = .rename
+            root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.rename() }.environment(model))
         case "empty":
             model.route = .result(record.id, .emptyFolders)
             root = AnyView(ContentView().environment(model))
@@ -115,6 +118,15 @@ enum Demo {
                            skipped: [SkippedItem(path: "/Volumes/hdd0/@eaDir", reason: "Permission denied (os error 13)")])
         Marking.apply(.oldest, to: &r)
         return r
+    }
+
+    static func rename() -> RenameView {
+        let dir = "/Volumes/hdd0/Books"
+        let names = ["【书香网】三体.epub", "【书香网】球状闪电.epub", "活着【书香网】.pdf", "【书香网】.pdf", "【书香网】围城.pdf"]
+        var items = names.map { Renamer.Item(path: dir + "/" + $0, newName: Renamer.strip($0, removing: "【书香网】")) }
+        items[3] = Renamer.Item(path: dir + "/" + names[3], newName: ".pdf", problem: .emptyName)
+        items[4] = Renamer.Item(path: dir + "/Old/" + names[4], newName: "围城.pdf", problem: .nameTaken)
+        return RenameView(folders: [dir], text: "【书香网】", items: items, searched: true)
     }
 
     static func job() -> Job {

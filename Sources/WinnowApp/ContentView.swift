@@ -15,6 +15,8 @@ struct ContentView: View {
                 NewScanView()
             case .scanning:
                 ScanningView()
+            case .rename:
+                RenameView()
             case .result(let id, let category):
                 switch category {
                 case .duplicates: DuplicatesView(id: id).id(id)
@@ -40,6 +42,8 @@ struct Sidebar: View {
         List(selection: $model.route) {
             Label(L("New Scan"), systemImage: "plus")
                 .tag(Route.newScan)
+            Label(L("Remove Text from Names"), systemImage: "pencil.line")
+                .tag(Route.rename)
 
             if let job = model.job {
                 Section(L("In Progress")) {

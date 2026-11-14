@@ -11,6 +11,7 @@ enum Category: String, Hashable {
 enum Route: Hashable {
     case newScan
     case scanning
+    case rename
     case result(UUID, Category)
 }
 
