@@ -342,4 +342,59 @@ final class UnnesterTests: XCTestCase {
         XCTAssertTrue(kept.trashed.isEmpty)
         XCTAssertTrue(exists("src/C")); XCTAssertTrue(exists("dest/D"))
     }
+
+    func testFilesMoveOutAndTakeFolderName() throws {
+        dir("dl/Movie.2023"); touch("dl/Movie.2023/abc.mkv"); touch("dl/Movie.2023/.DS_Store")
+        dir("dl/Show"); touch("dl/Show/e2.mkv"); touch("dl/Show/e1.mkv"); touch("dl/Show/e10.srt")
+        dir("dl/Big"); for i in 1...4 { touch("dl/Big/\(i).txt") }           // over the limit
+        dir("dl/Mixed/sub"); touch("dl/Mixed/a.txt")                          // files and a folder
+        dir("dl/Pack"); touch("dl/Pack/src.tar.gz")
+        dir("dl/Taken"); touch("dl/Taken/x.pdf"); touch("dl/Taken.pdf")       // new name already there
+        dir("dl/Same/Same"); touch("dl/Same/Same/f.txt")                      // inner takes the outer's place
+        dir("dl/Bare"); touch("dl/Bare/README")                               // no extension: also takes its place
+        dir("dl/Skip"); touch("dl/Skip/s.txt")
+
+        XCTAssertEqual(Unnester.plan(roots: [p("dl")]).map(\.outer), [p("dl/Same")], "files are off by default")
+        XCTAssertEqual(Unnester.plan(roots: [p("dl")], maxFiles: 1).map(\.outer),
+                       [p("dl/Bare"), p("dl/Movie.2023"), p("dl/Pack"), p("dl/Same"), p("dl/Skip"), p("dl/Taken")])
+        var items = Unnester.plan(roots: [p("dl")], maxFiles: 3)
+        XCTAssertEqual(items.map(\.outer), [p("dl/Bare"), p("dl/Movie.2023"), p("dl/Pack"), p("dl/Same"), p("dl/Show"), p("dl/Skip"), p("dl/Taken")])
+        XCTAssertEqual(Unnester.names(for: items[4], rename: true), ["Show 1.mkv", "Show 2.mkv", "Show 3.srt"])
+        XCTAssertEqual(Unnester.names(for: items[4], rename: false), ["e1.mkv", "e2.mkv", "e10.srt"])
+        items[5].include = false
+
+        let batch = Unnester.apply(items, trashEmptied: true, rename: true)
+        XCTAssertEqual(batch.failures, [p("dl/Taken/x.pdf")])
+        for f in ["dl/Movie.2023.mkv", "dl/Show 1.mkv", "dl/Show 2.mkv", "dl/Show 3.srt", "dl/Pack.tar.gz", "dl/Same/f.txt", "dl/Bare"] {
+            XCTAssertTrue(exists(f), f)
+        }
+        var isDir: ObjCBool = true
+        FileManager.default.fileExists(atPath: p("dl/Bare"), isDirectory: &isDir)
+        XCTAssertFalse(isDir.boolValue, "the file replaced its folder")
+        XCTAssertFalse(exists("dl/Same/Same")); XCTAssertFalse(exists("dl/Movie.2023")); XCTAssertFalse(exists("dl/Show"))
+        XCTAssertTrue(exists("dl/Skip/s.txt"), "unticked rows are left alone")
+        XCTAssertTrue(exists("dl/Taken/x.pdf")); XCTAssertTrue(exists("dl/Big/1.txt")); XCTAssertTrue(exists("dl/Mixed/a.txt"))
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: p("dl")).filter { $0.contains(".winnow-") }, [])
+
+        let saved = try JSONDecoder().decode(Unnester.Batch.self, from: JSONEncoder().encode(batch))
+        let back = Unnester.undo(saved)
+        XCTAssertTrue(back.failures.isEmpty, "\(back.failures)")
+        XCTAssertEqual(back.done.count, batch.moves.count)
+        for f in ["dl/Movie.2023/abc.mkv", "dl/Movie.2023/.DS_Store", "dl/Show/e1.mkv", "dl/Show/e2.mkv", "dl/Show/e10.srt",
+                  "dl/Pack/src.tar.gz", "dl/Same/Same/f.txt", "dl/Bare/README"] {
+            XCTAssertTrue(exists(f), f)
+        }
+        XCTAssertFalse(exists("dl/Movie.2023.mkv")); XCTAssertFalse(exists("dl/Show 1.mkv"))
+
+        // Without renaming, to a chosen place; taking the folder's own place needs the folder trashed.
+        dir("out")
+        let plain = Unnester.apply(Unnester.plan(roots: [p("dl")], maxFiles: 1).filter { $0.outer == p("dl/Movie.2023") }, to: p("out"), trashEmptied: false)
+        XCTAssertTrue(exists("out/abc.mkv")); XCTAssertTrue(exists("dl/Movie.2023")); XCTAssertTrue(plain.trashed.isEmpty)
+        let stuck = Unnester.apply([Unnester.Item(outer: p("dl/Same"), inner: p("dl/Same/Same"))], trashEmptied: false)
+        XCTAssertEqual(stuck.failures, [p("dl/Same/Same")])
+
+        // A record written before `log` existed still decodes.
+        let old = try JSONDecoder().decode(Unnester.Batch.self, from: Data(#"{"moves":[],"trashed":[],"failures":[]}"#.utf8))
+        XCTAssertNil(old.log)
+    }
 }

@@ -242,15 +242,6 @@
   "de": "%ld Ordner gefunden.",
   "es": "%ld carpetas encontradas."
  },
- "%ld found. Choose where to move them.": {
-  "zh-Hans": "找到 %ld 个，请选择移到哪里。",
-  "zh-Hant": "找到 %ld 個，請選擇移到哪裡。",
-  "ja": "%ld 個見つかりました。移動先を選んでください。",
-  "ko": "%ld개를 찾았습니다. 옮길 위치를 고르세요.",
-  "fr": "%ld trouvés. Choisissez où les déplacer.",
-  "de": "%ld gefunden. Wähle, wohin sie sollen.",
-  "es": "%ld encontradas. Elige adónde moverlas."
- },
  "1 folder excluded": {
   "de": "1 Ordner ausgeschlossen",
   "es": "1 carpeta excluida",
@@ -728,6 +719,15 @@
   "zh-Hans": "重复文件",
   "zh-Hant": "重複檔案"
  },
+ "Each item keeps its extension. Several files from one folder are numbered: Name 1, Name 2.": {
+  "de": "Die Endung bleibt. Mehrere Dateien aus einem Ordner werden nummeriert: Name 1, Name 2.",
+  "es": "Se conserva la extensión. Varios archivos de una carpeta se numeran: Nombre 1, Nombre 2.",
+  "fr": "L’extension est conservée. Plusieurs fichiers d’un même dossier sont numérotés : Nom 1, Nom 2.",
+  "ja": "拡張子はそのままです。同じフォルダに複数のファイルがあるときは番号を付けます：名前 1、名前 2。",
+  "ko": "확장자는 유지됩니다. 한 폴더에 파일이 여러 개면 번호를 붙입니다: 이름 1, 이름 2.",
+  "zh-Hans": "扩展名保留。同一文件夹里有多个文件时加数字后缀：名称 1、名称 2。",
+  "zh-Hant": "副檔名保留。同一資料夾裡有多個檔案時加數字後綴：名稱 1、名稱 2。"
+ },
  "Empty Folders": {
   "de": "Leere Ordner",
   "es": "Carpetas vacías",
@@ -890,14 +890,14 @@
   "de": "Findet Dateien, deren Name einen der Texte enthält, und entfernt alle. Erst „Umbenennen“ ändert etwas.",
   "es": "Busca archivos cuyo nombre contiene alguno de los textos y los quita todos. Nada cambia hasta que pulses Renombrar."
  },
- "Finds folders whose only content is one folder, such as A/B, and moves B to the place you choose.": {
-  "zh-Hans": "找出里面只有一个文件夹的文件夹（如 A/B），把 B 移到你选的位置。",
-  "zh-Hant": "找出裡面只有一個資料夾的資料夾（如 A/B），把 B 移到你選的位置。",
-  "ja": "中身がフォルダ 1 つだけのフォルダ（A/B など）を探し、B を指定した場所へ移動します。",
-  "ko": "폴더 하나만 들어 있는 폴더(예: A/B)를 찾아 B를 원하는 위치로 옮깁니다.",
-  "fr": "Trouve les dossiers qui ne contiennent qu’un dossier, comme A/B, et déplace B à l’endroit choisi.",
-  "de": "Findet Ordner, die nur einen Ordner enthalten, etwa A/B, und verschiebt B an den gewählten Ort.",
-  "es": "Busca carpetas que solo contienen otra carpeta, como A/B, y mueve B al lugar que elijas."
+ "Finds folders that only wrap one folder or a few files, and moves what is inside out.": {
+  "de": "Findet Ordner, die nur einen Ordner oder wenige Dateien umhüllen, und holt den Inhalt heraus.",
+  "es": "Busca carpetas que solo envuelven una carpeta o unos pocos archivos, y saca su contenido.",
+  "fr": "Trouve les dossiers qui n’enveloppent qu’un dossier ou quelques fichiers, et en sort le contenu.",
+  "ja": "フォルダ 1 つ、または数個のファイルだけを包んでいるフォルダを探し、中身を外へ移動します。",
+  "ko": "폴더 하나 또는 파일 몇 개만 감싸고 있는 폴더를 찾아 내용물을 밖으로 옮깁니다.",
+  "zh-Hans": "找出只包着一个文件夹或几个文件的文件夹，把里面的内容移出来。",
+  "zh-Hant": "找出只包著一個資料夾或幾個檔案的資料夾，把裡面的內容移出來。"
  },
  "Folder": {
   "zh-Hans": "文件夹",
@@ -908,23 +908,14 @@
   "de": "Ordner",
   "es": "Carpeta"
  },
- "Folder to Move": {
-  "zh-Hans": "要移动的文件夹",
-  "zh-Hant": "要移動的資料夾",
-  "ja": "移動するフォルダ",
-  "ko": "옮길 폴더",
-  "fr": "Dossier à déplacer",
-  "de": "Zu verschiebender Ordner",
-  "es": "Carpeta a mover"
- },
- "Folders are moved, not copied. Undo puts them back.": {
-  "zh-Hans": "文件夹是移动而非复制，撤销可放回原处。",
-  "zh-Hant": "資料夾是移動而非拷貝，還原可放回原處。",
-  "ja": "フォルダはコピーではなく移動します。取り消すと元に戻ります。",
-  "ko": "폴더는 복사가 아니라 이동됩니다. 취소하면 제자리로 돌아갑니다.",
-  "fr": "Les dossiers sont déplacés, pas copiés. Annuler les remet en place.",
-  "de": "Ordner werden verschoben, nicht kopiert. Widerrufen legt sie zurück.",
-  "es": "Las carpetas se mueven, no se copian. Deshacer las devuelve."
+ "Folders holding only files count, up to: %ld": {
+  "de": "Auch Ordner nur mit Dateien, höchstens: %ld",
+  "es": "Incluir carpetas solo con archivos, como máximo: %ld",
+  "fr": "Inclure les dossiers ne contenant que des fichiers, au plus : %ld",
+  "ja": "ファイルだけのフォルダも対象、ファイル数の上限：%ld",
+  "ko": "파일만 든 폴더도 포함, 파일 수 상한: %ld",
+  "zh-Hans": "只装文件的文件夹也算，文件数上限：%ld",
+  "zh-Hant": "只裝檔案的資料夾也算，檔案數上限：%ld"
  },
  "Folders with nothing in them": {
   "de": "Ordner ohne Inhalt",
@@ -997,6 +988,24 @@
   "fr": "Inclure les sous-dossiers",
   "de": "Unterordner einbeziehen",
   "es": "Incluir subcarpetas"
+ },
+ "Item to Move": {
+  "de": "Zu verschiebendes Objekt",
+  "es": "Elemento a mover",
+  "fr": "Élément à déplacer",
+  "ja": "移動する項目",
+  "ko": "옮길 항목",
+  "zh-Hans": "要移动的项目",
+  "zh-Hant": "要移動的項目"
+ },
+ "Items are moved, not copied. Undo puts them back.": {
+  "de": "Objekte werden verschoben, nicht kopiert. Widerrufen legt sie zurück.",
+  "es": "Los elementos se mueven, no se copian. Deshacer los devuelve.",
+  "fr": "Les éléments sont déplacés, pas copiés. Annuler les remet en place.",
+  "ja": "項目はコピーではなく移動します。取り消すと元に戻ります。",
+  "ko": "항목은 복사가 아니라 이동됩니다. 취소하면 제자리로 돌아갑니다.",
+  "zh-Hans": "项目是移动而非复制，撤销可放回原处。",
+  "zh-Hant": "項目是移動而非拷貝，還原可放回原處。"
  },
  "Items go into a dated “%@…” folder at the top of their drive, keeping their folder structure. Items on this Mac’s disk go into your home folder. Delete the folder yourself once you are sure, or restore everything in one click.": {
   "de": "Objekte kommen in einen datierten Ordner „%@…“ oben auf ihrem Laufwerk, mit ihrer Ordnerstruktur. Objekte auf dem Laufwerk dieses Macs landen in deinem Benutzerordner. Lösche den Ordner selbst, wenn du sicher bist, oder stelle alles mit einem Klick wieder her.",
@@ -1160,14 +1169,14 @@
   "zh-Hans": "移动 %@ 项",
   "zh-Hant": "移動 %@ 項"
  },
- "Move %ld Folders": {
-  "zh-Hans": "移动 %ld 个文件夹",
-  "zh-Hant": "移動 %ld 個資料夾",
-  "ja": "%ld 個のフォルダを移動",
-  "ko": "폴더 %ld개 이동",
-  "fr": "Déplacer %ld dossiers",
-  "de": "%ld Ordner verschieben",
-  "es": "Mover %ld carpetas"
+ "Move %ld Items": {
+  "de": "%ld Objekte verschieben",
+  "es": "Mover %ld elementos",
+  "fr": "Déplacer %ld éléments",
+  "ja": "%ld 項目を移動",
+  "ko": "%ld개 항목 이동",
+  "zh-Hans": "移动 %ld 项",
+  "zh-Hant": "移動 %ld 項"
  },
  "Move emptied folders to the Trash": {
   "zh-Hans": "变空的外层文件夹移到废纸篓",
@@ -1214,41 +1223,41 @@
   "zh-Hans": "已移到暂存文件夹 %@ 项，释放 %@。",
   "zh-Hant": "已移到暫存資料夾 %@ 項，釋放 %@。"
  },
- "Moved %ld folders back.": {
-  "zh-Hans": "已放回 %ld 个文件夹。",
-  "zh-Hant": "已放回 %ld 個資料夾。",
-  "ja": "%ld 個のフォルダを元に戻しました。",
-  "ko": "폴더 %ld개를 되돌렸습니다.",
-  "fr": "%ld dossiers remis en place.",
-  "de": "%ld Ordner zurückgelegt.",
-  "es": "%ld carpetas devueltas."
+ "Moved %ld items back.": {
+  "de": "%ld Objekte zurückgelegt.",
+  "es": "%ld elementos devueltos.",
+  "fr": "%ld éléments remis en place.",
+  "ja": "%ld 項目を元に戻しました。",
+  "ko": "%ld개 항목을 되돌렸습니다.",
+  "zh-Hans": "已放回 %ld 项。",
+  "zh-Hant": "已放回 %ld 項。"
  },
- "Moved %ld folders back; %ld could not be restored.": {
-  "zh-Hans": "已放回 %ld 个文件夹；%ld 个无法恢复。",
-  "zh-Hant": "已放回 %ld 個資料夾；%ld 個無法恢復。",
-  "ja": "%ld 個を元に戻しました。%ld 個は戻せませんでした。",
-  "ko": "폴더 %ld개를 되돌렸습니다. %ld개는 되돌리지 못했습니다.",
-  "fr": "%ld dossiers remis en place ; %ld n’ont pas pu l’être.",
-  "de": "%ld Ordner zurückgelegt; %ld ließen sich nicht wiederherstellen.",
-  "es": "%ld carpetas devueltas; %ld no se pudieron restaurar."
+ "Moved %ld items back; %ld could not be restored.": {
+  "de": "%ld Objekte zurückgelegt; %ld ließen sich nicht wiederherstellen.",
+  "es": "%ld elementos devueltos; %ld no se pudieron restaurar.",
+  "fr": "%ld éléments remis en place ; %ld n’ont pas pu l’être.",
+  "ja": "%ld 項目を元に戻しました。%ld 項目は戻せませんでした。",
+  "ko": "%ld개 항목을 되돌렸습니다. %ld개는 되돌리지 못했습니다.",
+  "zh-Hans": "已放回 %ld 项；%ld 项无法恢复。",
+  "zh-Hant": "已放回 %ld 項；%ld 項無法恢復。"
  },
- "Moved %ld folders.": {
-  "zh-Hans": "已移动 %ld 个文件夹。",
-  "zh-Hant": "已移動 %ld 個資料夾。",
-  "ja": "%ld 個のフォルダを移動しました。",
-  "ko": "폴더 %ld개를 옮겼습니다.",
-  "fr": "%ld dossiers déplacés.",
-  "de": "%ld Ordner verschoben.",
-  "es": "%ld carpetas movidas."
+ "Moved %ld items.": {
+  "de": "%ld Objekte verschoben.",
+  "es": "%ld elementos movidos.",
+  "fr": "%ld éléments déplacés.",
+  "ja": "%ld 項目を移動しました。",
+  "ko": "%ld개 항목을 옮겼습니다.",
+  "zh-Hans": "已移动 %ld 项。",
+  "zh-Hant": "已移動 %ld 項。"
  },
- "Moved %ld folders; %ld were skipped because they changed or the name is taken in the destination.": {
-  "zh-Hans": "已移动 %ld 个文件夹；%ld 个已变动或目标位置有同名项，已跳过。",
-  "zh-Hant": "已移動 %ld 個資料夾；%ld 個已變動或目標位置有同名項目，已略過。",
-  "ja": "%ld 個を移動しました。%ld 個は変更されたか移動先に同名があるためスキップしました。",
-  "ko": "폴더 %ld개를 옮겼습니다. %ld개는 변경되었거나 대상에 같은 이름이 있어 건너뛰었습니다.",
-  "fr": "%ld dossiers déplacés ; %ld ignorés car modifiés ou nom déjà pris dans la destination.",
-  "de": "%ld Ordner verschoben; %ld übersprungen, weil sie sich geändert haben oder der Name am Ziel vergeben ist.",
-  "es": "%ld carpetas movidas; %ld omitidas porque cambiaron o el nombre ya existe en el destino."
+ "Moved %ld items; %ld folders were skipped because they changed or a name is taken in the destination.": {
+  "de": "%ld Objekte verschoben; %ld Ordner übersprungen, weil sie sich geändert haben oder ein Name am Ziel vergeben ist.",
+  "es": "%ld elementos movidos; %ld carpetas omitidas porque cambiaron o un nombre ya existe en el destino.",
+  "fr": "%ld éléments déplacés ; %ld dossiers ignorés car modifiés ou nom déjà pris dans la destination.",
+  "ja": "%ld 項目を移動しました。%ld 個のフォルダは変更されたか移動先に同名があるためスキップしました。",
+  "ko": "%ld개 항목을 옮겼습니다. 폴더 %ld개는 변경되었거나 대상에 같은 이름이 있어 건너뛰었습니다.",
+  "zh-Hans": "已移动 %ld 项；%ld 个文件夹已变动或目标位置有同名项，已跳过。",
+  "zh-Hant": "已移動 %ld 項；%ld 個資料夾已變動或目標位置有同名項目，已略過。"
  },
  "Music": {
   "de": "Musik",
@@ -1258,6 +1267,24 @@
   "ko": "음악",
   "zh-Hans": "音乐",
   "zh-Hant": "音樂"
+ },
+ "Name After Moving": {
+  "de": "Name nach dem Verschieben",
+  "es": "Nombre tras mover",
+  "fr": "Nom après déplacement",
+  "ja": "移動後の名前",
+  "ko": "이동 후 이름",
+  "zh-Hans": "移动后的名称",
+  "zh-Hant": "移動後的名稱"
+ },
+ "Name moved items after the folder they were in": {
+  "de": "Nach dem bisherigen Ordner benennen",
+  "es": "Nombrar como la carpeta de origen",
+  "fr": "Nommer d’après le dossier d’origine",
+  "ja": "元の親フォルダの名前を付ける",
+  "ko": "원래 상위 폴더 이름으로 바꾸기",
+  "zh-Hans": "用原父文件夹的名称命名",
+  "zh-Hant": "用原上層資料夾的名稱命名"
  },
  "Name or pattern, e.g. node_modules or *.tmp": {
   "zh-Hans": "名称或通配符，如 node_modules 或 *.tmp",
@@ -1394,14 +1421,14 @@
   "de": "Kein Dateiname enthält %@.",
   "es": "Ningún nombre de archivo contiene %@."
  },
- "No folder here holds just one folder.": {
-  "zh-Hans": "这里没有只装着一个文件夹的文件夹。",
-  "zh-Hant": "這裡沒有只裝著一個資料夾的資料夾。",
-  "ja": "フォルダ 1 つだけを含むフォルダはありません。",
-  "ko": "폴더 하나만 들어 있는 폴더가 없습니다.",
-  "fr": "Aucun dossier ici ne contient un seul dossier.",
-  "de": "Hier enthält kein Ordner nur einen einzelnen Ordner.",
-  "es": "Aquí ninguna carpeta contiene solo una carpeta."
+ "No folder here only wraps one folder or a few files.": {
+  "de": "Hier umhüllt kein Ordner nur einen Ordner oder wenige Dateien.",
+  "es": "Aquí ninguna carpeta envuelve solo una carpeta o unos pocos archivos.",
+  "fr": "Aucun dossier ici n’enveloppe qu’un dossier ou quelques fichiers.",
+  "ja": "フォルダ 1 つや数個のファイルだけを包むフォルダはありません。",
+  "ko": "폴더 하나나 파일 몇 개만 감싼 폴더가 없습니다.",
+  "zh-Hans": "这里没有只包着一个文件夹或几个文件的文件夹。",
+  "zh-Hant": "這裡沒有只包著一個資料夾或幾個檔案的資料夾。"
  },
  "No marked item changed since the scan": {
   "de": "Kein markiertes Objekt hat sich seit dem Scan geändert",
@@ -1745,6 +1772,15 @@
   "zh-Hans": "核对并处理…",
   "zh-Hant": "核對並處理…"
  },
+ "Same Place as the Folder": {
+  "de": "Gleicher Ort wie der Ordner",
+  "es": "Mismo lugar que la carpeta",
+  "fr": "Même endroit que le dossier",
+  "ja": "元のフォルダと同じ場所",
+  "ko": "원래 폴더가 있는 위치",
+  "zh-Hans": "原文件夹所在位置",
+  "zh-Hant": "原資料夾所在位置"
+ },
  "Scan finished": {
   "de": "Scan abgeschlossen",
   "es": "Análisis terminado",
@@ -2032,6 +2068,15 @@
   "fr": "Vers : %@",
   "de": "Nach: %@",
   "es": "A: %@"
+ },
+ "To: Same Place as the Folder": {
+  "de": "Nach: gleicher Ort wie der Ordner",
+  "es": "A: mismo lugar que la carpeta",
+  "fr": "Vers : même endroit que le dossier",
+  "ja": "移動先：元のフォルダと同じ場所",
+  "ko": "대상: 원래 폴더가 있는 위치",
+  "zh-Hans": "移到：原文件夹所在位置",
+  "zh-Hant": "移到：原資料夾所在位置"
  },
  "Today %@": {
   "de": "Heute %@",

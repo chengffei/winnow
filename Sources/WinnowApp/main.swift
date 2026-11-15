@@ -138,6 +138,8 @@ enum Demo {
             Unnester.Item(outer: "\(dir)/\($0.0)", inner: "\(dir)/\($0.0)/\($0.1)")
         }
         items[1].include = false
+        items.append(Unnester.Item(outer: "\(dir)/流浪地球2.2023.BluRay", files: ["\(dir)/流浪地球2.2023.BluRay/movie.mkv"]))
+        items.append(Unnester.Item(outer: "\(dir)/年会录像", files: ["a.mp4", "b.mp4", "c.srt"].map { "\(dir)/年会录像/\($0)" }))
         return NestedFoldersView(folders: [dir], items: items, searched: true, destination: "/Volumes/hdd0/整理")
     }
 
