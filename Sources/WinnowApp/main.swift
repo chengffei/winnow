@@ -82,11 +82,20 @@ enum Snapshot {
         Task { @MainActor in
             host.layoutSubtreeIfNeeded()
             try? await Task.sleep(nanoseconds: 800_000_000)
+            // WINNOW_SNAPSHOT_SET=key=1 flips a stored setting once the page is up, to check that it redraws.
+            var restore: (() -> Void)?
+            if let pair = ProcessInfo.processInfo.environment["WINNOW_SNAPSHOT_SET"]?.split(separator: "=", maxSplits: 1), pair.count == 2 {
+                let key = String(pair[0]), old = UserDefaults.standard.object(forKey: key)
+                UserDefaults.standard.set(pair[1] == "1", forKey: key)
+                restore = { UserDefaults.standard.set(old, forKey: key) }
+                try? await Task.sleep(nanoseconds: 800_000_000)
+            }
             host.layoutSubtreeIfNeeded()
             if let rep = host.bitmapImageRepForCachingDisplay(in: host.bounds) {
                 host.cacheDisplay(in: host.bounds, to: rep)
                 try? rep.representation(using: .png, properties: [:])?.write(to: file)
             }
+            restore?()
             exit(0)
         }
         app.run()

@@ -503,6 +503,24 @@
   "zh-Hans": "无法恢复。需要输入「%@」确认。",
   "zh-Hant": "無法復原。需要輸入「%@」確認。"
  },
+ "Check": {
+  "zh-Hans": "勾选",
+  "zh-Hant": "勾選",
+  "ja": "チェックを入れる",
+  "ko": "선택",
+  "fr": "Cocher",
+  "de": "Markieren",
+  "es": "Marcar"
+ },
+ "Check All": {
+  "zh-Hans": "全选",
+  "zh-Hant": "全選",
+  "ja": "すべてチェック",
+  "ko": "모두 선택",
+  "fr": "Tout cocher",
+  "de": "Alle markieren",
+  "es": "Marcar todo"
+ },
  "Checking each marked item again…": {
   "de": "Jedes markierte Objekt wird erneut geprüft …",
   "es": "Revisando de nuevo cada elemento marcado…",
@@ -2167,6 +2185,24 @@
   "ko": "확인하려면 '%@' 입력",
   "zh-Hans": "输入「%@」确认",
   "zh-Hant": "輸入「%@」確認"
+ },
+ "Uncheck": {
+  "zh-Hans": "取消勾选",
+  "zh-Hant": "取消勾選",
+  "ja": "チェックを外す",
+  "ko": "선택 해제",
+  "fr": "Décocher",
+  "de": "Markierung entfernen",
+  "es": "Desmarcar"
+ },
+ "Uncheck All": {
+  "zh-Hans": "全不选",
+  "zh-Hant": "全不選",
+  "ja": "すべて外す",
+  "ko": "모두 해제",
+  "fr": "Tout décocher",
+  "de": "Keine markieren",
+  "es": "Desmarcar todo"
  },
  "Undo Last Move (%ld)": {
   "zh-Hans": "撤销上次移动（%ld）",

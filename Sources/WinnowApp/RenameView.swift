@@ -144,7 +144,12 @@ struct RenameView: View {
                 .width(24)
             }
             .contextMenu(forSelectionType: String.self) { ids in
-                if !ids.isEmpty { Button(L("Show in Finder")) { showInFinder(ids) } }
+                if !ids.isEmpty {
+                    Button(L("Show in Finder")) { showInFinder(ids) }
+                    Divider()
+                    Button(L("Check")) { setInclude(ids, true) }
+                    Button(L("Uncheck")) { setInclude(ids, false) }
+                }
             } primaryAction: { showInFinder($0) }
         }
     }
@@ -155,6 +160,8 @@ struct RenameView: View {
             HStack {
                 Text(message ?? footerText).font(.callout).foregroundStyle(.secondary)
                 Spacer()
+                Button(L("Check All")) { setInclude(Set(items.map(\.id)), true) }.disabled(items.isEmpty)
+                Button(L("Uncheck All")) { setInclude(Set(items.map(\.id)), false) }.disabled(items.isEmpty)
                 if !lastBatch.isEmpty {
                     Button(L("Undo Last Rename (%ld)", lastBatch.count), action: undo)
                 }
@@ -180,7 +187,12 @@ struct RenameView: View {
 
     private func includeBinding(_ path: String) -> Binding<Bool> {
         Binding(get: { items.first { $0.path == path }?.include ?? false },
-                set: { v in if let i = items.firstIndex(where: { $0.path == path }) { items[i].include = v } })
+                set: { v in setInclude(selection.contains(path) ? selection : [path], v) })
+    }
+
+    /// Ticking a row that is part of the selection ticks the whole selection; rows with a name problem stay out.
+    private func setInclude(_ paths: Set<String>, _ value: Bool) {
+        for i in items.indices where paths.contains(items[i].path) && items[i].problem == nil { items[i].include = value }
     }
 
     private func find() {

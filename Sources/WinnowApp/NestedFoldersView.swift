@@ -26,6 +26,22 @@ struct NestedFoldersView: View {
 
     private var included: [Unnester.Item] { items.filter(\.include) }
 
+    /// A table row. The names are part of it so the table redraws when the naming option changes:
+    /// a Table only refreshes rows whose own value changed.
+    private struct Row: Identifiable {
+        let item: Unnester.Item
+        let before: String
+        let after: String
+        var id: String { item.outer }
+    }
+
+    private var rows: [Row] {
+        items.map {
+            Row(item: $0, before: Unnester.names(for: $0, rename: false).joined(separator: ", "),
+                after: Unnester.names(for: $0, rename: rename).joined(separator: ", "))
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 14) {
@@ -71,33 +87,37 @@ struct NestedFoldersView: View {
             ContentUnavailableView(L("No Matches"), systemImage: "checkmark.circle",
                                    description: Text(L("No folder here only wraps one folder or a few files.")))
         } else {
-            Table(items, selection: $selection) {
-                TableColumn("") { item in
-                    Toggle("", isOn: includeBinding(item.outer)).labelsHidden()
+            Table(rows, selection: $selection) {
+                TableColumn("") { row in
+                    Toggle("", isOn: includeBinding(row.id)).labelsHidden()
                 }
                 .width(24)
-                TableColumn(L("Item to Move")) { item in
-                    let names = Unnester.names(for: item, rename: false).joined(separator: ", ")
-                    Label(names, systemImage: item.holdsFolder ? "folder" : "doc")
-                        .lineLimit(1).truncationMode(.middle).help(names)
+                TableColumn(L("Item to Move")) { row in
+                    Label(row.before, systemImage: row.item.holdsFolder ? "folder" : "doc")
+                        .lineLimit(1).truncationMode(.middle).help(row.before)
                 }
-                TableColumn(L("Name After Moving")) { item in
-                    let names = Unnester.names(for: item, rename: rename).joined(separator: ", ")
-                    Text(names).lineLimit(1).truncationMode(.middle).help(names)
+                TableColumn(L("Name After Moving")) { row in
+                    Text(row.after).lineLimit(1).truncationMode(.middle).help(row.after)
                 }
-                TableColumn(L("Now Inside")) { item in
+                TableColumn(L("Now Inside")) { row in
+                    let item = row.item
                     Text(item.outer).font(.caption).foregroundStyle(.secondary)
                         .lineLimit(1).truncationMode(.head).help(item.outer)
                 }
-                TableColumn("") { item in
-                    Button { showInFinder([item.outer]) } label: { Image(systemName: "magnifyingglass") }
+                TableColumn("") { row in
+                    Button { showInFinder([row.id]) } label: { Image(systemName: "magnifyingglass") }
                         .buttonStyle(.borderless)
                         .help(L("Show in Finder"))
                 }
                 .width(24)
             }
             .contextMenu(forSelectionType: String.self) { ids in
-                if !ids.isEmpty { Button(L("Show in Finder")) { showInFinder(ids) } }
+                if !ids.isEmpty {
+                    Button(L("Show in Finder")) { showInFinder(ids) }
+                    Divider()
+                    Button(L("Check")) { setInclude(ids, true) }
+                    Button(L("Uncheck")) { setInclude(ids, false) }
+                }
             } primaryAction: { showInFinder($0) }
         }
     }
@@ -129,6 +149,8 @@ struct NestedFoldersView: View {
                     .help(L("Each item keeps its extension. Several files from one folder are numbered: Name 1, Name 2."))
                 Toggle(L("Move emptied folders to the Trash"), isOn: $trashEmptied)
                 Spacer()
+                Button(L("Check All")) { setInclude(Set(items.map(\.id)), true) }.disabled(items.isEmpty)
+                Button(L("Uncheck All")) { setInclude(Set(items.map(\.id)), false) }.disabled(items.isEmpty)
             }
             .toggleStyle(.checkbox)
             .padding(.horizontal, 24)
@@ -151,7 +173,12 @@ struct NestedFoldersView: View {
 
     private func includeBinding(_ outer: String) -> Binding<Bool> {
         Binding(get: { items.first { $0.outer == outer }?.include ?? false },
-                set: { v in if let i = items.firstIndex(where: { $0.outer == outer }) { items[i].include = v } })
+                set: { v in setInclude(selection.contains(outer) ? selection : [outer], v) })
+    }
+
+    /// Ticking a row that is part of the selection ticks the whole selection.
+    private func setInclude(_ outers: Set<String>, _ value: Bool) {
+        for i in items.indices where outers.contains(items[i].outer) { items[i].include = value }
     }
 
     private func find() {
