@@ -31,7 +31,7 @@ struct WinnowApp: App {
 }
 
 /// `WinnowApp --snapshot out.png` renders a screen with demo data offscreen and exits.
-/// WINNOW_SNAPSHOT_SCREEN = new | rename | nested | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
+/// WINNOW_SNAPSHOT_SCREEN = new | rename | nested | search | scanning | dups | empty | sheet | settings-general | settings-scan. Needs no screen-recording permission.
 @MainActor
 enum Snapshot {
     static func run(to file: URL, screen: String) {
@@ -53,6 +53,9 @@ enum Snapshot {
         case "rename":
             model.route = .rename
             root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.rename() }.environment(model))
+        case "search":
+            model.route = .search
+            root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.search() }.environment(model))
         case "nested":
             model.route = .nested
             root = AnyView(NavigationSplitView { Sidebar() } detail: { Demo.nested() }.environment(model))
@@ -140,6 +143,15 @@ enum Demo {
         items[3] = Renamer.Item(path: dir + "/" + names[3], newName: ".pdf", problem: .emptyName)
         items[4] = Renamer.Item(path: dir + "/Old/" + names[4], newName: "围城.pdf", problem: .nameTaken)
         return RenameView(folders: [dir], texts: ["【书香网】", "高清版", "www.example.com"], items: items, searched: true)
+    }
+
+    static func search() -> SearchView {
+        let dir = "/Volumes/hdd0/Downloads"
+        let names = ["流浪地球2.2023.BluRay/流浪地球2.mkv", "流浪地球2.2023.BluRay/流浪地球2.chs.srt", "年会录像/a.mp4", "年会录像/b.mp4",
+                     "Trip/GoPro 0412.mp4", "Trip/GoPro 0413.mp4", "Trip/notes.txt", "三体全集/三体.epub", "Xcode_17/Xcode_17.dmg"]
+        var files = names.map { FileSearch.File(path: "\(dir)/\($0)") }
+        for i in [2, 3, 4] { files[i].include = true }
+        return SearchView(folders: [dir], text: ".srt", kinds: [.videos], files: files, destination: "/Volumes/hdd0/影视")
     }
 
     static func favorites() -> [Favorite] {

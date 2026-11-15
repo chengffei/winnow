@@ -27,11 +27,25 @@ public enum Unnester {
         }
     }
 
+    public enum Reason: String, Codable, Sendable {
+        /// The folder no longer holds what the preview showed.
+        case changed
+        /// A name is already used where the items would go.
+        case nameTaken
+        /// The drive would not move something, for instance a file that is open.
+        case refused
+    }
+
+    /// Tests turn this off to act like a drive without a Trash, as most network drives are.
+    nonisolated(unsafe) static var usesTrash = true
+
     public struct Batch: Codable, Equatable, Sendable {
         public var moves: [Renamer.Move] = []
-        /// Emptied outer folders sent to the Trash: where they were, and where they are in the Trash.
+        /// Emptied outer folders: where they were, and where they are in the Trash, or "" when deleted for want of one.
         public var trashed: [Renamer.Move] = []
         public var failures: [String] = []
+        /// Why each of `failures` was skipped, in the same order. Absent in older records.
+        public var reasons: [Reason]?
         /// Every move on disk in the order it happened; Undo replays it backwards. Absent in older records.
         public var log: [Renamer.Move]?
 
@@ -86,64 +100,99 @@ public enum Unnester {
     }
 
     /// Moves what each included folder holds into `destination`, or next to that folder when it is nil,
-    /// then trashes the folder if it is left empty.
+    /// then gets rid of the folder if it is left empty: to the Trash, or deleted on a drive that has none.
     /// Folders that changed since the preview, or whose names are taken in the destination, are skipped whole.
     public static func apply(_ items: [Item], to destination: String? = nil, trashEmptied: Bool, rename: Bool = false) -> Batch {
         var batch = Batch()
         var log: [Renamer.Move] = []
+        var reasons: [Reason] = []
         let fm = FileManager.default
         for item in items where item.include {
+            func skip(_ reason: Reason) {
+                batch.failures.append(item.inner)
+                reasons.append(reason)
+            }
             let dest = destination ?? (item.outer as NSString).deletingLastPathComponent
             let targets = names(for: item, rename: rename).map { (dest as NSString).appendingPathComponent($0) }
             // A lone item may take the outer folder's own name and place, once that folder is gone.
             let swap = targets.count == 1 && targets[0].compare(item.outer, options: .caseInsensitive) == .orderedSame
             guard let now = visible(item.outer),
-                  now.sorted() == item.inners.map({ ($0 as NSString).lastPathComponent }).sorted(),
-                  !item.inners.contains(where: { Paths.contains($0, dest) }),
+                  now.sorted() == item.inners.map({ ($0 as NSString).lastPathComponent }).sorted() else {
+                skip(.changed); continue
+            }
+            guard !item.inners.contains(where: { Paths.contains($0, dest) }),
                   Set(targets.map { $0.lowercased() }).count == targets.count,
                   swap ? trashEmptied : !targets.contains(where: { fm.fileExists(atPath: $0) }) else {
-                batch.failures.append(item.inner); continue
+                skip(.nameTaken); continue
             }
             var steps: [Renamer.Move] = []
-            var trashedTo: String?
+            var gone: String?
+            // A network drive can refuse a move for a moment while something still has the file open.
             func step(_ from: String, _ to: String) -> Bool {
-                guard (try? fm.moveItem(atPath: from, toPath: to)) != nil else { return false }
+                if (try? fm.moveItem(atPath: from, toPath: to)) == nil {
+                    usleep(400_000)
+                    guard (try? fm.moveItem(atPath: from, toPath: to)) != nil else { return false }
+                }
                 steps.append(Renamer.Move(from: from, to: to))
                 return true
             }
-            func trashOuter() -> Bool {
+            func removeOuter() -> Bool {
                 var result: NSURL?
-                guard (try? fm.trashItem(at: URL(fileURLWithPath: item.outer), resultingItemURL: &result)) != nil,
-                      let result else { return false }
-                trashedTo = (result as URL).path
-                steps.append(Renamer.Move(from: item.outer, to: (result as URL).path))
+                if usesTrash, (try? fm.trashItem(at: URL(fileURLWithPath: item.outer), resultingItemURL: &result)) != nil, let result {
+                    gone = (result as URL).path
+                    steps.append(Renamer.Move(from: item.outer, to: (result as URL).path))
+                    return true
+                }
+                // No Trash here. A folder holding nothing but Finder's own leftovers is deleted; Undo makes it again.
+                guard let left = try? fm.contentsOfDirectory(atPath: item.outer),
+                      left.allSatisfy({ $0 == ".DS_Store" || $0.hasPrefix("._") }) else { return false }
+                for name in left { try? fm.removeItem(atPath: item.outer + "/" + name) }
+                guard rmdir(item.outer) == 0 else { return false }
+                gone = ""
+                steps.append(Renamer.Move(from: item.outer, to: ""))
                 return true
             }
             var ok = true
             if swap {
                 let hold = item.outer + ".winnow-" + UUID().uuidString.prefix(8)
-                ok = step(item.inner, hold) && trashOuter() && step(hold, targets[0])
+                ok = step(item.inner, hold) && removeOuter() && step(hold, targets[0])
             } else {
                 for (from, to) in zip(item.inners, targets) where ok { ok = step(from, to) }
-                if ok, trashEmptied, visible(item.outer)?.isEmpty == true { _ = trashOuter() }
+                if ok, trashEmptied, visible(item.outer)?.isEmpty == true { _ = removeOuter() }
             }
             guard ok else {
-                _ = Renamer.undo(steps)
-                batch.failures.append(item.inner); continue
+                _ = revert(steps)
+                skip(.refused); continue
             }
             batch.moves += zip(item.inners, targets).map { Renamer.Move(from: $0, to: $1) }
-            if let trashedTo { batch.trashed.append(Renamer.Move(from: item.outer, to: trashedTo)) }
+            if let gone { batch.trashed.append(Renamer.Move(from: item.outer, to: gone)) }
             log += steps
         }
         batch.log = log
+        batch.reasons = reasons
         return batch
     }
 
-    /// Replays the batch backwards: outer folders come back out of the Trash and their contents go home.
+    /// Takes steps back, last first. A step with nowhere to come back from is a deleted empty folder, made again.
+    static func revert(_ steps: [Renamer.Move]) -> [String] {
+        var failures: [String] = []
+        for step in steps.reversed() {
+            if step.to.isEmpty {
+                if (try? FileManager.default.createDirectory(atPath: step.from, withIntermediateDirectories: false)) == nil {
+                    failures.append(step.from)
+                }
+            } else {
+                failures += Renamer.undo([step]).failures
+            }
+        }
+        return failures
+    }
+
+    /// Replays the batch backwards: outer folders come back and their contents go home.
     public static func undo(_ batch: Batch) -> Renamer.Outcome {
         var outcome = Renamer.Outcome()
         if let log = batch.log {
-            outcome.failures = Renamer.undo(log).failures
+            outcome.failures = revert(log)
             outcome.done = batch.moves
                 .filter { FileManager.default.fileExists(atPath: $0.from) }
                 .map { Renamer.Move(from: $0.to, to: $0.from) }

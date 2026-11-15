@@ -19,6 +19,8 @@ struct ContentView: View {
                 RenameView(favorite: model.opened(.rename)).id(model.openedCount)
             case .nested:
                 NestedFoldersView(favorite: model.opened(.nested)).id(model.openedCount)
+            case .search:
+                SearchView(favorite: model.opened(.search)).id(model.openedCount)
             case .result(let id, let category):
                 switch category {
                 case .duplicates: DuplicatesView(id: id).id(id)
@@ -48,6 +50,8 @@ struct Sidebar: View {
                 .tag(Route.rename)
             Label(L("Nested Folders"), systemImage: "tray.and.arrow.up")
                 .tag(Route.nested)
+            Label(L("Find Files"), systemImage: "magnifyingglass")
+                .tag(Route.search)
 
             if !model.favorites.isEmpty {
                 Section(L("Favorites")) {
@@ -100,6 +104,7 @@ struct Sidebar: View {
         case .scan: return L("New Scan")
         case .rename: return L("Remove Text from Names")
         case .nested: return L("Nested Folders")
+        case .search: return L("Find Files")
         }
     }
 

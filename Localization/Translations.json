@@ -197,6 +197,24 @@
   "zh-Hans": "%@：%ld 组重复，可释放 %@",
   "zh-Hant": "%@：%ld 組重複，可釋放 %@"
  },
+ "%ld Files Here": {
+  "zh-Hans": "这里有 %ld 个文件",
+  "zh-Hant": "這裡有 %ld 個檔案",
+  "ja": "ここに %ld 個のファイル",
+  "ko": "여기에 파일 %ld개",
+  "fr": "%ld fichiers ici",
+  "de": "%ld Dateien hier",
+  "es": "%ld archivos aquí"
+ },
+ "%ld changed since they were found": {
+  "zh-Hans": "%ld 个在查找后有变动",
+  "zh-Hant": "%ld 個在尋找後有變動",
+  "ja": "%ld 個は検索後に変更された",
+  "ko": "%ld개는 찾은 뒤 변경됨",
+  "fr": "%ld modifiés depuis la recherche",
+  "de": "%ld seit der Suche geändert",
+  "es": "%ld cambiaron desde la búsqueda"
+ },
  "%ld copies · %@ each": {
   "de": "%ld Kopien · je %@",
   "es": "%ld copias · %@ cada una",
@@ -224,6 +242,24 @@
   "de": "%ld Dateien gefunden; %ld bleiben wegen eines Namensproblems außen vor.",
   "es": "%ld archivos encontrados; %ld se excluyen por un problema de nombre."
  },
+ "%ld files match, the first %ld are listed; %ld ticked.": {
+  "zh-Hans": "匹配 %ld 个文件，只列出前 %ld 个；已勾选 %ld 个。",
+  "zh-Hant": "符合 %ld 個檔案，只列出前 %ld 個；已勾選 %ld 個。",
+  "ja": "%ld 個が一致、先頭 %ld 個を表示。%ld 個をチェック済み。",
+  "ko": "%ld개 일치, 처음 %ld개만 표시. %ld개 선택됨.",
+  "fr": "%ld fichiers correspondent, les %ld premiers sont affichés ; %ld cochés.",
+  "de": "%ld Dateien passen, die ersten %ld sind aufgeführt; %ld markiert.",
+  "es": "%ld archivos coinciden, se muestran los primeros %ld; %ld marcados."
+ },
+ "%ld files match; %ld ticked.": {
+  "zh-Hans": "匹配 %ld 个文件；已勾选 %ld 个。",
+  "zh-Hant": "符合 %ld 個檔案；已勾選 %ld 個。",
+  "ja": "%ld 個が一致。%ld 個をチェック済み。",
+  "ko": "%ld개 일치. %ld개 선택됨.",
+  "fr": "%ld fichiers correspondent ; %ld cochés.",
+  "de": "%ld Dateien passen; %ld markiert.",
+  "es": "%ld archivos coinciden; %ld marcados."
+ },
  "%ld folders excluded": {
   "de": "%ld Ordner ausgeschlossen",
   "es": "%ld carpetas excluidas",
@@ -242,6 +278,24 @@
   "de": "%ld Ordner gefunden.",
   "es": "%ld carpetas encontradas."
  },
+ "%ld the drive refused to move, perhaps because a file is open": {
+  "zh-Hans": "%ld 个被磁盘拒绝移动，可能有文件正被打开",
+  "zh-Hant": "%ld 個被磁碟拒絕移動，可能有檔案正被開啟",
+  "ja": "%ld 個はドライブが移動を拒否（ファイルが開かれている可能性）",
+  "ko": "%ld개는 드라이브가 이동을 거부함(파일이 열려 있을 수 있음)",
+  "fr": "%ld refusés par le disque, peut-être parce qu’un fichier est ouvert",
+  "de": "%ld vom Laufwerk abgelehnt, vielleicht weil eine Datei geöffnet ist",
+  "es": "%ld rechazados por el disco, quizá porque hay un archivo abierto"
+ },
+ "%ld would take a name already in use": {
+  "zh-Hans": "%ld 个的新名称已被占用",
+  "zh-Hant": "%ld 個的新名稱已被占用",
+  "ja": "%ld 個は名前がすでに使われている",
+  "ko": "%ld개는 이름이 이미 사용 중",
+  "fr": "%ld prendraient un nom déjà utilisé",
+  "de": "%ld bekämen einen bereits vergebenen Namen",
+  "es": "%ld tomarían un nombre ya en uso"
+ },
  "1 folder excluded": {
   "de": "1 Ordner ausgeschlossen",
   "es": "1 carpeta excluida",
@@ -259,6 +313,15 @@
   "ko": "8 KB(기본값)",
   "zh-Hans": "8 KB（默认）",
   "zh-Hant": "8 KB（預設）"
+ },
+ "A file whose name is already in the destination gets a number added, so nothing is replaced.": {
+  "zh-Hans": "目标位置已有同名文件时，会在名称后加数字，不会覆盖。",
+  "zh-Hant": "目標位置已有同名檔案時，會在名稱後加數字，不會覆蓋。",
+  "ja": "移動先に同名のファイルがある場合は名前に番号を付け、置き換えはしません。",
+  "ko": "대상에 같은 이름이 있으면 이름 뒤에 번호를 붙이며, 덮어쓰지 않습니다.",
+  "fr": "Si le nom existe déjà dans la destination, un numéro est ajouté ; rien n’est remplacé.",
+  "de": "Ist der Name am Ziel schon vergeben, wird eine Nummer angehängt; nichts wird ersetzt.",
+  "es": "Si el nombre ya existe en el destino, se añade un número; no se reemplaza nada."
  },
  "Add": {
   "de": "Hinzufügen",
@@ -286,6 +349,15 @@
   "ko": "먼저 스캔할 위치를 추가하세요.",
   "zh-Hans": "先添加要扫描的位置。",
   "zh-Hant": "先加入要掃描的位置。"
+ },
+ "Add a location to search in.": {
+  "zh-Hans": "先添加要查找的位置。",
+  "zh-Hant": "先加入要尋找的位置。",
+  "ja": "検索する場所を追加してください。",
+  "ko": "검색할 위치를 추가하세요.",
+  "fr": "Ajoutez un emplacement où chercher.",
+  "de": "Füge einen Ort zum Durchsuchen hinzu.",
+  "es": "Añade una ubicación donde buscar."
  },
  "Add a location, then click Find Folders.": {
   "zh-Hans": "添加位置，再点「查找文件夹」。",
@@ -566,6 +638,15 @@
   "zh-Hans": "选「%@」里扫描时要跳过的文件夹",
   "zh-Hant": "選「%@」裡掃描時要略過的資料夾"
  },
+ "Choose the folder to move the files into": {
+  "zh-Hans": "选择要把文件移到的文件夹",
+  "zh-Hant": "選擇要把檔案移到的資料夾",
+  "ja": "ファイルの移動先フォルダを選択",
+  "ko": "파일을 옮길 폴더를 고르세요",
+  "fr": "Choisissez le dossier où déplacer les fichiers",
+  "de": "Wähle den Ordner, in den die Dateien sollen",
+  "es": "Elige la carpeta a la que mover los archivos"
+ },
  "Clean up %@ items?": {
   "de": "%@ Objekte aufräumen?",
   "es": "¿Limpiar %@ elementos?",
@@ -574,6 +655,15 @@
   "ko": "항목 %@개를 정리할까요?",
   "zh-Hans": "处理 %@ 项？",
   "zh-Hant": "處理 %@ 項？"
+ },
+ "Clear": {
+  "zh-Hans": "清除",
+  "zh-Hant": "清除",
+  "ja": "消去",
+  "ko": "지우기",
+  "fr": "Effacer",
+  "de": "Löschen",
+  "es": "Borrar"
  },
  "Clear All": {
   "zh-Hans": "全部清除",
@@ -872,6 +962,15 @@
   "zh-Hans": "文件类型",
   "zh-Hant": "檔案類型"
  },
+ "Files are moved, not copied. Undo puts them back.": {
+  "zh-Hans": "文件是移动而非复制，撤销可放回原处。",
+  "zh-Hant": "檔案是移動而非拷貝，還原可放回原處。",
+  "ja": "ファイルはコピーではなく移動します。取り消すと元に戻ります。",
+  "ko": "파일은 복사가 아니라 이동됩니다. 취소하면 제자리로 돌아갑니다.",
+  "fr": "Les fichiers sont déplacés, pas copiés. Annuler les remet en place.",
+  "de": "Dateien werden verschoben, nicht kopiert. Widerrufen legt sie zurück.",
+  "es": "Los archivos se mueven, no se copian. Deshacer los devuelve."
+ },
  "Files are renamed in place. Undo puts the old names back.": {
   "zh-Hans": "文件原地改名，撤销可恢复原名。",
   "zh-Hant": "檔案原地改名，還原可恢復原名。",
@@ -925,6 +1024,15 @@
   "ko": "빈 폴더 찾기",
   "zh-Hans": "找空文件夹",
   "zh-Hant": "找空資料夾"
+ },
+ "Finds files by name or type in the locations, then moves the ones you tick into one folder.": {
+  "zh-Hans": "在这些位置里按名称或类型查找文件，再把勾选的移到同一个文件夹。",
+  "zh-Hant": "在這些位置裡按名稱或類型尋找檔案，再把勾選的移到同一個資料夾。",
+  "ja": "これらの場所から名前や種類でファイルを探し、チェックしたものを 1 つのフォルダへ移動します。",
+  "ko": "이 위치들에서 이름이나 종류로 파일을 찾아, 선택한 것을 한 폴더로 옮깁니다.",
+  "fr": "Cherche des fichiers par nom ou par type dans les emplacements, puis déplace ceux que vous cochez dans un même dossier.",
+  "de": "Sucht in den Orten Dateien nach Name oder Typ und verschiebt die markierten in einen Ordner.",
+  "es": "Busca archivos por nombre o tipo en las ubicaciones y mueve los que marques a una sola carpeta."
  },
  "Finds files whose names contain any of the texts and takes them all out. Nothing changes until you click Rename.": {
   "zh-Hans": "找出文件名含有任一段文字的文件，把这些文字全部删掉。点「重命名」之前不会改动任何文件。",
@@ -1214,6 +1322,15 @@
   "zh-Hans": "移动 %@ 项",
   "zh-Hant": "移動 %@ 項"
  },
+ "Move %ld Files": {
+  "zh-Hans": "移动 %ld 个文件",
+  "zh-Hant": "移動 %ld 個檔案",
+  "ja": "%ld 個のファイルを移動",
+  "ko": "파일 %ld개 이동",
+  "fr": "Déplacer %ld fichiers",
+  "de": "%ld Dateien verschieben",
+  "es": "Mover %ld archivos"
+ },
  "Move %ld Items": {
   "de": "%ld Objekte verschieben",
   "es": "Mover %ld elementos",
@@ -1268,6 +1385,42 @@
   "zh-Hans": "已移到暂存文件夹 %@ 项，释放 %@。",
   "zh-Hant": "已移到暫存資料夾 %@ 項，釋放 %@。"
  },
+ "Moved %ld files back.": {
+  "zh-Hans": "已放回 %ld 个文件。",
+  "zh-Hant": "已放回 %ld 個檔案。",
+  "ja": "%ld 個のファイルを元に戻しました。",
+  "ko": "파일 %ld개를 되돌렸습니다.",
+  "fr": "%ld fichiers remis en place.",
+  "de": "%ld Dateien zurückgelegt.",
+  "es": "%ld archivos devueltos."
+ },
+ "Moved %ld files back; %ld could not be restored.": {
+  "zh-Hans": "已放回 %ld 个文件；%ld 个无法恢复。",
+  "zh-Hant": "已放回 %ld 個檔案；%ld 個無法恢復。",
+  "ja": "%ld 個を元に戻しました。%ld 個は戻せませんでした。",
+  "ko": "파일 %ld개를 되돌렸습니다. %ld개는 되돌리지 못했습니다.",
+  "fr": "%ld fichiers remis en place ; %ld n’ont pas pu l’être.",
+  "de": "%ld Dateien zurückgelegt; %ld ließen sich nicht wiederherstellen.",
+  "es": "%ld archivos devueltos; %ld no se pudieron restaurar."
+ },
+ "Moved %ld files to %@.": {
+  "zh-Hans": "已把 %ld 个文件移到「%@」。",
+  "zh-Hant": "已把 %ld 個檔案移到「%@」。",
+  "ja": "%ld 個のファイルを「%@」へ移動しました。",
+  "ko": "파일 %ld개를 ‘%@’(으)로 옮겼습니다.",
+  "fr": "%ld fichiers déplacés vers « %@ ».",
+  "de": "%ld Dateien nach „%@“ verschoben.",
+  "es": "%ld archivos movidos a «%@»."
+ },
+ "Moved %ld files to %@; %ld could not be moved.": {
+  "zh-Hans": "已把 %ld 个文件移到「%@」；%ld 个没能移动。",
+  "zh-Hant": "已把 %ld 個檔案移到「%@」；%ld 個沒能移動。",
+  "ja": "%ld 個を「%@」へ移動しました。%ld 個は移動できませんでした。",
+  "ko": "파일 %ld개를 ‘%@’(으)로 옮겼습니다. %ld개는 옮기지 못했습니다.",
+  "fr": "%ld fichiers déplacés vers « %@ » ; %ld n’ont pas pu l’être.",
+  "de": "%ld Dateien nach „%@“ verschoben; %ld ließen sich nicht verschieben.",
+  "es": "%ld archivos movidos a «%@»; %ld no se pudieron mover."
+ },
  "Moved %ld items back.": {
   "de": "%ld Objekte zurückgelegt.",
   "es": "%ld elementos devueltos.",
@@ -1295,14 +1448,14 @@
   "zh-Hans": "已移动 %ld 项。",
   "zh-Hant": "已移動 %ld 項。"
  },
- "Moved %ld items; %ld folders were skipped because they changed or a name is taken in the destination.": {
-  "de": "%ld Objekte verschoben; %ld Ordner übersprungen, weil sie sich geändert haben oder ein Name am Ziel vergeben ist.",
-  "es": "%ld elementos movidos; %ld carpetas omitidas porque cambiaron o un nombre ya existe en el destino.",
-  "fr": "%ld éléments déplacés ; %ld dossiers ignorés car modifiés ou nom déjà pris dans la destination.",
-  "ja": "%ld 項目を移動しました。%ld 個のフォルダは変更されたか移動先に同名があるためスキップしました。",
-  "ko": "%ld개 항목을 옮겼습니다. 폴더 %ld개는 변경되었거나 대상에 같은 이름이 있어 건너뛰었습니다.",
-  "zh-Hans": "已移动 %ld 项；%ld 个文件夹已变动或目标位置有同名项，已跳过。",
-  "zh-Hant": "已移動 %ld 項；%ld 個資料夾已變動或目標位置有同名項目，已略過。"
+ "Moving %ld of %ld…": {
+  "zh-Hans": "正在移动第 %ld 个，共 %ld 个…",
+  "zh-Hant": "正在移動第 %ld 個，共 %ld 個…",
+  "ja": "%ld / %ld を移動中…",
+  "ko": "%ld/%ld 이동 중…",
+  "fr": "Déplacement %ld sur %ld…",
+  "de": "%ld von %ld wird verschoben…",
+  "es": "Moviendo %ld de %ld…"
  },
  "Music": {
   "de": "Musik",
@@ -1466,6 +1619,15 @@
   "zh-Hans": "没有找到空文件夹",
   "zh-Hant": "沒有找到空資料夾"
  },
+ "No file here matches. Words separated by spaces must all be in the name.": {
+  "zh-Hans": "没有匹配的文件。用空格分开的词必须都出现在名称里。",
+  "zh-Hant": "沒有符合的檔案。用空格分開的詞必須都出現在名稱裡。",
+  "ja": "一致するファイルはありません。空白で区切った語はすべて名前に含まれている必要があります。",
+  "ko": "일치하는 파일이 없습니다. 공백으로 나눈 단어는 모두 이름에 있어야 합니다.",
+  "fr": "Aucun fichier ne correspond. Les mots séparés par des espaces doivent tous figurer dans le nom.",
+  "de": "Keine Datei passt. Durch Leerzeichen getrennte Wörter müssen alle im Namen vorkommen.",
+  "es": "Ningún archivo coincide. Las palabras separadas por espacios deben estar todas en el nombre."
+ },
  "No file name contains %@.": {
   "zh-Hans": "没有文件名包含 %@。",
   "zh-Hant": "沒有檔名包含 %@。",
@@ -1583,6 +1745,15 @@
   "zh-Hans": "好",
   "zh-Hant": "好"
  },
+ "On a drive without a Trash, as most network drives are, the empty folder is deleted instead. Undo makes it again.": {
+  "zh-Hans": "没有废纸篓的磁盘（多数网络盘）上，空文件夹会直接删除，撤销时会重新建好。",
+  "zh-Hant": "沒有垃圾桶的磁碟（多數網路磁碟）上，空資料夾會直接刪除，還原時會重新建立。",
+  "ja": "ゴミ箱のないドライブ（多くのネットワークドライブ）では空のフォルダを直接削除します。取り消すと作り直します。",
+  "ko": "휴지통이 없는 드라이브(대부분의 네트워크 드라이브)에서는 빈 폴더를 바로 삭제하며, 취소하면 다시 만듭니다.",
+  "fr": "Sur un disque sans corbeille, comme la plupart des disques réseau, le dossier vide est supprimé ; Annuler le recrée.",
+  "de": "Auf einem Laufwerk ohne Papierkorb, wie den meisten Netzlaufwerken, wird der leere Ordner gelöscht; Widerrufen legt ihn neu an.",
+  "es": "En un disco sin papelera, como la mayoría de los de red, la carpeta vacía se elimina; Deshacer la vuelve a crear."
+ },
  "One core": {
   "zh-Hans": "单个核心",
   "zh-Hant": "單個核心",
@@ -1618,6 +1789,15 @@
   "ko": "임시 보관 폴더 열기",
   "zh-Hans": "打开暂存文件夹",
   "zh-Hant": "打開暫存資料夾"
+ },
+ "Part of a name, or an extension such as .mkv": {
+  "zh-Hans": "名称的一部分，或扩展名如 .mkv",
+  "zh-Hant": "名稱的一部分，或副檔名如 .mkv",
+  "ja": "名前の一部、または .mkv などの拡張子",
+  "ko": "이름의 일부 또는 .mkv 같은 확장자",
+  "fr": "Une partie du nom, ou une extension comme .mkv",
+  "de": "Teil des Namens oder eine Endung wie .mkv",
+  "es": "Parte del nombre o una extensión como .mkv"
  },
  "Partly done": {
   "de": "Teilweise erledigt",
@@ -1690,6 +1870,15 @@
   "fr": "Utilisation du processeur",
   "de": "Prozessornutzung",
   "es": "Uso del procesador"
+ },
+ "Reading file names…": {
+  "zh-Hans": "正在读取文件名…",
+  "zh-Hant": "正在讀取檔名…",
+  "ja": "ファイル名を読み込み中…",
+  "ko": "파일 이름을 읽는 중…",
+  "fr": "Lecture des noms de fichiers…",
+  "de": "Dateinamen werden gelesen…",
+  "es": "Leyendo nombres de archivo…"
  },
  "Reference": {
   "de": "Referenz",
@@ -1952,6 +2141,15 @@
   "zh-Hans": "跳过",
   "zh-Hant": "略過"
  },
+ "Skipped %ld folders: %@.": {
+  "zh-Hans": "跳过 %ld 个文件夹：%@。",
+  "zh-Hant": "略過 %ld 個資料夾：%@。",
+  "ja": "%ld 個のフォルダをスキップ：%@。",
+  "ko": "폴더 %ld개 건너뜀: %@.",
+  "fr": "%ld dossiers ignorés : %@.",
+  "de": "%ld Ordner übersprungen: %@.",
+  "es": "%ld carpetas omitidas: %@."
+ },
  "Smaller files are not checked; duplicates of them take little space.": {
   "de": "Kleinere Dateien werden nicht geprüft; ihre Duplikate belegen wenig Platz.",
   "es": "Los archivos más pequeños no se revisan; sus duplicados ocupan poco.",
@@ -2176,6 +2374,15 @@
   "ko": "휴지통, 시스템 캐시, NAS 휴지통, 썸네일 폴더는 항상 건너뜁니다",
   "zh-Hans": "已自动跳过废纸篓、系统缓存、NAS 回收站和缩略图目录",
   "zh-Hant": "已自動略過垃圾桶、系統快取、NAS 資源回收筒和縮圖目錄"
+ },
+ "Type part of a name or pick a type to narrow them down.": {
+  "zh-Hans": "输入名称的一部分，或点选类型来筛选。",
+  "zh-Hant": "輸入名稱的一部分，或點選類型來篩選。",
+  "ja": "名前の一部を入力するか、種類を選んで絞り込みます。",
+  "ko": "이름의 일부를 입력하거나 종류를 골라 좁히세요.",
+  "fr": "Saisissez une partie du nom ou choisissez un type pour les filtrer.",
+  "de": "Gib einen Teil des Namens ein oder wähle einen Typ, um einzugrenzen.",
+  "es": "Escribe parte del nombre o elige un tipo para acotarlos."
  },
  "Type “%@” to confirm": {
   "de": "Zum Bestätigen „%@“ eingeben",

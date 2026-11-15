@@ -148,6 +148,7 @@ struct NestedFoldersView: View {
                 Toggle(L("Name moved items after the folder they were in"), isOn: $rename)
                     .help(L("Each item keeps its extension. Several files from one folder are numbered: Name 1, Name 2."))
                 Toggle(L("Move emptied folders to the Trash"), isOn: $trashEmptied)
+                    .help(L("On a drive without a Trash, as most network drives are, the empty folder is deleted instead. Undo makes it again."))
                 Spacer()
                 Button(L("Check All")) { setInclude(Set(items.map(\.id)), true) }.disabled(items.isEmpty)
                 Button(L("Uncheck All")) { setInclude(Set(items.map(\.id)), false) }.disabled(items.isEmpty)
@@ -169,6 +170,19 @@ struct NestedFoldersView: View {
     private func showInFinder(_ outers: Set<String>) {
         let paths = items.filter { outers.contains($0.outer) }.flatMap(\.inners)
         Finder.show(paths.isEmpty ? Array(outers) : paths)
+    }
+
+    /// What happened, with a count for each reason folders were skipped.
+    static func summary(_ batch: Unnester.Batch) -> String {
+        let moved = L("Moved %ld items.", batch.moves.count)
+        guard !batch.failures.isEmpty else { return moved }
+        let reasons = batch.reasons ?? []
+        func count(_ r: Unnester.Reason) -> Int { reasons.filter { $0 == r }.count }
+        var parts: [String] = []
+        if count(.changed) > 0 { parts.append(L("%ld changed since they were found", count(.changed))) }
+        if count(.nameTaken) > 0 { parts.append(L("%ld would take a name already in use", count(.nameTaken))) }
+        if count(.refused) > 0 { parts.append(L("%ld the drive refused to move, perhaps because a file is open", count(.refused))) }
+        return moved + " " + L("Skipped %ld folders: %@.", batch.failures.count, joinedList(parts))
     }
 
     private func includeBinding(_ outer: String) -> Binding<Bool> {
@@ -208,10 +222,7 @@ struct NestedFoldersView: View {
             let batch = await Task.detached { Unnester.apply(chosen, to: destination, trashEmptied: trash, rename: rename) }.value
             lastBatch = batch
             Unnester.saveLast(batch)
-            message = batch.failures.isEmpty
-                ? L("Moved %ld items.", batch.moves.count)
-                : L("Moved %ld items; %ld folders were skipped because they changed or a name is taken in the destination.",
-                    batch.moves.count, batch.failures.count)
+            message = Self.summary(batch)
             let done = Set(batch.moves.map(\.from))
             items.removeAll { done.contains($0.inner) }
             busy = false

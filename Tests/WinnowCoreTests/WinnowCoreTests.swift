@@ -292,6 +292,84 @@ final class RenamerTests: XCTestCase {
     }
 }
 
+extension UnnesterTests {
+    /// A network drive usually has no Trash: emptied folders are deleted, and Undo makes them again.
+    func testDriveWithoutTrash() throws {
+        Unnester.usesTrash = false
+        defer { Unnester.usesTrash = true }
+        dir("nas/Wrap/Inner"); touch("nas/Wrap/Inner/f.txt"); touch("nas/Wrap/.DS_Store")   // inner takes the outer's name
+        dir("nas/One"); touch("nas/One/x.mkv")
+        dir("nas/Kept"); touch("nas/Kept/y.mkv"); touch("nas/Kept/.nomedia")                 // a hidden file of the user's
+        dir("nas/Held/Sub"); touch("nas/Held/Sub/f.txt"); touch("nas/Held/.nomedia")
+
+        let batch = Unnester.apply(Unnester.plan(roots: [p("nas")], maxFiles: 1), trashEmptied: true, rename: true)
+        XCTAssertTrue(exists("nas/Wrap/f.txt"), "Inner is now called Wrap")
+        XCTAssertFalse(exists("nas/Wrap/Inner"))
+        XCTAssertTrue(exists("nas/One.mkv"))
+        var isDir: ObjCBool = false
+        XCTAssertFalse(exists("nas/One"), "the emptied folder is deleted")
+        XCTAssertTrue(exists("nas/Kept.mkv")); XCTAssertTrue(exists("nas/Kept/.nomedia"), "a folder with a hidden file of the user's stays")
+        XCTAssertEqual(batch.failures, [p("nas/Held/Sub")]); XCTAssertEqual(batch.reasons, [.refused])
+        XCTAssertTrue(exists("nas/Held/Sub/f.txt"), "put back when its folder could not go")
+        XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: p("nas")).filter { $0.contains(".winnow-") }, [])
+
+        let back = Unnester.undo(batch)
+        XCTAssertTrue(back.failures.isEmpty, "\(back.failures)")
+        XCTAssertTrue(exists("nas/Wrap/Inner/f.txt")); XCTAssertTrue(exists("nas/One/x.mkv")); XCTAssertTrue(exists("nas/Kept/y.mkv"))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: p("nas/One"), isDirectory: &isDir) && isDir.boolValue)
+    }
+}
+
+final class FileSearchTests: XCTestCase {
+    var root: URL!
+
+    override func setUpWithError() throws {
+        root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-search-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
+    }
+
+    override func tearDownWithError() throws { try? FileManager.default.removeItem(at: root) }
+
+    func touch(_ rel: String) {
+        let url = root.appendingPathComponent(rel)
+        try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        FileManager.default.createFile(atPath: url.path, contents: Data(rel.utf8))
+    }
+    func exists(_ rel: String) -> Bool { FileManager.default.fileExists(atPath: root.appendingPathComponent(rel).path) }
+    func p(_ rel: String) -> String { root.appendingPathComponent(rel).path }
+
+    func testFindMoveUndo() throws {
+        for f in ["src/A/Movie One.MKV", "src/A/movie one.srt", "src/B/clip.mp4", "src/B/clip.txt", "src/B/Café.pdf",
+                  "src/.hidden.mkv", "src/@eaDir/thumb.mkv", "src/C/clip.mp4", "dest/clip.mp4"] { touch(f) }
+        let all = FileSearch.index(roots: [p("src")])
+        XCTAssertEqual(all.count, 6, "hidden files and NAS housekeeping folders are left out")
+        XCTAssertTrue(FileSearch.index(roots: [p("src")], subfolders: false).isEmpty)
+
+        func names(_ text: String, _ kinds: Set<FileKind> = []) -> [String] {
+            FileSearch.filter(all, FileSearch.Query(text: text, kinds: kinds)).map(\.name).sorted()
+        }
+        XCTAssertEqual(names(""), [], "nothing is listed until something is asked for")
+        XCTAssertEqual(names("ONE movie"), ["Movie One.MKV", "movie one.srt"], "every word, any case, any order")
+        XCTAssertEqual(names("cafe"), ["Café.pdf"])
+        XCTAssertEqual(names(".mkv"), ["Movie One.MKV"])
+        XCTAssertEqual(names("*.srt", [.videos]), ["Movie One.MKV", "clip.mp4", "clip.mp4", "movie one.srt"], "types add up")
+        XCTAssertEqual(names("clip", [.videos]), ["clip.mp4", "clip.mp4"])
+        XCTAssertEqual(names("1.5"), [], "a word with a dot inside is part of a name, not an extension")
+
+        let out = FileSearch.move([p("src/B/clip.mp4"), p("src/C/clip.mp4"), p("src/A/Movie One.MKV"), p("dest/clip.mp4"), p("src/gone.mp4")], to: p("dest"))
+        XCTAssertEqual(out.done.map(\.to), [p("dest/clip 2.mp4"), p("dest/clip 3.mp4"), p("dest/Movie One.MKV")])
+        XCTAssertEqual(out.failures, [p("src/gone.mp4")])
+        XCTAssertEqual(try String(contentsOfFile: p("dest/clip.mp4")), "dest/clip.mp4", "the file already there is untouched")
+        XCTAssertFalse(exists("src/B/clip.mp4"))
+
+        let back = Renamer.undo(out.done)
+        XCTAssertTrue(back.failures.isEmpty)
+        XCTAssertTrue(exists("src/B/clip.mp4")); XCTAssertTrue(exists("src/C/clip.mp4")); XCTAssertTrue(exists("src/A/Movie One.MKV"))
+        XCTAssertFalse(exists("dest/clip 2.mp4"))
+    }
+}
+
 final class FavoriteTests: XCTestCase {
     func testRoundTrip() throws {
         var scan = Favorite(name: "NAS", kind: .scan)
@@ -301,6 +379,10 @@ final class FavoriteTests: XCTestCase {
         nested.trashEmptied = false; nested.destination = "/Volumes/hdd0/Sorted"
         let back = try JSONDecoder().decode([Favorite].self, from: JSONEncoder().encode([scan, nested]))
         XCTAssertEqual(back, [scan, nested])
+        // A favorite saved before Find Files existed has no `kinds`.
+        let old = #"[{"id":"7B0A3B5E-0000-4000-8000-000000000001","name":"Books","kind":"rename","folders":["/b"],"texts":["x"],"subfolders":false,"maxFiles":1,"takeFolderName":false,"trashEmptied":true}]"#
+        let loaded = try JSONDecoder().decode([Favorite].self, from: Data(old.utf8))
+        XCTAssertEqual(loaded[0].texts, ["x"]); XCTAssertEqual(loaded[0].kinds, []); XCTAssertFalse(loaded[0].subfolders)
     }
 }
 
@@ -404,6 +486,9 @@ final class UnnesterTests: XCTestCase {
         XCTAssertTrue(exists("out/abc.mkv")); XCTAssertTrue(exists("dl/Movie.2023")); XCTAssertTrue(plain.trashed.isEmpty)
         let stuck = Unnester.apply([Unnester.Item(outer: p("dl/Same"), inner: p("dl/Same/Same"))], trashEmptied: false)
         XCTAssertEqual(stuck.failures, [p("dl/Same/Same")])
+
+        XCTAssertEqual(stuck.reasons, [.nameTaken])
+        XCTAssertEqual(batch.reasons, [.nameTaken])
 
         // A record written before `log` existed still decodes.
         let old = try JSONDecoder().decode(Unnester.Batch.self, from: Data(#"{"moves":[],"trashed":[],"failures":[]}"#.utf8))

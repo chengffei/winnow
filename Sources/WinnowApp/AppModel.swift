@@ -13,6 +13,7 @@ enum Route: Hashable {
     case scanning
     case rename
     case nested
+    case search
     case result(UUID, Category)
 }
 
@@ -104,6 +105,10 @@ final class AppModel {
             opened = favorite
             openedCount += 1
             route = .nested
+        case .search:
+            opened = favorite
+            openedCount += 1
+            route = .search
         }
     }
 
