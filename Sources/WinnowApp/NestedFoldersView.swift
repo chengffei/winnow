@@ -14,12 +14,14 @@ struct NestedFoldersView: View {
     @State private var busy = false
     @State private var lastBatch = Unnester.loadLast()
     @State private var message: String?
+    @State private var selection = Set<String>()
 
-    init(folders: [String] = [], items: [Unnester.Item] = [], searched: Bool = false, destination: String? = nil) {
-        _folders = State(initialValue: folders)
+    init(folders: [String] = [], items: [Unnester.Item] = [], searched: Bool = false, destination: String? = nil, favorite: Favorite? = nil) {
+        _folders = State(initialValue: favorite?.folders ?? folders)
+        _trashEmptied = State(initialValue: favorite?.trashEmptied ?? true)
         _items = State(initialValue: items)
         _searched = State(initialValue: searched)
-        _destination = State(initialValue: destination)
+        _destination = State(initialValue: favorite.map(\.destination) ?? destination)
     }
 
     private var included: [Unnester.Item] { items.filter(\.include) }
@@ -35,6 +37,15 @@ struct NestedFoldersView: View {
                         .fixedSize()
                         .onChange(of: maxFiles) { if searched { find() } }
                     Spacer()
+                    FavoriteButton(suggested: FavoriteButton.name(for: folders), disabled: folders.isEmpty) {
+                        var favorite = Favorite(kind: .nested)
+                        favorite.folders = folders
+                        favorite.maxFiles = maxFiles
+                        favorite.takeFolderName = rename
+                        favorite.trashEmptied = trashEmptied
+                        favorite.destination = destination
+                        return favorite
+                    }
                     Button(L("Find Folders"), action: find)
                         .disabled(folders.isEmpty || busy)
                 }
@@ -60,7 +71,7 @@ struct NestedFoldersView: View {
             ContentUnavailableView(L("No Matches"), systemImage: "checkmark.circle",
                                    description: Text(L("No folder here only wraps one folder or a few files.")))
         } else {
-            Table(items) {
+            Table(items, selection: $selection) {
                 TableColumn("") { item in
                     Toggle("", isOn: includeBinding(item.outer)).labelsHidden()
                 }
@@ -78,7 +89,16 @@ struct NestedFoldersView: View {
                     Text(item.outer).font(.caption).foregroundStyle(.secondary)
                         .lineLimit(1).truncationMode(.head).help(item.outer)
                 }
+                TableColumn("") { item in
+                    Button { showInFinder([item.outer]) } label: { Image(systemName: "magnifyingglass") }
+                        .buttonStyle(.borderless)
+                        .help(L("Show in Finder"))
+                }
+                .width(24)
             }
+            .contextMenu(forSelectionType: String.self) { ids in
+                if !ids.isEmpty { Button(L("Show in Finder")) { showInFinder(ids) } }
+            } primaryAction: { showInFinder($0) }
         }
     }
 
@@ -121,6 +141,12 @@ struct NestedFoldersView: View {
     private var footerText: String {
         guard searched, !items.isEmpty else { return L("Items are moved, not copied. Undo puts them back.") }
         return L("%ld folders found.", items.count)
+    }
+
+    /// Selects in Finder what each folder holds; if that has moved since, the nearest folder still there.
+    private func showInFinder(_ outers: Set<String>) {
+        let paths = items.filter { outers.contains($0.outer) }.flatMap(\.inners)
+        Finder.show(paths.isEmpty ? Array(outers) : paths)
     }
 
     private func includeBinding(_ outer: String) -> Binding<Bool> {

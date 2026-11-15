@@ -39,6 +39,7 @@ enum Snapshot {
         app.setActivationPolicy(.prohibited)
         let record = Demo.record()
         let model = AppModel(records: [record], draft: Demo.config)
+        model.favorites = Demo.favorites()
         var size = NSSize(width: 1180, height: 760)
         let root: AnyView
         switch screen {
@@ -130,6 +131,14 @@ enum Demo {
         items[3] = Renamer.Item(path: dir + "/" + names[3], newName: ".pdf", problem: .emptyName)
         items[4] = Renamer.Item(path: dir + "/Old/" + names[4], newName: "围城.pdf", problem: .nameTaken)
         return RenameView(folders: [dir], texts: ["【书香网】", "高清版", "www.example.com"], items: items, searched: true)
+    }
+
+    static func favorites() -> [Favorite] {
+        var downloads = Favorite(name: "Downloads", kind: .nested)
+        downloads.folders = ["/Volumes/hdd0/Downloads"]
+        var books = Favorite(name: "Books", kind: .rename)
+        books.folders = ["/Volumes/hdd0/Books"]
+        return [downloads, books]
     }
 
     static func nested() -> NestedFoldersView {

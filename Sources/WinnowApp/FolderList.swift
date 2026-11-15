@@ -59,3 +59,18 @@ struct FolderList: View {
         }
     }
 }
+
+enum Finder {
+    /// Selects the items in Finder. One that is gone (moved or renamed since the list was made)
+    /// is replaced by the nearest folder above it that still exists.
+    static func show(_ paths: [String]) {
+        let fm = FileManager.default
+        var urls: [URL] = []
+        for var path in paths {
+            while !fm.fileExists(atPath: path), path.count > 1 { path = (path as NSString).deletingLastPathComponent }
+            let url = URL(fileURLWithPath: path)
+            if !urls.contains(url) { urls.append(url) }
+        }
+        if !urls.isEmpty { NSWorkspace.shared.activateFileViewerSelecting(urls) }
+    }
+}

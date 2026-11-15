@@ -292,6 +292,18 @@ final class RenamerTests: XCTestCase {
     }
 }
 
+final class FavoriteTests: XCTestCase {
+    func testRoundTrip() throws {
+        var scan = Favorite(name: "NAS", kind: .scan)
+        scan.scan = ScanConfig(locations: [Location(path: "/Volumes/hdd0")], minSize: 1 << 20)
+        var nested = Favorite(name: "Downloads", kind: .nested)
+        nested.folders = ["/Volumes/hdd0/Downloads"]; nested.maxFiles = 3; nested.takeFolderName = true
+        nested.trashEmptied = false; nested.destination = "/Volumes/hdd0/Sorted"
+        let back = try JSONDecoder().decode([Favorite].self, from: JSONEncoder().encode([scan, nested]))
+        XCTAssertEqual(back, [scan, nested])
+    }
+}
+
 final class UnnesterTests: XCTestCase {
     var root: URL!
 

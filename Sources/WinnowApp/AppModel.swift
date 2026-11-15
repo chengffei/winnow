@@ -41,6 +41,13 @@ final class AppModel {
     }
     var job: Job?
     var scanError: String?
+    var favorites: [Favorite] {
+        didSet { if persists { Favorites.save(favorites) } }
+    }
+    /// The favorite last opened for Remove Text from Names or Nested Folders, and a count that
+    /// changes with every opening so the page is rebuilt from it.
+    private(set) var opened: Favorite?
+    private(set) var openedCount = 0
 
     /// Snapshot mode passes demo records and must not touch the user's saved settings.
     @ObservationIgnored private let persists: Bool
@@ -50,6 +57,7 @@ final class AppModel {
     init(records: [ScanRecord]? = nil, draft: ScanConfig? = nil) {
         self.persists = records == nil
         self.records = records ?? Store.loadAll()
+        self.favorites = records == nil ? Favorites.load() : []
         if let draft {
             self.draft = draft
         } else if let data = UserDefaults.standard.data(forKey: "draft"),
@@ -68,6 +76,39 @@ final class AppModel {
 
     private func saveDraft() {
         if let data = try? JSONEncoder().encode(draft) { UserDefaults.standard.set(data, forKey: "draft") }
+    }
+
+    // MARK: Favorites
+
+    func addFavorite(_ favorite: Favorite) {
+        favorites.append(favorite)
+    }
+
+    func removeFavorite(_ id: UUID) {
+        favorites.removeAll { $0.id == id }
+    }
+
+    /// Puts a favorite's locations and settings back on its page. Nothing is scanned or changed yet.
+    func open(_ favorite: Favorite) {
+        switch favorite.kind {
+        case .scan:
+            if let config = favorite.scan { draft = config }
+            route = .newScan
+        case .rename:
+            opened = favorite
+            openedCount += 1
+            route = .rename
+        case .nested:
+            UserDefaults.standard.set(favorite.maxFiles, forKey: "nestedMaxFiles")
+            UserDefaults.standard.set(favorite.takeFolderName, forKey: "nestedRename")
+            opened = favorite
+            openedCount += 1
+            route = .nested
+        }
+    }
+
+    func opened(_ kind: Favorite.Kind) -> Favorite? {
+        opened?.kind == kind ? opened : nil
     }
 
     // MARK: Scanning

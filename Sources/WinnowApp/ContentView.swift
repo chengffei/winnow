@@ -16,9 +16,9 @@ struct ContentView: View {
             case .scanning:
                 ScanningView()
             case .rename:
-                RenameView()
+                RenameView(favorite: model.opened(.rename)).id(model.openedCount)
             case .nested:
-                NestedFoldersView()
+                NestedFoldersView(favorite: model.opened(.nested)).id(model.openedCount)
             case .result(let id, let category):
                 switch category {
                 case .duplicates: DuplicatesView(id: id).id(id)
@@ -48,6 +48,21 @@ struct Sidebar: View {
                 .tag(Route.rename)
             Label(L("Nested Folders"), systemImage: "tray.and.arrow.up")
                 .tag(Route.nested)
+
+            if !model.favorites.isEmpty {
+                Section(L("Favorites")) {
+                    ForEach(model.favorites) { favorite in
+                        Button { model.open(favorite) } label: {
+                            SidebarRow(title: favorite.name, subtitle: Self.kindName(favorite.kind), icon: "star")
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            Button(L("Remove from Favorites")) { model.removeFavorite(favorite.id) }
+                        }
+                    }
+                }
+            }
 
             if let job = model.job {
                 Section(L("In Progress")) {
@@ -80,6 +95,14 @@ struct Sidebar: View {
         .listStyle(.sidebar)
     }
 
+    static func kindName(_ kind: Favorite.Kind) -> String {
+        switch kind {
+        case .scan: return L("New Scan")
+        case .rename: return L("Remove Text from Names")
+        case .nested: return L("Nested Folders")
+        }
+    }
+
     private func deleteButton(_ id: UUID) -> some View {
         Button(L("Delete This Record")) { model.deleteRecord(id) }
     }
@@ -108,5 +131,41 @@ struct SidebarRow: View {
                 Text(Fmt.number(count)).font(.callout).foregroundStyle(.secondary).monospacedDigit()
             }
         }
+    }
+}
+
+/// Saves the page's current locations and settings as a favorite, after asking for a name.
+struct FavoriteButton: View {
+    @Environment(AppModel.self) private var model
+    let suggested: String
+    let disabled: Bool
+    let make: () -> Favorite
+    @State private var asking = false
+    @State private var name = ""
+
+    var body: some View {
+        Button {
+            name = suggested
+            asking = true
+        } label: {
+            Label(L("Add to Favorites…"), systemImage: "star")
+        }
+        .disabled(disabled)
+        .alert(L("Add to Favorites"), isPresented: $asking) {
+            TextField(L("Name"), text: $name)
+            Button(L("Save")) {
+                var favorite = make()
+                let typed = name.trimmingCharacters(in: .whitespaces)
+                favorite.name = typed.isEmpty ? suggested : typed
+                model.addFavorite(favorite)
+            }
+            Button(L("Cancel"), role: .cancel) {}
+        } message: {
+            Text(L("Saves the locations and settings on this page. Open it from the sidebar to bring them back."))
+        }
+    }
+
+    static func name(for folders: [String]) -> String {
+        joinedList(folders.map { Paths.displayName($0) })
     }
 }

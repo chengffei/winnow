@@ -14,14 +14,16 @@ struct RenameView: View {
     @State private var searching = false
     @State private var lastBatch: [Renamer.Move] = Renamer.loadLast()
     @State private var message: String?
+    @State private var selection = Set<String>()
 
     private let persists: Bool
 
     /// `texts` is passed only by snapshot mode, which must not touch the saved list.
-    init(folders: [String] = [], texts: [String]? = nil, items: [Renamer.Item] = [], searched: Bool = false) {
+    init(folders: [String] = [], texts: [String]? = nil, items: [Renamer.Item] = [], searched: Bool = false, favorite: Favorite? = nil) {
         persists = texts == nil
-        let saved = texts ?? UserDefaults.standard.stringArray(forKey: "removeTexts") ?? []
-        _folders = State(initialValue: folders)
+        let saved = texts ?? favorite?.texts ?? UserDefaults.standard.stringArray(forKey: "removeTexts") ?? []
+        _folders = State(initialValue: favorite?.folders ?? folders)
+        _subfolders = State(initialValue: favorite?.subfolders ?? true)
         _texts = State(initialValue: saved)
         _items = State(initialValue: items)
         _searchedTexts = State(initialValue: searched ? saved : nil)
@@ -68,6 +70,13 @@ struct RenameView: View {
                 Toggle(L("Include subfolders"), isOn: $subfolders)
                     .toggleStyle(.checkbox)
                 Spacer()
+                FavoriteButton(suggested: FavoriteButton.name(for: folders), disabled: folders.isEmpty) {
+                    var favorite = Favorite(kind: .rename)
+                    favorite.folders = folders
+                    favorite.texts = texts
+                    favorite.subfolders = subfolders
+                    return favorite
+                }
                 Button(L("Find Files"), action: find)
                     .disabled(folders.isEmpty || (texts.isEmpty && text.isEmpty) || searching)
             }
@@ -104,7 +113,7 @@ struct RenameView: View {
             ContentUnavailableView(L("Nothing Found Yet"), systemImage: "textformat",
                                    description: Text(L("Add a location, type the text, then click Find Files.")))
         } else {
-            Table(items) {
+            Table(items, selection: $selection) {
                 TableColumn("") { item in
                     Toggle("", isOn: includeBinding(item.path))
                         .labelsHidden()
@@ -127,7 +136,16 @@ struct RenameView: View {
                     Text(item.folder).font(.caption).foregroundStyle(.secondary)
                         .lineLimit(1).truncationMode(.head).help(item.folder)
                 }
+                TableColumn("") { item in
+                    Button { showInFinder([item.path]) } label: { Image(systemName: "magnifyingglass") }
+                        .buttonStyle(.borderless)
+                        .help(L("Show in Finder"))
+                }
+                .width(24)
             }
+            .contextMenu(forSelectionType: String.self) { ids in
+                if !ids.isEmpty { Button(L("Show in Finder")) { showInFinder(ids) } }
+            } primaryAction: { showInFinder($0) }
         }
     }
 
@@ -157,6 +175,8 @@ struct RenameView: View {
         return blocked == 0 ? L("%ld files found.", items.count)
                             : L("%ld files found; %ld are left out because of a name problem.", items.count, blocked)
     }
+
+    private func showInFinder(_ paths: Set<String>) { Finder.show(Array(paths)) }
 
     private func includeBinding(_ path: String) -> Binding<Bool> {
         Binding(get: { items.first { $0.path == path }?.include ?? false },

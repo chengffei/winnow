@@ -199,6 +199,11 @@ struct NewScanView: View {
             HStack {
                 Text(footerText).font(.callout).foregroundStyle(.secondary)
                 Spacer()
+                FavoriteButton(suggested: model.draft.title, disabled: model.draft.locations.isEmpty) {
+                    var favorite = Favorite(kind: .scan)
+                    favorite.scan = model.draft
+                    return favorite
+                }
                 Button(L("Start Scan")) { model.startScan() }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)

@@ -305,6 +305,24 @@
   "de": "Ort hinzufügen, Text eingeben, dann „Dateien suchen“ klicken.",
   "es": "Añade una ubicación, escribe el texto y pulsa Buscar archivos."
  },
+ "Add to Favorites": {
+  "zh-Hans": "加入收藏",
+  "zh-Hant": "加入喜好項目",
+  "ja": "お気に入りに追加",
+  "ko": "즐겨찾기에 추가",
+  "fr": "Ajouter aux favoris",
+  "de": "Zu Favoriten hinzufügen",
+  "es": "Añadir a favoritos"
+ },
+ "Add to Favorites…": {
+  "zh-Hans": "加入收藏…",
+  "zh-Hant": "加入喜好項目…",
+  "ja": "お気に入りに追加…",
+  "ko": "즐겨찾기에 추가…",
+  "fr": "Ajouter aux favoris…",
+  "de": "Zu Favoriten hinzufügen…",
+  "es": "Añadir a favoritos…"
+ },
  "All": {
   "de": "Alle",
   "es": "Todos",
@@ -800,6 +818,15 @@
   "zh-Hans": "很快出结果，但同名同大小不一定相同，只适合先摸底。",
   "zh-Hant": "很快出結果，但同名同大小不一定相同，只適合先摸底。"
  },
+ "Favorites": {
+  "zh-Hans": "收藏",
+  "zh-Hant": "喜好項目",
+  "ja": "お気に入り",
+  "ko": "즐겨찾기",
+  "fr": "Favoris",
+  "de": "Favoriten",
+  "es": "Favoritos"
+ },
  "File": {
   "de": "Datei",
   "es": "Archivo",
@@ -1268,6 +1295,15 @@
   "zh-Hans": "音乐",
   "zh-Hant": "音樂"
  },
+ "Name": {
+  "zh-Hans": "名称",
+  "zh-Hant": "名稱",
+  "ja": "名前",
+  "ko": "이름",
+  "fr": "Nom",
+  "de": "Name",
+  "es": "Nombre"
+ },
  "Name After Moving": {
   "de": "Name nach dem Verschieben",
   "es": "Nombre tras mover",
@@ -1673,6 +1709,15 @@
   "de": "Text aus Namen entfernen",
   "es": "Quitar texto de los nombres"
  },
+ "Remove from Favorites": {
+  "zh-Hans": "从收藏中移除",
+  "zh-Hant": "從喜好項目中移除",
+  "ja": "お気に入りから削除",
+  "ko": "즐겨찾기에서 제거",
+  "fr": "Supprimer des favoris",
+  "de": "Aus Favoriten entfernen",
+  "es": "Quitar de favoritos"
+ },
  "Remove this location": {
   "de": "Diesen Ort entfernen",
   "es": "Quitar esta ubicación",
@@ -1780,6 +1825,24 @@
   "ko": "원래 폴더가 있는 위치",
   "zh-Hans": "原文件夹所在位置",
   "zh-Hant": "原資料夾所在位置"
+ },
+ "Save": {
+  "zh-Hans": "保存",
+  "zh-Hant": "儲存",
+  "ja": "保存",
+  "ko": "저장",
+  "fr": "Enregistrer",
+  "de": "Sichern",
+  "es": "Guardar"
+ },
+ "Saves the locations and settings on this page. Open it from the sidebar to bring them back.": {
+  "zh-Hans": "保存本页的位置和设置。在侧栏点开即可恢复。",
+  "zh-Hant": "儲存本頁的位置和設定。在側邊欄點開即可恢復。",
+  "ja": "このページの場所と設定を保存します。サイドバーから開くと元に戻せます。",
+  "ko": "이 페이지의 위치와 설정을 저장합니다. 사이드바에서 열면 다시 불러옵니다.",
+  "fr": "Enregistre les emplacements et réglages de cette page. Ouvrez-le depuis la barre latérale pour les retrouver.",
+  "de": "Sichert die Orte und Einstellungen dieser Seite. In der Seitenleiste öffnen, um sie zurückzuholen.",
+  "es": "Guarda las ubicaciones y los ajustes de esta página. Ábrelo desde la barra lateral para recuperarlos."
  },
  "Scan finished": {
   "de": "Scan abgeschlossen",
