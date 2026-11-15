@@ -175,6 +175,9 @@ struct SearchView: View {
                 }
                 Button(destination.map { L("To: %@", Paths.displayName($0)) } ?? L("Choose Destination…")) { _ = chooseDestination() }
                     .help(destination ?? "")
+                Button(L("Set Aside"), action: setAside)
+                    .disabled(ticked.isEmpty || moving != nil)
+                    .help(L("Moves the ticked files to a dated staging folder at the top of their drive, keeping their folders. Nothing is deleted; remove the staging folder yourself once you are sure."))
                 Button(L("Move %ld Files", ticked.count), action: move)
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
@@ -256,6 +259,13 @@ struct SearchView: View {
             guard chooseDestination() else { return }
         }
         guard let destination else { return }
+        run(to: destination)
+    }
+
+    private func setAside() { run(to: nil) }
+
+    /// Moves the ticked files to `destination`, or to the staging folder when it is nil.
+    private func run(to destination: String?) {
         let paths = ticked.map(\.path)
         moving = (0, paths.count)
         Task {
@@ -263,7 +273,9 @@ struct SearchView: View {
             // In small batches, so the count in the footer moves along on a slow drive.
             for start in stride(from: 0, to: paths.count, by: 20) {
                 let part = Array(paths[start..<min(start + 20, paths.count)])
-                let outcome = await Task.detached { FileSearch.move(part, to: destination) }.value
+                let outcome = await Task.detached {
+                    destination.map { FileSearch.move(part, to: $0) } ?? FileSearch.setAside(part)
+                }.value
                 done += outcome.done
                 failed += outcome.failures.count
                 moving = (min(start + 20, paths.count), paths.count)
@@ -274,9 +286,10 @@ struct SearchView: View {
             matches.removeAll { gone.contains($0.path) }
             index?.removeAll { gone.contains($0.path) }
             moving = nil
+            let place = destination.map { Paths.displayName($0) } ?? L("the staging folder")
             message = failed == 0
-                ? L("Moved %ld files to %@.", done.count, Paths.displayName(destination))
-                : L("Moved %ld files to %@; %ld could not be moved.", done.count, Paths.displayName(destination), failed)
+                ? L("Moved %ld files to %@.", done.count, place)
+                : L("Moved %ld files to %@; %ld could not be moved.", done.count, place, failed)
         }
     }
 

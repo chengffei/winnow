@@ -14,7 +14,7 @@ public enum ScanError: LocalizedError {
 
 /// Runs the bundled czkawka_cli for each selected tool and builds a ScanRecord.
 /// The CLI only draws progress on a terminal, so it is started under `script` to get a pty.
-public final class ScanRunner {
+public final class ScanRunner: @unchecked Sendable {
     public static func locateCLI() -> URL? {
         var candidates: [String] = []
         if let env = ProcessInfo.processInfo.environment["WINNOW_CLI"] { candidates.append(env) }
@@ -35,6 +35,8 @@ public final class ScanRunner {
     private var cancelled = false
 
     public init() {}
+
+    private var isCancelled: Bool { lock.withLock { cancelled } }
 
     public func cancel() {
         let p = lock.withLock { () -> Process? in
@@ -91,7 +93,21 @@ public final class ScanRunner {
 
         var record = ScanRecord(config: config)
         var skipped: [SkippedItem] = []
-        if config.tools.contains(.duplicates) {
+        if config.tools.contains(.duplicates), config.method == .sizeName {
+            // Size and name need no reading of contents, so the engine is skipped: see QuickScan.
+            let scanned = config
+            let stopped: @Sendable () -> Bool = { [weak self] in self?.isCancelled ?? true }
+            let found = await Task.detached {
+                QuickScan.duplicates(scanned, options: options, isCancelled: stopped) { count in
+                    var progress = ScanProgress()
+                    progress.filesFound = count
+                    onProgress(progress)
+                }
+            }.value
+            if isCancelled { throw CancellationError() }
+            record.groups = found.groups
+            skipped += found.skipped
+        } else if config.tools.contains(.duplicates) {
             let out = work.appendingPathComponent("dup.json")
             let args = Self.arguments(.duplicates, config: config, options: options, output: out.path)
             skipped += try await execute(cli, args, output: out, stage: .collecting, onProgress: onProgress)

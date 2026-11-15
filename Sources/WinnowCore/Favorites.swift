@@ -17,6 +17,7 @@ public struct Favorite: Codable, Identifiable, Equatable {
     public var maxFiles = 1
     public var takeFolderName = false
     public var trashEmptied = true
+    public var setAside = true
     public var destination: String?
     /// Find Files: the types ticked. What was typed is in `texts`.
     public var kinds: [FileKind] = []
@@ -39,6 +40,7 @@ public struct Favorite: Codable, Identifiable, Equatable {
         maxFiles = try c.decodeIfPresent(Int.self, forKey: .maxFiles) ?? 1
         takeFolderName = try c.decodeIfPresent(Bool.self, forKey: .takeFolderName) ?? false
         trashEmptied = try c.decodeIfPresent(Bool.self, forKey: .trashEmptied) ?? true
+        setAside = try c.decodeIfPresent(Bool.self, forKey: .setAside) ?? true
         destination = try c.decodeIfPresent(String.self, forKey: .destination)
         kinds = try c.decodeIfPresent([FileKind].self, forKey: .kinds) ?? []
     }

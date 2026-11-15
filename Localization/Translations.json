@@ -224,6 +224,15 @@
   "zh-Hans": "%ld 份 · 每份 %@",
   "zh-Hant": "%ld 份 · 每份 %@"
  },
+ "%ld files": {
+  "zh-Hans": "%ld 个文件",
+  "zh-Hant": "%ld 個檔案",
+  "ja": "%ld 個",
+  "ko": "%ld개",
+  "fr": "%ld fichiers",
+  "de": "%ld Dateien",
+  "es": "%ld archivos"
+ },
  "%ld files found.": {
   "zh-Hans": "找到 %ld 个文件。",
   "zh-Hant": "找到 %ld 個檔案。",
@@ -278,6 +287,24 @@
   "de": "%ld Ordner gefunden.",
   "es": "%ld carpetas encontradas."
  },
+ "%ld set aside": {
+  "zh-Hans": "另有 %ld 个进暂存",
+  "zh-Hant": "另有 %ld 個進暫存",
+  "ja": "ほか %ld 個は一時保管",
+  "ko": "%ld개는 보관",
+  "fr": "%ld mis de côté",
+  "de": "%ld beiseitegelegt",
+  "es": "%ld apartados"
+ },
+ "%ld small leftovers were set aside in the staging folder.": {
+  "zh-Hans": "%ld 个小杂项文件已移到暂存文件夹。",
+  "zh-Hant": "%ld 個小雜項檔案已移到暫存資料夾。",
+  "ja": "小さなファイル %ld 個を一時保管フォルダへ移しました。",
+  "ko": "작은 파일 %ld개를 보관 폴더로 옮겼습니다.",
+  "fr": "%ld petits fichiers annexes mis de côté dans le dossier de transit.",
+  "de": "%ld kleine Nebendateien in den Zwischenordner gelegt.",
+  "es": "%ld archivos menores apartados en la carpeta provisional."
+ },
  "%ld the drive refused to move, perhaps because a file is open": {
   "zh-Hans": "%ld 个被磁盘拒绝移动，可能有文件正被打开",
   "zh-Hant": "%ld 個被磁碟拒絕移動，可能有檔案正被開啟",
@@ -331,6 +358,15 @@
   "ko": "추가",
   "zh-Hans": "添加",
   "zh-Hant": "加入"
+ },
+ "Add %ld Texts": {
+  "zh-Hans": "添加 %ld 段文字",
+  "zh-Hant": "加入 %ld 段文字",
+  "ja": "%ld 個を追加",
+  "ko": "%ld개 추가",
+  "fr": "Ajouter %ld textes",
+  "de": "%ld Texte hinzufügen",
+  "es": "Añadir %ld textos"
  },
  "Add Location…": {
   "de": "Ort hinzufügen …",
@@ -1133,6 +1169,15 @@
   "zh-Hans": "进行中",
   "zh-Hant": "進行中"
  },
+ "In a folder with several files, those under a tenth the size of the largest, such as links, notes and promo clips, do not move out with it. They go to a dated staging folder at the top of the drive, where you can delete them later. Subtitles named like the main file stay with it.": {
+  "zh-Hans": "文件夹里有多个文件时，不到最大文件十分之一的小文件（链接、说明、宣传片等）不随主文件移出，而是移到磁盘顶层带日期的暂存文件夹，之后可自行删除。与主文件同名的字幕会跟着主文件。",
+  "zh-Hant": "資料夾裡有多個檔案時，不到最大檔案十分之一的小檔案（連結、說明、宣傳片等）不隨主檔案移出，而是移到磁碟頂層帶日期的暫存資料夾，之後可自行刪除。與主檔案同名的字幕會跟著主檔案。",
+  "ja": "複数のファイルがあるフォルダでは、最大のファイルの 10 分の 1 未満のもの（リンク、メモ、宣伝動画など）は一緒に移動せず、ドライブ最上位の日付付き一時保管フォルダへ移します。あとで削除できます。メインのファイルと同じ名前の字幕は一緒に移動します。",
+  "ko": "파일이 여러 개인 폴더에서 가장 큰 파일의 10분의 1보다 작은 파일(링크, 메모, 홍보 영상 등)은 함께 옮기지 않고, 드라이브 최상위의 날짜가 붙은 보관 폴더로 옮깁니다. 나중에 지울 수 있습니다. 주 파일과 이름이 같은 자막은 함께 옮깁니다.",
+  "fr": "Dans un dossier à plusieurs fichiers, ceux qui font moins d’un dixième du plus gros (liens, notes, clips promotionnels) ne sortent pas avec lui. Ils vont dans un dossier de transit daté à la racine du disque, que vous pourrez supprimer plus tard. Les sous-titres nommés comme le fichier principal le suivent.",
+  "de": "In einem Ordner mit mehreren Dateien bleiben jene unter einem Zehntel der größten (Links, Notizen, Werbeclips) nicht bei ihr. Sie kommen in einen datierten Zwischenordner auf oberster Ebene des Laufwerks und lassen sich später löschen. Untertitel, die wie die Hauptdatei heißen, bleiben bei ihr.",
+  "es": "En una carpeta con varios archivos, los que no llegan a una décima parte del mayor (enlaces, notas, clips promocionales) no salen con él. Van a una carpeta provisional con fecha en la raíz del disco, que puedes eliminar después. Los subtítulos con el nombre del archivo principal lo acompañan."
+ },
  "Include subfolders": {
   "zh-Hans": "包含子文件夹",
   "zh-Hant": "包含子資料夾",
@@ -1249,6 +1294,15 @@
   "ko": "빈 폴더를 찾는 중",
   "zh-Hans": "正在找空文件夹",
   "zh-Hant": "正在找空資料夾"
+ },
+ "Looks through the file names here for texts many of them share, such as site tags.": {
+  "zh-Hans": "在这些位置的文件名里找出很多文件共有的文字，比如网站标签。",
+  "zh-Hant": "在這些位置的檔名裡找出很多檔案共有的文字，比如網站標籤。",
+  "ja": "ここのファイル名から、多くに共通する文字列（サイトのタグなど）を探します。",
+  "ko": "이 위치의 파일 이름에서 여러 파일에 공통된 문구(사이트 태그 등)를 찾습니다.",
+  "fr": "Cherche dans les noms de fichiers les textes que beaucoup partagent, comme les mentions de sites.",
+  "de": "Sucht in den Dateinamen nach Texten, die viele gemeinsam haben, etwa Website-Kennzeichnungen.",
+  "es": "Busca en los nombres de archivo textos que muchos comparten, como etiquetas de sitios."
  },
  "Mark All": {
   "de": "Alle markieren",
@@ -1447,6 +1501,15 @@
   "ko": "%ld개 항목을 옮겼습니다.",
   "zh-Hans": "已移动 %ld 项。",
   "zh-Hant": "已移動 %ld 項。"
+ },
+ "Moves the ticked files to a dated staging folder at the top of their drive, keeping their folders. Nothing is deleted; remove the staging folder yourself once you are sure.": {
+  "zh-Hans": "把勾选的文件移到所在磁盘顶层带日期的暂存文件夹，保留原目录结构。不会删除任何东西；确认无误后自行删除暂存文件夹。",
+  "zh-Hant": "把勾選的檔案移到所在磁碟頂層帶日期的暫存資料夾，保留原目錄結構。不會刪除任何東西；確認無誤後自行刪除暫存資料夾。",
+  "ja": "チェックしたファイルを、同じドライブ最上位の日付付き一時保管フォルダへ、フォルダ構成を保ったまま移します。何も削除しません。問題なければ一時保管フォルダを自分で削除してください。",
+  "ko": "선택한 파일을 같은 드라이브 최상위의 날짜가 붙은 보관 폴더로, 폴더 구조를 유지한 채 옮깁니다. 아무것도 삭제하지 않으며, 확인 후 보관 폴더를 직접 지우세요.",
+  "fr": "Déplace les fichiers cochés dans un dossier de transit daté à la racine de leur disque, en gardant leurs dossiers. Rien n’est supprimé ; supprimez vous-même ce dossier une fois sûr.",
+  "de": "Verschiebt die markierten Dateien in einen datierten Zwischenordner auf oberster Ebene ihres Laufwerks, samt Ordnerstruktur. Nichts wird gelöscht; entferne den Zwischenordner selbst, wenn du sicher bist.",
+  "es": "Mueve los archivos marcados a una carpeta provisional con fecha en la raíz de su disco, conservando sus carpetas. No se elimina nada; borra tú la carpeta provisional cuando estés seguro."
  },
  "Moving %ld of %ld…": {
   "zh-Hans": "正在移动第 %ld 个，共 %ld 个…",
@@ -1681,6 +1744,15 @@
   "ko": "진행 중인 스캔이 없습니다",
   "zh-Hans": "没有进行中的扫描",
   "zh-Hant": "沒有進行中的掃描"
+ },
+ "No text is shared by enough file names here.": {
+  "zh-Hans": "这里没有足够多文件共有的文字。",
+  "zh-Hant": "這裡沒有足夠多檔案共有的文字。",
+  "ja": "十分な数のファイル名に共通する文字列はありません。",
+  "ko": "충분히 많은 파일 이름에 공통된 문구가 없습니다.",
+  "fr": "Aucun texte n’est partagé par assez de noms de fichiers ici.",
+  "de": "Kein Text kommt hier in genügend Dateinamen vor.",
+  "es": "Ningún texto aparece aquí en suficientes nombres de archivo."
  },
  "Not Connected": {
   "de": "Nicht verbunden",
@@ -2123,6 +2195,24 @@
   "zh-Hans": "选一组查看",
   "zh-Hant": "選一組查看"
  },
+ "Set Aside": {
+  "zh-Hans": "移到暂存",
+  "zh-Hant": "移到暫存",
+  "ja": "一時保管へ",
+  "ko": "보관 폴더로",
+  "fr": "Mettre de côté",
+  "de": "Beiseitelegen",
+  "es": "Apartar"
+ },
+ "Set small leftovers aside": {
+  "zh-Hans": "小杂项文件移到暂存",
+  "zh-Hant": "小雜項檔案移到暫存",
+  "ja": "小さな余分なファイルは一時保管へ",
+  "ko": "작은 부속 파일은 보관 폴더로",
+  "fr": "Mettre de côté les petits fichiers annexes",
+  "de": "Kleine Nebendateien beiseitelegen",
+  "es": "Apartar los archivos menores"
+ },
  "Show in Finder": {
   "de": "Im Finder zeigen",
   "es": "Mostrar en el Finder",
@@ -2213,6 +2303,15 @@
   "zh-Hans": "不再排除",
   "zh-Hant": "不再排除"
  },
+ "Suggest…": {
+  "zh-Hans": "建议…",
+  "zh-Hant": "建議…",
+  "ja": "候補…",
+  "ko": "추천…",
+  "fr": "Suggérer…",
+  "de": "Vorschläge…",
+  "es": "Sugerir…"
+ },
  "Text to remove, then Return": {
   "zh-Hans": "输入要删的文字，按回车添加",
   "zh-Hant": "輸入要刪的文字，按 Return 加入",
@@ -2221,6 +2320,24 @@
   "fr": "Texte à retirer, puis Retour",
   "de": "Zu entfernender Text, dann Return",
   "es": "Texto a quitar y pulsa Intro"
+ },
+ "Texts many file names share. Tick the ones that are clutter.": {
+  "zh-Hans": "很多文件名共有的文字。勾选其中要删掉的。",
+  "zh-Hant": "很多檔名共有的文字。勾選其中要刪掉的。",
+  "ja": "多くのファイル名に共通する文字列です。不要なものにチェックを入れてください。",
+  "ko": "여러 파일 이름에 공통된 문구입니다. 지울 것을 선택하세요.",
+  "fr": "Textes partagés par beaucoup de noms. Cochez ceux qui sont superflus.",
+  "de": "Texte, die viele Dateinamen gemeinsam haben. Markiere die überflüssigen.",
+  "es": "Textos que comparten muchos nombres. Marca los que sobran."
+ },
+ "The folder could not be read": {
+  "zh-Hans": "无法读取该文件夹",
+  "zh-Hant": "無法讀取該資料夾",
+  "ja": "フォルダを読み込めませんでした",
+  "ko": "폴더를 읽을 수 없습니다",
+  "fr": "Le dossier n’a pas pu être lu",
+  "de": "Der Ordner konnte nicht gelesen werden",
+  "es": "No se pudo leer la carpeta"
  },
  "The new language applies after Winnow restarts.": {
   "zh-Hans": "新语言在 Winnow 重新启动后生效。",
@@ -2599,5 +2716,14 @@
   "ko": "%@ 미만 파일 건너뜀",
   "zh-Hans": "跳过小于 %@ 的文件",
   "zh-Hant": "略過小於 %@ 的檔案"
+ },
+ "the staging folder": {
+  "zh-Hans": "暂存文件夹",
+  "zh-Hant": "暫存資料夾",
+  "ja": "一時保管フォルダ",
+  "ko": "보관 폴더",
+  "fr": "le dossier de transit",
+  "de": "den Zwischenordner",
+  "es": "la carpeta provisional"
  }
 }

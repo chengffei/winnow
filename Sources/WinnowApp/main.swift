@@ -169,7 +169,8 @@ enum Demo {
         }
         items[1].include = false
         items.append(Unnester.Item(outer: "\(dir)/流浪地球2.2023.BluRay", files: ["\(dir)/流浪地球2.2023.BluRay/movie.mkv"]))
-        items.append(Unnester.Item(outer: "\(dir)/年会录像", files: ["a.mp4", "b.mp4", "c.srt"].map { "\(dir)/年会录像/\($0)" }))
+        items.append(Unnester.Item(outer: "\(dir)/年会录像", files: ["a.mp4", "a.srt", "b.mp4", "说明.txt", "更多资源.url"].map { "\(dir)/年会录像/\($0)" },
+                                   sizes: [900_000_000, 40_000, 700_000_000, 800, 200]))
         return NestedFoldersView(folders: [dir], items: items, searched: true, destination: "/Volumes/hdd0/整理")
     }
 

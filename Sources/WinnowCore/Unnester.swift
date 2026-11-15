@@ -9,6 +9,10 @@ public enum Unnester {
         /// What it holds: one folder, or one or more files.
         public let inners: [String]
         public let holdsFolder: Bool
+        /// Files much smaller than the largest one and not named after it: links, notes, promo pictures.
+        public let extras: Set<String>
+        /// Files that go with a main file, such as its subtitles: each one's path and its main file's path.
+        public let companions: [String: String]
         public var include = true
 
         public var inner: String { inners[0] }
@@ -18,12 +22,18 @@ public enum Unnester {
             self.outer = outer
             self.inners = [inner]
             self.holdsFolder = true
+            self.extras = []
+            self.companions = [:]
         }
 
-        public init(outer: String, files: [String]) {
+        /// `sizes` go with `files`; without them every file counts as a main file.
+        public init(outer: String, files: [String], sizes: [UInt64]? = nil) {
             self.outer = outer
             self.inners = files
             self.holdsFolder = false
+            let roles = sizes.map { Unnester.classify(zip(files, $0).map { ($0, $1) }) }
+            self.extras = roles?.extras ?? []
+            self.companions = roles?.companions ?? [:]
         }
     }
 
@@ -46,6 +56,8 @@ public enum Unnester {
         public var failures: [String] = []
         /// Why each of `failures` was skipped, in the same order. Absent in older records.
         public var reasons: [Reason]?
+        /// Small extras moved to a staging folder: where they were and where they are. Absent in older records.
+        public var aside: [Renamer.Move]?
         /// Every move on disk in the order it happened; Undo replays it backwards. Absent in older records.
         public var log: [Renamer.Move]?
 
@@ -65,14 +77,14 @@ public enum Unnester {
     /// In a chain A/B/C only A is listed: moving B out brings C along.
     public static func plan(roots: [String], maxFiles: Int = 0) -> [Item] {
         let rootSet = Set(roots)
-        let found = FastWalk.walk(roots) { dir, entries -> (found: [Item], descend: [String]) in
+        let found = FastWalk.walk(roots, list: FastWalk.details) { dir, entries -> (found: [Item], descend: [String]) in
             if !rootSet.contains(dir) {
                 if entries.count == 1, entries[0].isFolder {
                     return ([Item(outer: dir, inner: dir + "/" + entries[0].name)], [])
                 }
                 if !entries.isEmpty, entries.count <= maxFiles, !entries.contains(where: \.isFolder) {
-                    let names = entries.map(\.name).sorted { $0.localizedStandardCompare($1) == .orderedAscending }
-                    return ([Item(outer: dir, files: names.map { dir + "/" + $0 })], [])
+                    let files = entries.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+                    return ([Item(outer: dir, files: files.map { dir + "/" + $0.name }, sizes: files.map(\.size))], [])
                 }
             }
             return ([], entries.filter(\.isFolder).map { dir + "/" + $0.name })
@@ -80,15 +92,54 @@ public enum Unnester {
         return found.sorted { $0.outer.localizedStandardCompare($1.outer) == .orderedAscending }
     }
 
-    /// The names the moved items end up with. With `rename` they take the outer folder's name and keep
-    /// their own extension; several files are numbered: "Name 1.mkv", "Name 2.srt".
-    public static func names(for item: Item, rename: Bool) -> [String] {
-        let old = item.inners.map { ($0 as NSString).lastPathComponent }
-        guard rename else { return old }
-        let base = (item.outer as NSString).lastPathComponent
-        return old.enumerated().map { i, name in
-            base + (old.count > 1 ? " \(i + 1)" : "") + (item.holdsFolder ? "" : fileExtension(name))
+    /// Sorts a folder's files into main files, their companions and small extras.
+    /// A main file is at least a tenth the size of the largest. A smaller file named like a main file
+    /// up to a dot ("Movie.chs.srt" beside "Movie.mkv") is its companion. The rest are extras.
+    static func classify(_ files: [(path: String, size: UInt64)]) -> (extras: Set<String>, companions: [String: String]) {
+        guard files.count > 1, let largest = files.map(\.size).max(), largest > 0 else { return ([], [:]) }
+        func name(_ path: String) -> String { (path as NSString).lastPathComponent }
+        let mains = files.filter { $0.size >= largest / 10 }
+        let stems = mains.compactMap { main -> (stem: String, path: String)? in
+            let stem = (name(main.path) as NSString).deletingPathExtension
+            return stem.isEmpty || stem == name(main.path) ? nil : (stem.lowercased() + ".", main.path)
+        }.sorted { $0.stem.count > $1.stem.count }
+        var extras = Set<String>()
+        var companions: [String: String] = [:]
+        for file in files where file.size < largest / 10 {
+            if let main = stems.first(where: { name(file.path).lowercased().hasPrefix($0.stem) }) {
+                companions[file.path] = main.path
+            } else {
+                extras.insert(file.path)
+            }
         }
+        return (extras, companions)
+    }
+
+    /// What moves out of the folder and under which name. With `setAside` the small extras are left out.
+    /// With `rename` the items take the outer folder's name and keep their own extension; several main
+    /// files are numbered ("Name 1.mkv", "Name 2.mkv") and a companion follows its main file ("Name 1.chs.srt").
+    public static func moves(for item: Item, rename: Bool, setAside: Bool = false) -> [(from: String, name: String)] {
+        let moved = setAside ? item.inners.filter { !item.extras.contains($0) } : item.inners
+        func own(_ path: String) -> String { (path as NSString).lastPathComponent }
+        guard rename else { return moved.map { ($0, own($0)) } }
+        let base = (item.outer as NSString).lastPathComponent
+        if item.holdsFolder { return moved.map { ($0, base) } }
+        // Main files are numbered first, then any extras that come along.
+        let numbered = moved.filter { item.companions[$0] == nil && !item.extras.contains($0) } + moved.filter(item.extras.contains)
+        var label: [String: String] = [:]
+        for (i, path) in numbered.enumerated() { label[path] = numbered.count > 1 ? "\(base) \(i + 1)" : base }
+        return moved.map { path in
+            if let main = item.companions[path], let mainLabel = label[main] {
+                let stem = (own(main) as NSString).deletingPathExtension
+                return (path, mainLabel + String(own(path).dropFirst(stem.count)))
+            }
+            return (path, (label[path] ?? base) + fileExtension(own(path)))
+        }
+    }
+
+    /// The names the moved items end up with.
+    public static func names(for item: Item, rename: Bool, setAside: Bool = false) -> [String] {
+        moves(for: item, rename: rename, setAside: setAside).map(\.name)
     }
 
     /// ".mkv", ".tar.gz", or nothing.
@@ -102,8 +153,11 @@ public enum Unnester {
     /// Moves what each included folder holds into `destination`, or next to that folder when it is nil,
     /// then gets rid of the folder if it is left empty: to the Trash, or deleted on a drive that has none.
     /// Folders that changed since the preview, or whose names are taken in the destination, are skipped whole.
-    public static func apply(_ items: [Item], to destination: String? = nil, trashEmptied: Bool, rename: Bool = false) -> Batch {
+    /// With `setAside` each folder's small extras go to a dated staging folder at the top of their drive.
+    public static func apply(_ items: [Item], to destination: String? = nil, trashEmptied: Bool, rename: Bool = false,
+                             setAside: Bool = false, date: Date = Date(), home: String = NSHomeDirectory()) -> Batch {
         var batch = Batch()
+        var aside: [Renamer.Move] = []
         var log: [Renamer.Move] = []
         var reasons: [Reason] = []
         let fm = FileManager.default
@@ -113,7 +167,9 @@ public enum Unnester {
                 reasons.append(reason)
             }
             let dest = destination ?? (item.outer as NSString).deletingLastPathComponent
-            let targets = names(for: item, rename: rename).map { (dest as NSString).appendingPathComponent($0) }
+            let moved = moves(for: item, rename: rename, setAside: setAside)
+            let targets = moved.map { (dest as NSString).appendingPathComponent($0.name) }
+            let extras = setAside ? item.inners.filter(item.extras.contains) : []
             // A lone item may take the outer folder's own name and place, once that folder is gone.
             let swap = targets.count == 1 && targets[0].compare(item.outer, options: .caseInsensitive) == .orderedSame
             guard let now = visible(item.outer),
@@ -153,22 +209,35 @@ public enum Unnester {
                 return true
             }
             var ok = true
+            let hold = item.outer + ".winnow-" + UUID().uuidString.prefix(8)
             if swap {
-                let hold = item.outer + ".winnow-" + UUID().uuidString.prefix(8)
-                ok = step(item.inner, hold) && removeOuter() && step(hold, targets[0])
+                ok = step(moved[0].from, hold)
             } else {
-                for (from, to) in zip(item.inners, targets) where ok { ok = step(from, to) }
-                if ok, trashEmptied, visible(item.outer)?.isEmpty == true { _ = removeOuter() }
+                for (from, to) in zip(moved.map(\.from), targets) where ok { ok = step(from, to) }
+            }
+            var staged: [Renamer.Move] = []
+            for path in extras where ok {
+                let target = Processor.freeName(Processor.stagingTarget(for: path, date: date, home: home).target)
+                try? fm.createDirectory(atPath: (target as NSString).deletingLastPathComponent, withIntermediateDirectories: true)
+                ok = step(path, target)
+                if ok { staged.append(Renamer.Move(from: path, to: target)) }
+            }
+            if swap {
+                ok = ok && removeOuter() && step(hold, targets[0])
+            } else if ok, trashEmptied, visible(item.outer)?.isEmpty == true {
+                _ = removeOuter()
             }
             guard ok else {
                 _ = revert(steps)
                 skip(.refused); continue
             }
-            batch.moves += zip(item.inners, targets).map { Renamer.Move(from: $0, to: $1) }
+            batch.moves += zip(moved.map(\.from), targets).map { Renamer.Move(from: $0, to: $1) }
+            aside += staged
             if let gone { batch.trashed.append(Renamer.Move(from: item.outer, to: gone)) }
             log += steps
         }
         batch.log = log
+        batch.aside = aside
         batch.reasons = reasons
         return batch
     }

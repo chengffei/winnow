@@ -320,6 +320,108 @@ extension UnnesterTests {
     }
 }
 
+extension UnnesterTests {
+    func write(_ rel: String, bytes: Int) {
+        let url = root.appendingPathComponent(rel)
+        try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        FileManager.default.createFile(atPath: url.path, contents: Data(count: bytes))
+    }
+
+    /// One big file with subtitles and clutter: the file takes the folder's name, subtitles follow, clutter is staged.
+    func testMainFileAndExtras() throws {
+        write("dl/Film.2023/abc.mkv", bytes: 50_000); write("dl/Film.2023/abc.srt", bytes: 300); write("dl/Film.2023/ABC.chs.srt", bytes: 300)
+        write("dl/Film.2023/visit-us.url", bytes: 50); write("dl/Film.2023/readme.txt", bytes: 80)
+        write("dl/Show/e1.mkv", bytes: 40_000); write("dl/Show/e2.mkv", bytes: 45_000); write("dl/Show/e2.srt", bytes: 100); write("dl/Show/ad.jpg", bytes: 900)
+        write("dl/Same/a.txt", bytes: 100); write("dl/Same/b.txt", bytes: 120)                 // no small file: both are main
+
+        let items = Unnester.plan(roots: [p("dl")], maxFiles: 10)
+        XCTAssertEqual(items.map(\.outer), [p("dl/Film.2023"), p("dl/Same"), p("dl/Show")])
+        let film = items[0], show = items[2]
+        XCTAssertEqual(film.extras, [p("dl/Film.2023/readme.txt"), p("dl/Film.2023/visit-us.url")])
+        XCTAssertEqual(Unnester.names(for: film, rename: true, setAside: true).sorted(), ["Film.2023.chs.srt", "Film.2023.mkv", "Film.2023.srt"])
+        XCTAssertEqual(Unnester.names(for: show, rename: true, setAside: true), ["Show 1.mkv", "Show 2.mkv", "Show 2.srt"])
+        XCTAssertEqual(Unnester.names(for: show, rename: true), ["Show 3.jpg", "Show 1.mkv", "Show 2.mkv", "Show 2.srt"], "kept extras are numbered after the main files")
+        XCTAssertEqual(Unnester.names(for: items[1], rename: true, setAside: true), ["Same 1.txt", "Same 2.txt"])
+        XCTAssertEqual(Unnester.names(for: film, rename: false, setAside: true).count, 3)
+
+        let home = p("home")
+        let batch = Unnester.apply(items, trashEmptied: true, rename: true, setAside: true, home: home)
+        XCTAssertTrue(batch.failures.isEmpty, "\(batch.reasons ?? [])")
+        XCTAssertTrue(exists("dl/Film.2023.mkv")); XCTAssertTrue(exists("dl/Film.2023.srt")); XCTAssertTrue(exists("dl/Film.2023.chs.srt"))
+        XCTAssertTrue(exists("dl/Show 2.srt")); XCTAssertFalse(exists("dl/Film.2023")); XCTAssertFalse(exists("dl/Show"))
+        XCTAssertEqual(batch.aside?.count, 3)
+        XCTAssertTrue(batch.aside!.allSatisfy { $0.to.contains(Processor.stagingPrefix) && FileManager.default.fileExists(atPath: $0.to) })
+        XCTAssertTrue(batch.aside!.contains { $0.to.hasSuffix("/dl/Film.2023/readme.txt") }, "staged files keep their folder structure")
+
+        let back = Unnester.undo(batch)
+        XCTAssertTrue(back.failures.isEmpty, "\(back.failures)")
+        for f in ["dl/Film.2023/abc.mkv", "dl/Film.2023/ABC.chs.srt", "dl/Film.2023/visit-us.url", "dl/Show/ad.jpg", "dl/Same/b.txt"] {
+            XCTAssertTrue(exists(f), f)
+        }
+    }
+}
+
+final class SuggestionTests: XCTestCase {
+    func testClutterIsFound() {
+        var names = (1...6).map { "【书香网】Book \($0) www.example.com.epub" }
+        names += (1...5).map { "Trip \($0)-HD.mp4" }
+        names += ["notes.txt", "[once] only.txt"]
+        let found = Suggestions.find(in: names)
+        XCTAssertEqual(found.prefix(2).map(\.text).sorted(), ["www.example.com", "【书香网】"])
+        XCTAssertEqual(found.first?.count, 6)
+        XCTAssertTrue(found.contains { $0.text == "-HD" && $0.count == 5 })
+        XCTAssertFalse(found.contains { $0.text.contains("once") }, "a text in one name is not clutter")
+    }
+}
+
+final class QuickScanTests: XCTestCase {
+    /// The quick scan must find exactly what the engine finds by size and name.
+    func testMatchesTheEngine() async throws {
+        guard ScanRunner.locateCLI() != nil else { throw XCTSkip("czkawka_cli not found") }
+        var root = FileManager.default.temporaryDirectory.appendingPathComponent("winnow-quick-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        root = URL(fileURLWithPath: ScanRunner.realPath(root.path))
+        defer { try? FileManager.default.removeItem(at: root) }
+        func write(_ rel: String, _ bytes: Int) {
+            let url = root.appendingPathComponent(rel)
+            try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            FileManager.default.createFile(atPath: url.path, contents: Data(count: bytes))
+        }
+        write("a/clip.mp4", 20_000); write("b/clip.mp4", 20_000); write("c/deep/clip.mp4", 20_000)
+        write("a/clip.mov", 20_000)                                     // same size, other name
+        write("a/doc.pdf", 9_000); write("b/doc.pdf", 9_001)            // same name, other size
+        write("a/small.txt", 100); write("b/small.txt", 100)            // under the minimum
+        write("a/pic.jpg", 30_000); write("skip/pic.jpg", 30_000)       // excluded folder
+        write("a/song.mp3", 12_000); write("b/node_modules/song.mp3", 12_000); write("ref/song.mp3", 12_000)
+
+        var config = ScanConfig(locations: [Location(path: root.appendingPathComponent("a").path), Location(path: root.appendingPathComponent("b").path),
+                                            Location(path: root.appendingPathComponent("c").path), Location(path: root.appendingPathComponent("skip").path),
+                                            Location(path: root.appendingPathComponent("ref").path, isReference: true)],
+                                tools: [.duplicates], method: .sizeName, excluded: [root.appendingPathComponent("skip").path])
+        let options = ScanOptions(alwaysSkip: ["node_modules"])
+        func shape(_ groups: [DupGroup]) -> Set<[String]> { Set(groups.map { $0.files.map { "\($0.path) \($0.size) \($0.isReference)" } }) }
+
+        let quick = QuickScan.duplicates(config, options: options)
+        XCTAssertEqual(quick.groups.count, 2)
+        // Ask the engine itself, not the runner, which now takes the quick path for this method.
+        let out = root.appendingPathComponent("dup.json")
+        let p = Process()
+        p.executableURL = ScanRunner.locateCLI()
+        p.arguments = ScanRunner.arguments(.duplicates, config: config, options: options, output: out.path)
+        p.standardOutput = FileHandle.nullDevice; p.standardError = FileHandle.nullDevice
+        try p.run(); p.waitUntilExit()
+        let engine = try ResultParser.duplicates(Data(contentsOf: out), config: config)
+        XCTAssertEqual(shape(quick.groups), shape(engine))
+        let times = Dictionary(uniqueKeysWithValues: engine.flatMap(\.files).map { ($0.path, $0.modified) })
+        for f in quick.groups.flatMap(\.files) { XCTAssertEqual(f.modified, times[f.path], f.path) }
+
+        config.kinds = [.music]
+        XCTAssertEqual(QuickScan.duplicates(config, options: options).groups.map(\.name), ["song.mp3"])
+        let record = try await ScanRunner().run(config, options: options) { _ in }
+        XCTAssertEqual(record.groups.map(\.name), ["song.mp3"])
+    }
+}
+
 final class FileSearchTests: XCTestCase {
     var root: URL!
 
@@ -365,6 +467,11 @@ final class FileSearchTests: XCTestCase {
 
         let back = Renamer.undo(out.done)
         XCTAssertTrue(back.failures.isEmpty)
+
+        let staged = FileSearch.setAside([p("src/B/clip.txt"), p("src/gone.txt")], home: p("home"))
+        XCTAssertEqual(staged.failures, [p("src/gone.txt")])
+        XCTAssertTrue(staged.done[0].to.contains(Processor.stagingPrefix) && staged.done[0].to.hasSuffix("/src/B/clip.txt"))
+        XCTAssertTrue(Renamer.undo(staged.done).failures.isEmpty); XCTAssertTrue(exists("src/B/clip.txt"))
         XCTAssertTrue(exists("src/B/clip.mp4")); XCTAssertTrue(exists("src/C/clip.mp4")); XCTAssertTrue(exists("src/A/Movie One.MKV"))
         XCTAssertFalse(exists("dest/clip 2.mp4"))
     }

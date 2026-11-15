@@ -102,6 +102,7 @@ final class AppModel {
         case .nested:
             UserDefaults.standard.set(favorite.maxFiles, forKey: "nestedMaxFiles")
             UserDefaults.standard.set(favorite.takeFolderName, forKey: "nestedRename")
+            UserDefaults.standard.set(favorite.setAside, forKey: "nestedSetAside")
             opened = favorite
             openedCount += 1
             route = .nested

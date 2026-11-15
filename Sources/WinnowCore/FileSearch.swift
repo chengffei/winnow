@@ -94,6 +94,25 @@ public enum FileSearch {
         return outcome
     }
 
+    /// Moves files to a dated staging folder at the top of their drive, keeping their folder structure,
+    /// the way removed duplicates are staged. Nothing is deleted.
+    public static func setAside(_ paths: [String], date: Date = Date(), home: String = NSHomeDirectory()) -> Renamer.Outcome {
+        var outcome = Renamer.Outcome()
+        let fm = FileManager.default
+        for path in paths {
+            guard fm.fileExists(atPath: path) else { outcome.failures.append(path); continue }
+            let target = Processor.freeName(Processor.stagingTarget(for: path, date: date, home: home).target)
+            do {
+                try fm.createDirectory(atPath: (target as NSString).deletingLastPathComponent, withIntermediateDirectories: true)
+                try fm.moveItem(atPath: path, toPath: target)
+                outcome.done.append(Renamer.Move(from: path, to: target))
+            } catch {
+                outcome.failures.append(path)
+            }
+        }
+        return outcome
+    }
+
     // MARK: Last batch on disk
 
     public static var logFile: URL {

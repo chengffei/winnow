@@ -15,6 +15,10 @@ struct RenameView: View {
     @State private var lastBatch: [Renamer.Move] = Renamer.loadLast()
     @State private var message: String?
     @State private var selection = Set<String>()
+    @State private var suggesting = false
+    /// nil while the names are being read.
+    @State private var suggestions: [Suggestions.Suggestion]?
+    @State private var picked = Set<String>()
 
     private let persists: Bool
 
@@ -67,6 +71,10 @@ struct RenameView: View {
                     .textFieldStyle(.roundedBorder)
                     .frame(maxWidth: 320)
                     .onSubmit(addTyped)
+                Button(L("Suggest…"), action: suggest)
+                    .disabled(folders.isEmpty)
+                    .help(L("Looks through the file names here for texts many of them share, such as site tags."))
+                    .popover(isPresented: $suggesting, arrowEdge: .bottom) { suggestionList }
                 Toggle(L("Include subfolders"), isOn: $subfolders)
                     .toggleStyle(.checkbox)
                 Spacer()
@@ -184,6 +192,65 @@ struct RenameView: View {
     }
 
     private func showInFinder(_ paths: Set<String>) { Finder.show(Array(paths)) }
+
+    // MARK: Suggestions
+
+    private func suggest() {
+        suggestions = nil
+        picked = []
+        suggesting = true
+        let roots = folders, deep = subfolders, known = Set(texts)
+        Task {
+            let found = await Task.detached { Suggestions.find(roots: roots, subfolders: deep) }.value
+            suggestions = found.filter { !known.contains($0.text) }
+        }
+    }
+
+    private var suggestionList: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let suggestions {
+                if suggestions.isEmpty {
+                    Text(L("No text is shared by enough file names here.")).foregroundStyle(.secondary)
+                } else {
+                    Text(L("Texts many file names share. Tick the ones that are clutter."))
+                        .font(.callout).foregroundStyle(.secondary)
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 4) {
+                            ForEach(suggestions) { s in
+                                Toggle(isOn: Binding(get: { picked.contains(s.text) },
+                                                     set: { on in if on { picked.insert(s.text) } else { picked.remove(s.text) } })) {
+                                    HStack {
+                                        Text(s.text).lineLimit(1).truncationMode(.middle)
+                                        Spacer(minLength: 12)
+                                        Text(L("%ld files", s.count)).font(.caption).foregroundStyle(.secondary).monospacedDigit()
+                                    }
+                                }
+                                .toggleStyle(.checkbox)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .frame(maxHeight: 320)
+                    HStack {
+                        Spacer()
+                        Button(L("Add %ld Texts", picked.count)) {
+                            for s in suggestions where picked.contains(s.text) && !texts.contains(s.text) { texts.append(s.text) }
+                            suggesting = false
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(picked.isEmpty)
+                    }
+                }
+            } else {
+                HStack(spacing: 8) {
+                    ProgressView().controlSize(.small)
+                    Text(L("Reading file names…")).foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(16)
+        .frame(width: 380)
+    }
 
     private func includeBinding(_ path: String) -> Binding<Bool> {
         Binding(get: { items.first { $0.path == path }?.include ?? false },

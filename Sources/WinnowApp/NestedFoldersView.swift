@@ -11,6 +11,7 @@ struct NestedFoldersView: View {
     @State private var trashEmptied = true
     @AppStorage("nestedMaxFiles") private var maxFiles = 1
     @AppStorage("nestedRename") private var rename = false
+    @AppStorage("nestedSetAside") private var setAside = true
     @State private var busy = false
     @State private var lastBatch = Unnester.loadLast()
     @State private var message: String?
@@ -37,8 +38,10 @@ struct NestedFoldersView: View {
 
     private var rows: [Row] {
         items.map {
-            Row(item: $0, before: Unnester.names(for: $0, rename: false).joined(separator: ", "),
-                after: Unnester.names(for: $0, rename: rename).joined(separator: ", "))
+            let staged = setAside ? $0.extras.count : 0
+            let names = Unnester.names(for: $0, rename: rename, setAside: setAside).joined(separator: ", ")
+            return Row(item: $0, before: Unnester.names(for: $0, rename: false).joined(separator: ", "),
+                       after: staged == 0 ? names : names + " · " + L("%ld set aside", staged))
         }
     }
 
@@ -59,6 +62,7 @@ struct NestedFoldersView: View {
                         favorite.maxFiles = maxFiles
                         favorite.takeFolderName = rename
                         favorite.trashEmptied = trashEmptied
+                        favorite.setAside = setAside
                         favorite.destination = destination
                         return favorite
                     }
@@ -137,7 +141,7 @@ struct NestedFoldersView: View {
                 }
                 .fixedSize()
                 .help(destination ?? "")
-                Button(L("Move %ld Items", included.reduce(0) { $0 + $1.inners.count }), action: move)
+                Button(L("Move %ld Items", included.reduce(0) { $0 + $1.inners.count - (setAside ? $1.extras.count : 0) }), action: move)
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .disabled(included.isEmpty || busy)
@@ -147,6 +151,8 @@ struct NestedFoldersView: View {
             HStack(spacing: 20) {
                 Toggle(L("Name moved items after the folder they were in"), isOn: $rename)
                     .help(L("Each item keeps its extension. Several files from one folder are numbered: Name 1, Name 2."))
+                Toggle(L("Set small leftovers aside"), isOn: $setAside)
+                    .help(L("In a folder with several files, those under a tenth the size of the largest, such as links, notes and promo clips, do not move out with it. They go to a dated staging folder at the top of the drive, where you can delete them later. Subtitles named like the main file stay with it."))
                 Toggle(L("Move emptied folders to the Trash"), isOn: $trashEmptied)
                     .help(L("On a drive without a Trash, as most network drives are, the empty folder is deleted instead. Undo makes it again."))
                 Spacer()
@@ -174,7 +180,8 @@ struct NestedFoldersView: View {
 
     /// What happened, with a count for each reason folders were skipped.
     static func summary(_ batch: Unnester.Batch) -> String {
-        let moved = L("Moved %ld items.", batch.moves.count)
+        var moved = L("Moved %ld items.", batch.moves.count)
+        if let aside = batch.aside, !aside.isEmpty { moved += " " + L("%ld small leftovers were set aside in the staging folder.", aside.count) }
         guard !batch.failures.isEmpty else { return moved }
         let reasons = batch.reasons ?? []
         func count(_ r: Unnester.Reason) -> Int { reasons.filter { $0 == r }.count }
@@ -216,10 +223,10 @@ struct NestedFoldersView: View {
     }
 
     private func move() {
-        let chosen = included, trash = trashEmptied, destination = destination, rename = rename
+        let chosen = included, trash = trashEmptied, destination = destination, rename = rename, aside = setAside
         busy = true
         Task {
-            let batch = await Task.detached { Unnester.apply(chosen, to: destination, trashEmptied: trash, rename: rename) }.value
+            let batch = await Task.detached { Unnester.apply(chosen, to: destination, trashEmptied: trash, rename: rename, setAside: aside) }.value
             lastBatch = batch
             Unnester.saveLast(batch)
             message = Self.summary(batch)
